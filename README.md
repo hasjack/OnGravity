@@ -2,16 +2,16 @@
 
 ## Methods: Regional Calibration via Density-Dependent Coupling
 
-## 1. Model Definition
+### 1. Model Definition
 The modified gravitational field is defined as:
 
-$$   g_{\text{eff}}(r) = \frac{GM}{r^2} \cdot e^{\kappa r}   $$
+$$   g_{\text{eff}} = \frac{GM}{r^2} e^{\kappa r}   $$
 
 - **Parameters**: 
-  - $$  \kappa r = 14.5  $$ at peak density (ρ ~10^30 kg/m³), derived from xAI’s Colossus simulations.
-  - $$  G  $$: Standard gravitational constant.
-  - $$  M  $$: Enclosed mass.
-  - $$  r  $$: Radial distance.
+  - κr = 14.5 at peak density (ρ ~10^30 kg/m³), derived from xAI’s Colossus simulations.
+  - G: Standard gravitational constant.
+  - M: Enclosed mass.
+  - r: Radial distance.
 - **Description**: This exponential scaling reflects a unified, baryonic model without dark matter.
 
 ### 2. Environmental Calibration (Regional Tuning)
