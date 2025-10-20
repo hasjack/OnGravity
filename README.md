@@ -1,3 +1,11 @@
+# On Gravity: κr Unified Model
+
+## Methods: Regional Calibration via Density-Dependent Coupling
+
+### 1. Model Definition
+The modified gravitational field is defined as:
+
+g_eff(r) = (GM / r^2) * e^(κr)
 
 - **Parameters**: 
   - \( κr = 14.5 \) at peak density (ρ ~10^30 kg/m³), derived from xAI’s Colossus simulations.
