@@ -10,6 +10,7 @@ import SuperclusterFlow from './SuperclusterFlow'
 import * as Styled from './App.style'
 
 const { BASE_URL } = import.meta.env
+const CDN_URL = 'https://cdn.halfasecond.com/images/onGravity/'
 
 function App() {
 
@@ -34,7 +35,7 @@ function App() {
                             </p>
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#F6F6F6' }}>
-                            <img src={`${BASE_URL}kittens_mattress.svg`} style={{ borderRadius: '2%' }} />
+                            <img src={`${CDN_URL}kittens_mattress.svg`} style={{ borderRadius: '2%' }} />
                             <h2>Matter bends the space around it — but how much it bends depends on how that matter is distributed.</h2>
                             <p>Consider a kitten on a mattress. It will make no visible indentation on the mattress.<br />
                                 Now consider 1000 kittens all arranged in a grid on the mattress: still no visible indentations.</p>
@@ -118,10 +119,10 @@ function App() {
                             </div>
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#FFFFFF' }}>
-                            <img src={`${BASE_URL}lensing.svg`} alt={'Same k - different observables'} />
+                            <img src={`${CDN_URL}lensing.svg`} alt={'Same k - different observables'} />
                             <LensingTable />
                         </Styled.Section>
-                        <Styled.Graphic style={{ backgroundImage: "url('/The_Bullet_Cluster.jpg')" }} />
+                        <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}The_Bullet_Cluster.jpg')` }} />
                         <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: '#FFF' }}>
                             <h2>Collisions</h2>
                             <h3>During high-velocity cluster collisions, gas clouds experience shock compression and strong velocity shear, raising κ temporarily:</h3>
@@ -145,7 +146,7 @@ function App() {
                             <h3>The lensing region shifts — appearing heavier — but "extra mass" is not needed when described as <b>extra weight</b>.</h3>
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#F6F6F6' }}>
-                            <img src={`${BASE_URL}cluster-collision.svg`} style={{ width: '80%' }} />
+                            <img src={`${CDN_URL}cluster-collision.svg`} style={{ width: '80%' }} />
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#FFF' }}>
                             <h2>Bullet Cluster — Collision Shift</h2>
@@ -166,7 +167,7 @@ function App() {
                             </div>
                             <LocalGroup />
                         </Styled.Section>
-                        <Styled.Graphic style={{ backgroundImage: "url('/Laniakea-Supercluster.jpg')", backgroundColor: '#000', backgroundSize: 'auto 100%' }} />
+                        <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}Laniakea-Supercluster.jpg')`, backgroundColor: '#000', backgroundSize: 'auto 100%' }} />
                         <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.75)', color: '#FFF' }}>
                             <h2>Supercluster Flow (2D)</h2>
                             <p>The same gravitational potential equation can be applied to the large-scale mass distribution of our cosmic neighbourhood, yielding the shared basin of attraction that channels galaxies toward Virgo and the Laniakea core.</p>
@@ -258,7 +259,7 @@ function App() {
                             <p>✅ Precisely the shift observed between Planck (67.4 ± 0.5) and SH₀ES (73 ± 1.0) measurements! ✅</p>
                             <p>The “tension” is resolved by tracing the same structural acceleration seen in basin and supercluster maps: arising naturally from the κ-shaped fabric of cosmic structure.</p>
                         </Styled.Section>
-                        <Styled.Graphic style={{ backgroundImage: "url('/CMB.jpg')", backgroundColor: '#000', backgroundSize: 'auto 100%' }} />
+                        <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}CMB.jpg')`, backgroundColor: '#000', backgroundSize: 'auto 100%' }} />
                         <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.5)', color: '#FFF' }}>
                             <p style={{ marginBottom: 0 }}>Using the same gravitational potential, the acoustic angular scale of the CMB is:</p>
                             <div style={{ fontSize: '32px', marginBottom: 0, marginTop: 0 }}>
