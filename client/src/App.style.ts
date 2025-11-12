@@ -1,5 +1,5 @@
-import styled from "styled-components";
-
+import styled from 'styled-components'
+const CDN_URL = 'https://cdn.halfasecond.com/images/onGravity/'
 export const Section = styled.section`
     display: flex;
     align-items: center;
@@ -99,7 +99,7 @@ export const Graphic = styled.div`
 
 export const Panel = styled.div`
     position: fixed;
-    background-image: url('/Andromeda.webp');
+    background-image: url('${CDN_URL}/Andromeda.webp');
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
