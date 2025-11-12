@@ -1,0 +1,31 @@
+# Use Node 22 on Alpine
+FROM node:22-alpine
+
+# Basic deps some CLIs expect
+RUN apk add --no-cache git bash libc6-compat
+
+# Enable Corepack and activate Yarn classic **as root** (avoids EACCES symlinks)
+RUN corepack enable \
+ && corepack prepare yarn@1.22.22 --activate
+
+# Create app dir and make it owned by the non-root 'node' user
+WORKDIR /app
+RUN mkdir -p /app && chown -R node:node /app
+
+# Set up a writable Yarn cache for the node user
+ENV YARN_CACHE_FOLDER=/home/node/.yarn-cache
+RUN mkdir -p /home/node/.yarn-cache && chown -R node:node /home/node/.yarn-cache
+
+# Drop privileges
+USER node
+ENV HOME=/home/node
+
+# Helpful Yarn flags for dev containers
+ENV YARN_ENABLE_IMMUTABLE_INSTALLS=false
+ENV YARN_NODE_LINKER=node-modules
+
+# Expose Vite’s default port
+EXPOSE 5173
+
+# Keep the container alive for interactive dev; you’ll exec in to scaffold/run
+CMD ["sh", "-lc", "tail -f /dev/null"]

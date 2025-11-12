@@ -1,0 +1,29 @@
+services:
+  vite:
+    build:
+      context: .
+      dockerfile: ${DOCKERFILE:-Dockerfile}
+    container_name: ${CONTAINER_NAME:-universe-vite}
+    environment:
+      - NODE_ENV=development
+      - YARN_CACHE_FOLDER=/home/node/.yarn-cache
+      - PORT=${PORT:-5173}
+    volumes:
+      - .:/app
+      # Keep node_modules inside the container filesystem (fast + avoids host perms mess)
+      - /app/node_modules
+      # Persist Yarn cache between rebuilds
+      - yarn_cache:/home/node/.yarn-cache
+    ports:
+      - "${PORT:-5173}:5173"
+    stdin_open: true
+    tty: true
+    networks:
+      - gravity-network
+
+networks:
+  gravity-network:
+    driver: bridge
+
+volumes:
+  yarn_cache:
