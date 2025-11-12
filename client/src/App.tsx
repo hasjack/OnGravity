@@ -43,7 +43,7 @@ function App() {
                                 Furthermore, if we swap the mattress for actual spacetime, and add a dense enough region of kittens, the curve becomes so deep that light can't escape and we are left with a black hole! (And kitten spaghetti...)</p>
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#FFF' }}>
-                            <h2 className='large' style={{ fontSize: 180 }}>
+                            <h2 className='large'>
                                 <BlockMath math={String.raw`\kappa`} />
                             </h2>
                             <p>
