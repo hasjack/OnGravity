@@ -89,9 +89,6 @@ Reproducibility is ensured by using public catalogs and a shared density-mapping
 
 ## 6. Notes on Simulation Context
 
-Some online summaries reference “xAI Colossus” simulations claiming a fixed “κ r = 14.5” peak.  
-That value **does not originate from any verified dataset** and likely arose from misinterpreted or hallucinated LLM output.  
-
 In this implementation, κ is determined empirically from baryonic data and remains within the physically reasonable 10⁻²⁶ – 10⁻²¹ m⁻¹ range.
 
 ---
