@@ -9,6 +9,8 @@ import LensingTable from './results/Lensing'
 import SuperclusterFlow from './SuperclusterFlow'
 import * as Styled from './App.style'
 
+const { BASE_URL } = import.meta.env
+
 function App() {
 
     return (
@@ -32,7 +34,7 @@ function App() {
                             </p>
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#F6F6F6' }}>
-                            <img src={'https://cdn.halfasecond.com/images/on-gravity/kittens_mattress.svg'} style={{ borderRadius: '2%' }} />
+                            <img src={`${BASE_URL}kittens_mattress.svg`} style={{ borderRadius: '2%' }} />
                             <h2>Matter bends the space around it — but how much it bends depends on how that matter is distributed.</h2>
                             <p>Consider a kitten on a mattress. It will make no visible indentation on the mattress.<br />
                                 Now consider 1000 kittens all arranged in a grid on the mattress: still no visible indentations.</p>
@@ -40,7 +42,7 @@ function App() {
                                 Furthermore, if we swap the mattress for actual spacetime, and add a dense enough region of kittens, the curve becomes so deep that light can't escape and we are left with a black hole! (And kitten spaghetti...)</p>
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#FFF' }}>
-                            <h2 className='large'>
+                            <h2 className='large' style={{ fontSize: 180 }}>
                                 <BlockMath math={String.raw`\kappa`} />
                             </h2>
                             <p>
@@ -116,7 +118,7 @@ function App() {
                             </div>
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#FFFFFF' }}>
-                            <img src={'/lensing.svg'} alt={'Same k - different observables'} />
+                            <img src={`${BASE_URL}lensing.svg`} alt={'Same k - different observables'} />
                             <LensingTable />
                         </Styled.Section>
                         <Styled.Graphic style={{ backgroundImage: "url('/The_Bullet_Cluster.jpg')" }} />
@@ -143,7 +145,7 @@ function App() {
                             <h3>The lensing region shifts — appearing heavier — but "extra mass" is not needed when described as <b>extra weight</b>.</h3>
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#F6F6F6' }}>
-                            <img src={'/cluster-collision.svg'} style={{ width: '80%' }} />
+                            <img src={`${BASE_URL}cluster-collision.svg`} style={{ width: '80%' }} />
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#FFF' }}>
                             <h2>Bullet Cluster — Collision Shift</h2>
