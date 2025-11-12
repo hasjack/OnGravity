@@ -20,26 +20,37 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'yarn'
-      
-      - name: Install dependencies
+          cache-dependency-path: client/yarn.lock
+
+      # Install deps (handles missing lockfile gracefully)
+      - name: Install dependencies (with lockfile)
+        if: ${{ hashFiles('client/yarn.lock') != '' }}
+        working-directory: client
         run: yarn install --frozen-lockfile
-      
+      - name: Install dependencies (no lockfile)
+        if: ${{ hashFiles('client/yarn.lock') == '' }}
+        working-directory: client
+        run: yarn install
+
       - name: Build
+        working-directory: client
+        env:
+          CI: true
         run: yarn build
-      
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
-      
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: client/dist
 
   deploy:
     environment:
