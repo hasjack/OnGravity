@@ -14,7 +14,7 @@ const { BASE_URL } = import.meta.env
 function App() {
 
     return (
-        <Router basename={'/'}>
+        <Router basename={BASE_URL}>
             <Routes>
                 <Route path='/' element={
                     <>
