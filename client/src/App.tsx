@@ -7,7 +7,6 @@ import LocalGroup from './LocalGroup'
 // import GalaxySliders from './GalaxySliders'
 import LensingTable from './results/Lensing'
 import MercuryPrecession from './MercuryPrecession'
-import PPNPanel from './PPNPanel'
 import SuperclusterFlow from './SuperclusterFlow'
 import * as Styled from './App.style'
 
