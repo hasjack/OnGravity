@@ -21,28 +21,45 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'yarn'
-          cache-dependency-path: client/yarn.lock
+      #############################################
+      # ORIGINAL VITE BUILD STEPS (COMMENTED OUT)
+      # Uncomment these if returning to client-side SPA build mode
+      #############################################
 
-      # Install deps (handles missing lockfile gracefully)
-      - name: Install dependencies (with lockfile)
-        if: ${{ hashFiles('client/yarn.lock') != '' }}
-        working-directory: client
-        run: yarn install --frozen-lockfile
-      - name: Install dependencies (no lockfile)
-        if: ${{ hashFiles('client/yarn.lock') == '' }}
-        working-directory: client
-        run: yarn install
+      # - name: Setup Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+      #     cache: 'yarn'
+      #     cache-dependency-path: client/yarn.lock
 
-      - name: Build
+      # - name: Install dependencies (with lockfile)
+      #   if: ${{ hashFiles('client/yarn.lock') != '' }}
+      #   working-directory: client
+      #   run: yarn install --frozen-lockfile
+
+      # - name: Install dependencies (no lockfile)
+      #   if: ${{ hashFiles('client/yarn.lock') == '' }}
+      #   working-directory: client
+      #   run: yarn install
+
+      # - name: Build Vite SPA
+      #   working-directory: client
+      #   env:
+      #     CI: true
+      #   run: yarn build
+
+      #############################################
+      # ACTIVE: DEPLOY STATIC SNAPSHOT
+      #############################################
+
+      - name: Prepare static site
         working-directory: client
-        env:
-          CI: true
-        run: yarn build
+        run: |
+          mkdir -p dist
+          cp snapshot.html dist/index.html
+
+      #############################################
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
