@@ -1,5 +1,5 @@
 // components/MercuryPrecession.tsx
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { BlockMath } from 'react-katex'
 
 const G = 6.67430e-11            // m^3 kg^-1 s^-2
