@@ -6,6 +6,8 @@ import GalacticRotation from './results/GalacticRotation'
 import LocalGroup from './LocalGroup'
 // import GalaxySliders from './GalaxySliders'
 import LensingTable from './results/Lensing'
+import MercuryPrecession from './MercuryPrecession'
+import PPNPanel from './PPNPanel'
 import SuperclusterFlow from './SuperclusterFlow'
 import * as Styled from './App.style'
 
@@ -77,7 +79,7 @@ function App() {
                             <div>
                                 <BlockMath math={String.raw`
                                     \textbf{Newton predicts:}\qquad v_N=\sqrt{\frac{GM}{r}}
-                                `} /> 
+                                `} />
                                 <code>v_N ≈ sqrt(6.674e-11 * 2.0e41 / 8.0e20) ≈ 1.29e5 m/s ≈ 129 km/s 🛑</code>
                             </div>
                             <div>
@@ -291,6 +293,107 @@ function App() {
                             </div>
                             <p>Where sightlines intersect superclusters, this same factor enhances deflection slightly (typically 1–3%), consistent with the observed mild smoothing of the acoustic peaks.</p>
                         </Styled.Section>
+                        <Styled.Graphic style={{ backgroundImage: `url('https://cdn.mos.cms.futurecdn.net/v2/t:0,l:612,cw:1575,ch:1575,q:80,w:1575/v5n22xGyNNHLzSnSArbrVH.jpg')` }} />
+                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.75)', color: '#FFF' }}>
+                            <h2>Post-Newtonian Limit: GR Locally, Λ from κ₀</h2>
+                            <p>κ–r geometry reproduces Solar-System tests exactly (γ = 1, β = 1) adding a subtle large-scale acceleration set by κ₀.</p>
+                            <div style={{ fontSize: '28px', lineHeight: '2.1', textAlign: 'center' }}>
+                                {/* Ansatz & identification */}
+                                <BlockMath math={'g_{tt} = -e^{\\kappa(r)\\,r},\\quad \\kappa(r)=\\kappa_{0}-\\dfrac{2GM}{c^{2}r^{2}}+\\cdots,\\quad U=\\dfrac{GM}{c^{2}r}'} />
+
+                                {/* Final 1PN metric (boxed) */}
+                                <div style={{ display: 'inline-block', padding: '12px 18px', border: '2px solid #fff', borderRadius: 8, margin: '18px 0' }}>
+                                    <BlockMath math={
+                                        'ds^{2} = -\\Big(1 - 2U + \\kappa_{0} r\\Big)c^{2}dt^{2} \\; + \\; \\Big(1 + 2U\\Big)\\,(dr^{2}+r^{2}d\\Omega^{2}) \\; + \\; \\mathcal{O}(c^{-4})'
+                                    } />
+                                </div>
+
+                                {/* PPN & cosmic read-off */}
+                                <BlockMath math={'\\gamma = 1,\\quad \\beta = 1,\\qquad \\Lambda_{\\rm eff} = \\dfrac{\\kappa_{0} c^{2}}{3}'} />
+                                <BlockMath math={String.raw`
+                                    \kappa_0 \approx 2.6 \times 10^{-26}\ \text{m}^{-1}
+                                `} />
+                            </div>
+                        </Styled.Section>
+                        <Styled.Graphic style={{ backgroundImage: `url('https://c.tadst.com/gfx/1200x675/mercury.jpg?1')`, backgroundColor: '#000', backgroundSize: 'auto 100%' }} />
+                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.5)', color: '#FFF' }}>
+                            <MercuryPrecession />
+                        </Styled.Section>
+                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.75)', color: '#FFF' }}>
+                            <h2>Gravitational Waves in a κ–r Universe</h2>
+                            <p style={{ maxWidth: 900, margin: '0 auto 12px', lineHeight: 1.7 }}>
+                                Gravitational waves are one of our sharpest tests of gravity. In the κ–r geometry, present–day
+                                signals from neutron star and black hole mergers are indistinguishable from GR, while the same
+                                curvature response predicts enhanced primordial waves in the very early universe.
+                            </p>
+
+                            <div style={{ fontSize: '26px', lineHeight: '2.1', textAlign: 'center', marginBottom: '16px' }}>
+                                <BlockMath math={'\\Phi_{\\text{eff}}(r) = -\\dfrac{GM}{r}\\,e^{\\kappa(r)\\,r}'} />
+                                <BlockMath math={'h_{\\text{eff}} \\;\\propto\\; h_{\\text{GR}}\\,e^{\\kappa(r)\\,r}'} />
+                                <BlockMath math={'\\text{For } \\kappa r \\ll 1:\\quad e^{\\kappa r} \\simeq 1 + \\kappa r \\;\\Rightarrow\\; h_{\\text{eff}} \\simeq h_{\\text{GR}}'} />
+                            </div>
+
+                            <div style={{ maxWidth: 960, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                                <div>
+                                    <h3>Local mergers: GR recovered</h3>
+                                    <ul style={{ lineHeight: 1.7 }}>
+                                        <li>
+                                            Neutron–star and black–hole binaries live in regions where{' '}
+                                            <b>\\(\\kappa r \\ll 1\\)</b>, so the exponential factor is essentially unity.
+                                        </li>
+                                        <li>
+                                            Phase evolution, chirp mass and waveform shape reduce to standard GR:
+                                            <br />
+                                            <BlockMath math={'g_{\\mu\\nu}^{(\\kappa)} \\simeq g_{\\mu\\nu}^{\\rm GR} \\quad (\\text{Solar System / stellar densities})'} />
+                                        </li>
+                                        <li>
+                                            For GW170817–like systems, the κ–r model reproduces a strain of{' '}
+                                            <b>\\(h \\sim 4\\times10^{-21}\\)</b>, matching LIGO/Virgo observations.
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h3>Early universe: enhanced primordial waves</h3>
+                                    <ul style={{ lineHeight: 1.7 }}>
+                                        <li>
+                                            In the very early universe, densities and velocity gradients drive{' '}
+                                            <b>\\(\\kappa(r)\\)</b> to much larger values, so <b>\\(\\kappa r \\gtrsim 1\\)</b>.
+                                        </li>
+                                        <li>
+                                            The same factor that is negligible today becomes important:
+                                            <BlockMath math={'h_{\\text{prim}} \\;\\propto\\; h_{\\text{GR,prim}}\\,e^{\\kappa_{\\text{early}} r}'} />
+                                        </li>
+                                        <li>
+                                            This predicts a modest enhancement of the primordial gravitational–wave background and
+                                            associated CMB B–modes, providing a clean target for future missions.
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <p style={{ maxWidth: 900, margin: '18px auto 0', fontSize: '0.95rem', opacity: 0.9 }}>
+                                Today&apos;s detectors therefore see <b>GR–exact waveforms</b>, while the earliest gravitational waves
+                                are subtly reshaped by \\(\\kappa(r)\\). The κ–r model passes current tests and makes falsifiable
+                                predictions for primordial signals.
+                            </p>
+                        </Styled.Section>
+                        <Styled.Graphic style={{ backgroundImage: `url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Black_hole_-_Messier_87.jpg/1200px-Black_hole_-_Messier_87.jpg')`, backgroundColor: '#000', backgroundSize: 'auto 100%' }} />
+                        <Styled.Section style={{ color: '#fff', backgroundColor: 'rgba(0,0,0,0.6)' }}>
+                            <h2>Supermassive Black Holes: Born Heavy</h2>
+                            <p>
+                                In dense, early-universe clouds, κ grows to 10⁻¹⁷ m⁻¹ — making gravity 16% stronger.
+                                Collapse accelerates. Accretion explodes. A 10⁹ M⊙ black hole forms in under 10 million years.
+                            </p>
+                            <div style={{ fontSize: '32px' }}>
+                                <BlockMath math={String.raw`
+                                    \kappa \sim 5 \times 10^{-17}\ \text{m}^{-1},\quad
+                                    e^{\kappa r} \sim 1.16,\quad
+                                    t_{\text{collapse}} \sim 0.93 \, t_{\text{ff}}
+                                `} />
+                            </div>
+                        </Styled.Section>
+
                     </>}
                 />
             </Routes>
