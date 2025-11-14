@@ -1,0 +1,33 @@
+<svg width="360" height="260" viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
+  <!-- Axes -->
+  <line x1="60" y1="210" x2="320" y2="210" stroke="#333" stroke-width="1.5"></line>
+  <line x1="60" y1="210" x2="60" y2="40" stroke="#333" stroke-width="1.5"></line>
+
+  <!-- Axis labels -->
+  <text x="322" y="214" fill="#333" font-size="14">r</text>
+  <text x="48" y="40" fill="#333" font-size="14">ρ(r)</text>
+
+  <!-- Density profile -->
+  <path d="M60 200 Q 110 80 180 70 Q 250 80 320 180" fill="none" stroke="#0066cc" stroke-width="3"></path>
+
+  <!-- Mark a point on the slope -->
+  <circle cx="220" cy="100" r="3" fill="#0066cc"></circle>
+
+  <!-- Gradient arrow (∇ρ) -->
+  <line x1="220" y1="100" x2="200" y2="120" stroke="#00aa55" stroke-width="2" marker-end="url(#arrow_grad)"></line>
+
+  <!-- Gradient label -->
+  <text x="170" y="130" fill="#00aa55" font-size="14">∇ρ</text>
+
+  <!-- Caption -->
+  <text x="90" y="235" fill="#333" font-size="14">
+    Density gradient in a clumpy profile
+  </text>
+
+  <!-- Arrowhead definition -->
+  <defs>
+    <marker id="arrow_grad" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <polygon points="0 0, 6 3, 0 6" fill="#00aa55"></polygon>
+    </marker>
+  </defs>
+</svg>

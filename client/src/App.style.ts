@@ -34,12 +34,44 @@ export const Section = styled.section`
         font-weight: bold; 
     }
     
-    > p {
+    p {
         font-size: 18px;
         width: 64%;
         line-height: 32px;
         text-align: center;
         margin-bottom: 32px;
+    }
+
+    > div > div {
+        text-align: center;
+        > h3 {
+            margin-bottom: 32px;
+            font-weight: bold;
+        }
+        > p {
+            font-size: 18px;
+            width: 100%;
+            line-height: 32px;
+            margin-bottom: 32px;
+        }
+    }
+
+    > details {
+        font-size: 18px;
+        width: 64%;
+        line-height: 32px;
+        text-align: center;
+        margin-bottom: 32px;
+    }
+
+    ul {
+        width: 64%;
+        text-align: center;
+        margin-bottom: 32px;
+        > li {
+            font-size: 14px;
+            line-height: 32px; 
+        }
     }
 
     > div {
