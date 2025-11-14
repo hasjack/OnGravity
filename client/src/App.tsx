@@ -7,7 +7,10 @@ import LocalGroup from './LocalGroup'
 // import GalaxySliders from './GalaxySliders'
 import LensingTable from './results/Lensing'
 import MercuryPrecession from './MercuryPrecession'
+import OortCloudKappa from './OortCloudKappa'
+import QuantumScaleSlider from './QuantumScaleSlider'
 import SuperclusterFlow from './SuperclusterFlow'
+import TOVBaseball from './TOVBaseball'
 import * as Styled from './App.style'
 
 const { BASE_URL } = import.meta.env
@@ -496,6 +499,126 @@ function App() {
                         <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.5)', color: '#FFF' }}>
                             <MercuryPrecession />
                         </Styled.Section>
+
+                        <Styled.Section style={{ backgroundColor: '#FFF' }}>
+                            <h2>Interstellar Visitors in the Current κ(r) Model</h2>
+
+                            <p>
+                                The κ–response used for galaxies and clusters can also be applied to
+                                small bodies passing through the inner Solar System. In the present
+                                model,
+                            </p>
+
+                            <div style={{ fontSize: '28px', margin: '16px 0' }}>
+                                <BlockMath
+                                    math={String.raw`
+                                        \kappa(r)
+                                        =
+                                        \kappa_{0}
+                                        +
+                                        k_{v}
+                                        \left(\frac{\partial v / \partial r}{10^{-12}\,\mathrm{s}^{-1}}\right)^{3}
+                                        \left(\frac{\rho}{\rho_{0}}\right)^{1/2},
+                                    `}
+                                />
+                            </div>
+
+                            <p>
+                                with κ₀ ≈ 2.6×10⁻²⁶ m⁻¹, kᵥ ≈ 5×10⁻²⁶ m⁻¹ and ρ₀ = 1600 kg m⁻³. For
+                                a Keplerian profile v(r) = √(GM⊙/r) one has |∂v/∂r| = v/(2r), and for a
+                                representative interplanetary density ρ(1 AU) ≈ 10⁻¹⁹ kg m⁻³ scaling as
+                                1/r², the resulting κ(r) at the heliocentric distances of 1I/ʻOumuamua,
+                                2I/Borisov and 3I/Atlas is:
+                            </p>
+
+                            <div style={{ fontSize: '26px', margin: '16px 0' }}>
+                                <BlockMath
+                                    math={String.raw`
+                                        \kappa r \;\approx\;
+                                        \begin{cases}
+                                            3\times 10^{-8} & (r \approx 0.25\ \text{AU, 1I})\\[4pt]
+                                            1.5\times 10^{-11} & (r \approx 1.36\ \text{AU, 3I})\\[4pt]
+                                            2.6\times 10^{-12} & (r \approx 2.0\ \text{AU, 2I})
+                                        \end{cases}
+                                    `}
+                                />
+                            </div>
+
+                            <p>
+                                The effective solar acceleration is then
+                            </p>
+
+                            <div style={{ fontSize: '28px', margin: '12px 0' }}>
+                                <BlockMath
+                                    math={String.raw`
+                                        a_{\text{eff}}(r)
+                                        =
+                                        \frac{GM_\odot}{r^{2}}\,
+                                        e^{\kappa(r)\,r}
+                                        \;\simeq\;
+                                        a_{\text{Newton}}(r)\,\bigl(1 + \kappa(r)\,r\bigr),
+                                    `}
+                                />
+                            </div>
+
+                            <p>
+                                so that the fractional correction Δa/a is at most ≈ 3×10⁻⁸ for
+                                ʻOumuamua and much smaller for 2I/Borisov and 3I/Atlas. In the current
+                                κ(r) model the impact of κ on inner–Solar–System dynamics is therefore
+                                <b>well below present observational precision</b>, while remaining large
+                                enough on galactic and cluster scales to account for rotation curves and
+                                lensing without dark matter.
+                            </p>
+
+                            {/* Optional future table / plot */}
+                            {/* <InterstellarVisitors /> */}
+                        </Styled.Section>
+
+
+                        {/* <Styled.Section style={{ backgroundColor: '#FFF' }}>
+                            <h2>Interstellar Comets: κ in the Oort Cloud</h2>
+                            <p>
+                                Objects like <b>1I/ʻOumuamua</b> and <b>2I/Borisov</b> originate from the outer Solar System,
+                                where density is low and κ is dominated by the <b>background term κ₀</b>.
+                            </p>
+
+                            <div style={{ fontSize: '32px', margin: '32px 0' }}>
+                                <BlockMath math={String.raw`
+                                    \kappa(r \gtrsim 10^4\ \text{AU}) \approx \kappa_0 \approx 2.6 \times 10^{-26}\ \text{m}^{-1}
+                                `} />
+                            </div>
+
+                            <p>
+                                This tiny κ produces a <b>cumulative boost</b> over large distances:
+                            </p>
+
+                            <div style={{ fontSize: '28px' }}>
+                                <BlockMath math={String.raw`
+                                    v_{\text{escape}} \propto \sqrt{e^{\kappa r}} \quad \rightarrow \quad
+                                    \Delta v \sim \frac{1}{2} \kappa r \cdot v_0
+                                `} />
+                            </div>
+
+                            <p>
+                                At <b>r = 50,000 AU</b>, κ₀ r ≈ 0.013 → <b>Δv ≈ +0.65%</b> →
+                                <b>v ≈ 0.3–0.6 km/s excess</b> — enough to explain hyperbolic orbits
+                                <b>without close encounters</b>.
+                            </p>
+
+                            <div style={{ margin: '40px 0' }}>
+                                <OortCloudKappa />
+                            </div>
+
+                            <p style={{ fontSize: '0.9rem', color: '#555' }}>
+                                <i>See PDF Section 3.8: "Oort Cloud Dynamics and Interstellar Objects"</i>
+                                <br />
+                                Data:
+                                <a href="https://ui.adsabs.harvard.edu/abs/2017Natur.552..378M" target="_blank">Meech et al. 2017</a>,
+                                <a href="https://ui.adsabs.harvard.edu/abs/2019ApJ...872L..22D" target="_blank">Do et al. 2019</a>
+                            </p>
+                        </Styled.Section> */}
+
+                        {/* Gravitational Waves */}
                         <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.75)', color: '#FFF' }}>
                             <h2>Gravitational Waves in a κ–r Universe</h2>
                             <p style={{ maxWidth: 900, margin: '0 auto 12px', lineHeight: 1.7 }}>
@@ -531,13 +654,13 @@ function App() {
                                     </p>
                                     <p>
                                         The same factor that is negligible today becomes important:
-                                       
+
                                     </p>
-                                     <BlockMath
-                                            math={
-                                                'h_{\\text{prim}} \\;\\propto\\; h_{\\text{GR,prim}}\\,e^{\\kappa_{\\text{early}} r}'
-                                            }
-                                        />
+                                    <BlockMath
+                                        math={
+                                            'h_{\\text{prim}} \\;\\propto\\; h_{\\text{GR,prim}}\\,e^{\\kappa_{\\text{early}} r}'
+                                        }
+                                    />
                                     <p>
                                         This predicts a modest enhancement of the primordial gravitational–wave background and
                                         associated CMB B–modes, providing a clean target for future missions.
@@ -574,6 +697,130 @@ function App() {
                                 `} />
                             </div>
                         </Styled.Section>
+
+                        {/* TOV Baseball */}
+                        <Styled.Section style={{ backgroundColor: '#F9F9F9' }}>
+                            <h2>TOV Baseball: A Neutron Star in Your Hand</h2>
+                            <p>
+                                Imagine a <b>fully loaded baseball diamond</b> of neutron stars — four 1.4 M⊙ stars at the corners,
+                                100,000 meters apart. Each packed with <b>ρ ≈ 6.0 × 10¹⁷ kg/m³</b>.
+                            </p>
+
+                            <div style={{ fontSize: '32px', margin: '32px 0' }}>
+                                <BlockMath math={String.raw`
+                                    \kappa \approx 5 \times 10^{-17}\ \text{m}^{-1},\quad
+                                    e^{\kappa r} \approx 1.16
+                                `} />
+                            </div>
+
+                            <p>
+                                The central acceleration jumps from <b>0.85 m/s²</b> to <b>0.99 m/s²</b> —
+                                enough to trigger <span style={{ color: '#d00', fontWeight: 'bold' }}>Schwarzschild collapse in under 1.5 km</span>.
+                            </p>
+
+                            <div style={{ margin: '40px 0' }}>
+                                <TOVBaseball />
+                            </div>
+
+                            <p>
+                                This shows how κ <b>amplifies collapse in dense environments</b> —
+                                the same mechanism that drives <b>rapid SMBH formation</b> in the early universe.
+                            </p>
+
+                            <p style={{ fontSize: '0.9rem', color: '#555' }}>
+                                <i>See PDF Section 3.4.1: "The TOV Baseball"</i>
+                            </p>
+                        </Styled.Section>
+
+                        {/* Quantum.. */}
+                        <Styled.Section style={{ backgroundColor: '#fff' }}>
+                            <h2>Descent: The Quantum Limit</h2>
+                            <p style={{ fontSize: '1.2rem', maxWidth: 900, margin: '0 auto 32px' }}>
+                                If κ encodes <i>structure</i> at every scale, where does that structure end?<br />
+                                What happens when <b>r → ℓ_P</b> — the quantum domain where <b>mass</b> and <b>weight</b> separate?
+                            </p>
+
+                            <div style={{ fontSize: '36px', margin: '40px 0' }}>
+                                <BlockMath math={String.raw`
+                                    \Phi(r) = -\frac{GM}{r}\,e^{\kappa r},
+                                    \quad
+                                    \lim_{r \to \ell_P} \Phi(r) = -\frac{GM}{r}
+                                `} />
+                            </div>
+
+                            <p>
+                                At Planck scales, <b>κ loses leverage</b>. Curvature decouples from structure.<br />
+                                The exponential vanishes, restoring the unweighted Newtonian (and GR) potential.
+                            </p>
+
+                            <div style={{ fontSize: '32px', margin: '32px 0' }}>
+                                <BlockMath math={String.raw`
+                                    E_\kappa = m c^2\,e^{\kappa r}
+                                    \quad \rightarrow \quad
+                                    E_\kappa \to m c^2 \quad (\text{as } r \to 0)
+                                `} />
+                            </div>
+                        </Styled.Section>
+
+                        <Styled.Section style={{ backgroundColor: '#000', color: '#fff' }}>
+                            <p>
+                                Energy gain vanishes at small r — but <b>seeds the first structure</b> at larger scales.
+                            </p>
+
+                            <div style={{ margin: '48px 0' }}>
+                                <QuantumScaleSlider />
+                            </div>
+
+                            <p style={{ fontSize: '0.9rem', color: '#aaa' }}>
+                                The transition defines a natural cutoff: below it, mass is inertial; above it, it carries <b>geometric weight</b>.<br />
+                                <i>See PDF §3.8: "Quantum Scale Indications"</i>
+                            </p>
+                        </Styled.Section>
+                        <Styled.Section style={{ backgroundColor: '#FFF' }}>
+                            <h2>Mass–Energy Equivalence in κ–Modified Gravity</h2>
+
+                            <p>
+                                The rest–energy relation <b>E = mc²</b> remains unchanged in the κ–model.
+                                Mass retains its inertial role. What changes is how energy couples to curvature.
+                                The effective gravitational mass acquires a scale–dependent weight through the
+                                factor <code>exp(κ·r)</code>.
+                            </p>
+
+                            <div className='large' style={{ margin: '32px 0' }}>
+                                <BlockMath
+                                    math={String.raw`
+                m_{\text{grav}}(r) = m\,e^{\kappa r}
+            `}
+                                />
+                            </div>
+
+                            <p>
+                                This introduces a distinction between inertial mass and gravitational mass
+                                without altering local special relativistic physics. At small radii,
+                                the exponential term approaches unity.
+                            </p>
+
+                            <div className='large' style={{ margin: '32px 0' }}>
+                                <BlockMath
+                                    math={String.raw`
+                \lim_{r \to 0} m_{\text{grav}} = m,\qquad
+                \lim_{r \to 0} E_{\kappa} = mc^{2}
+            `}
+                                />
+                            </div>
+
+                            <p>
+                                At galactic and cluster scales, the κ-term enhances gravitational
+                                interactions by weighting energy according to local density and shear.
+                                At quantum scales, the weighting disappears, and the conventional
+                                mass–energy equivalence governs the dynamics.
+                            </p>
+
+                            <p style={{ fontSize: '0.9rem', color: '#666' }}>
+                                <i>See Appendix A.6: “Mass–Energy Equivalence Under κ(r)”</i>
+                            </p>
+                        </Styled.Section>
+
                         <Styled.Section id='appendix-derivations' style={{ backgroundColor: '#FFF' }}>
                             <h2>Appendix: Key Derivations</h2>
                             <p>
@@ -884,6 +1131,283 @@ function App() {
                                     </p>
                                 </div>
                             </details>
+                            <details style={{ marginTop: '16px' }}>
+                                <summary><b>6. Quantum limit of κ</b></summary>
+                                <div style={{ marginTop: '12px' }}>
+                                    <p>
+                                        We start from the κ–weighted potential used in the main text:
+                                    </p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                                \\Phi_{\\kappa}(r)
+                                                =
+                                                -\\frac{GM}{r}\\,e^{\\kappa(r)\\,r}
+                                            `}
+                                        />
+                                    </div>
+
+                                    <p>
+                                        Here \\(\\kappa(r)\\) encodes the response of gravity to large–scale structure
+                                        (background curvature, shear, and density). To understand the behaviour
+                                        near the quantum limit, we examine \\(r \\to \\ell_P\\), where the
+                                        Planck length \\(\\ell_P\\) is the characteristic scale below which classical
+                                        structure is no longer resolved.
+                                    </p>
+
+                                    <h4>6.1 Small–r expansion of the exponential</h4>
+
+                                    <p>
+                                        For any finite \\(\\kappa(r)\\), the exponential admits a Taylor expansion
+                                        around \\(r = 0\\):
+                                    </p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                                e^{\\kappa(r)\\,r}
+                                                =
+                                                1 + \\kappa(r)\\,r
+                                                + \\tfrac{1}{2}\\,\\kappa(r)^{2} r^{2}
+                                                + \\mathcal{O}(r^{3}).
+                                            `}
+                                        />
+                                    </div>
+
+                                    <p>{String.raw`Substituting into \(\Phi_{\kappa}(r)\) gives:`}</p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                                \\Phi_{\\kappa}(r)
+                                                =
+                                                -\\frac{GM}{r}
+                                                \\Bigl[
+                                                    1 + \\kappa(r)\\,r
+                                                    + \\tfrac{1}{2}\\,\\kappa(r)^{2} r^{2}
+                                                    + \\mathcal{O}(r^{3})
+                                                \\Bigr]
+                                            `}
+                                        />
+                                    </div>
+
+                                    <p>
+                                        Expanding term by term:
+                                    </p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                                \\Phi_{\\kappa}(r)
+                                                =
+                                                -\\frac{GM}{r}
+                                                \\;-\;
+                                                GM\\,\\kappa(r)
+                                                \\;-\;
+                                                \\tfrac{1}{2}\\,GM\\,\\kappa(r)^{2} r
+                                                \\;+\;
+                                                \\mathcal{O}(r^{2})
+                                            `}
+                                        />
+                                    </div>
+
+                                    <p>
+                                        The leading term is the usual Newtonian potential \\(-GM/r\\).
+                                        The \\(\\kappa\\)-dependent terms are finite or vanish as \\(r \\to 0\\),
+                                        so the short–distance \\(1/r\\) structure of gravity is unchanged.
+                                    </p>
+
+                                    <h4>6.2 κ sourced by macroscopic structure</h4>
+
+                                    <p>
+                                        In the κ–r model, \\(\\kappa(r)\\) is an effective parameter built from
+                                        coarse–grained structure:
+                                    </p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                                \\kappa(r)
+                                                =
+                                                \\kappa_{0}
+                                                \\;+\;
+                                                k_{v}
+                                                \\left(
+                                                    \\frac{\\partial v / \\partial r}{10^{-12}\\,\\mathrm{s}^{-1}}
+                                                \\right)^{3}
+                                                \\left(
+                                                    \\frac{\\rho}{\\rho_{0}}
+                                                \\right)^{1/2}
+                                            `}
+                                        />
+                                    </div>
+
+                                    <p>
+                                        At Planck scales, matter distribution is effectively homogeneous and
+                                        gradients vanish. Therefore:
+                                    </p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                                \\lim_{r \\to \\ell_P} \\kappa(r) = 0
+                                            `}
+                                        />
+                                    </div>
+
+                                    <p>
+                                        And the κ–weighted potential reduces to:
+                                    </p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                                \\lim_{r \\to \\ell_P} \\Phi_{\\kappa}(r)
+                                                =
+                                                -\\frac{GM}{r}
+                                            `}
+                                        />
+                                    </div>
+
+                                    <h4>6.3 κ–weighted mass–energy</h4>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                                E_{\\kappa}(r)
+                                                =
+                                                mc^{2}\\,e^{\\kappa(r) r}
+                                            `}
+                                        />
+                                    </div>
+
+                                    <p>Expanding for small r:</p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                                E_{\\kappa}(r)
+                                                =
+                                                mc^{2}
+                                                \\bigl[
+                                                    1 + \\kappa(r) r
+                                                    + \\tfrac{1}{2} \\kappa(r)^{2} r^{2}
+                                                    + \\mathcal{O}(r^{3})
+                                                \\bigr]
+                                            `}
+                                        />
+                                    </div>
+
+                                    <p>
+                                        Giving the limit:
+                                    </p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                                \\lim_{r \\to \\ell_P} E_{\\kappa}(r)
+                                                =
+                                                mc^{2}
+                                            `}
+                                        />
+                                    </div>
+
+                                    <h4>6.4 Interpretation</h4>
+
+                                    <p>
+                                        κ acts as a <b>structural modifier</b>: it vanishes when structure cannot
+                                        be resolved (Planck scale) and grows when gradients, density contrasts,
+                                        and shear appear on macroscopic scales.
+                                    </p>
+
+                                    <p style={{ fontSize: '0.9rem', color: '#555' }}>
+                                        Below the Planck scale, gravity reverts to its standard form.
+                                        Above it, κ encodes geometric weight.
+                                    </p>
+                                </div>
+                            </details>
+                            <details style={{ marginTop: '16px' }}>
+                                <summary><b>A.7 — Mass–Energy Equivalence Under κ(r)</b></summary>
+                                <div style={{ marginTop: '12px' }}>
+                                    <p>
+                                        In the κ–modified weak–field limit, the effective gravitational
+                                        potential takes the form
+                                    </p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                                \Phi_{\kappa}(r) = -\,\frac{GM}{r}\,e^{\kappa r}.
+                                            `}
+                                        />
+                                    </div>
+
+                                    <p>
+                                        Differentiating gives the radial acceleration:
+                                    </p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                                g_{\kappa}(r) = \frac{GM}{r^{2}}\,e^{\kappa r}.
+                                            `}
+                                        />
+                                    </div>
+
+                                    <p>
+                                        This may be interpreted as the usual Newtonian term multiplied by a
+                                        scale–dependent gravitational weight. Writing
+                                        <code>m<sub>grav</sub> = m · e^{'κ r'}</code> reproduces the same force law.
+                                    </p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                            F = m_{\text{grav}}\,\frac{GM}{r^{2}}
+                                            \quad\text{with}\quad
+                                            m_{\text{grav}}(r) = m\,e^{\kappa r}.
+                                        `}
+                                        />
+                                    </div>
+
+                                    <p>
+                                        Inertial mass remains unchanged, so the rest–energy relation
+                                        <code>E = mc²</code> holds exactly. The gravitational contribution to the
+                                        energy, however, acquires the same weight:
+                                    </p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                    E_{\kappa}(r) = mc^{2}\,e^{\kappa r}.
+                `}
+                                        />
+                                    </div>
+
+                                    <p>
+                                        At small radii, the weighting disappears and the standard expression
+                                        is recovered:
+                                    </p>
+
+                                    <div className='large'>
+                                        <BlockMath
+                                            math={String.raw`
+                                            \lim_{r \to 0} E_{\kappa}(r) = mc^{2}.
+                                        `}
+                                        />
+                                    </div>
+
+                                    <p>
+                                        This establishes a scale–dependent distinction between inertial and
+                                        gravitational mass without altering local special–relativistic physics.
+                                        Energy retains its inertial identity, while its gravitational influence
+                                        varies with structure through κ(r).
+                                    </p>
+                                </div>
+                            </details>
+
+
                             <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '8px' }}>Full derivations, MCMC fits, and code at:</p>
                             <ul>
                                 <li><a href="https://github.com/hasjack/on-gravity" target="_blank" rel="noreferrer">github.com/hasjack/on-gravity</a></li>

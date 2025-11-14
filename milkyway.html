@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>κ-Gravity Rotation Curve Demo</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h2>Interactive κ-Gravity: Galactic Rotation Curves</h2>
+    <p>Slide to tweak density (ρ) or radius (r). Watch v(r) boost via e^{κr}—no dark matter needed.</p>
+    
+    <div>
+        <label>ρ (M⊙/kpc³): <input type="range" id="rho_slider" min="1e6" max="1e10" value="1e8" step="1e6"></label>
+        <span id="rho_value">1e8</span><br>
+        <label>r (kpc): <input type="range" id="r_slider" min="1" max="100" value="10" step="1"></label>
+        <span id="r_value">10</span><br>
+        <label>Tweak a (density exp): <input type="range" id="a_slider" min="0" max="1" value="0.5" step="0.1"></label>
+        <span id="a_value">0.5</span>
+    </div>
+    
+    <div id="plot" style="width:800px;height:500px;"></div>
+    
+    <script>
+        const G = 4.30091e-3; // pc M⊙^{-1} (km/s)^2   [adjusted for astro units]
+        const k0 = 7e-21 * 3.08568e19; // m^{-1} to kpc^{-1}
+        const rho0 = 1e8; // M⊙/kpc³
+        const r0 = 100; // kpc
+        const b = 2;
+        const M = 1e11; // M⊙ for MW
+        
+        function compute_v(r_kpc, rho, a) {
+            const r = r_kpc; // kpc
+            const kappa = k0 * Math.pow(rho / rho0, a) * Math.pow(r0 / r, b);
+            const kappa_r = kappa * r;
+            const exp_boost = Math.exp(kappa_r);
+            const v_newt = Math.sqrt(G * M / r); // km/s
+            return v_newt * Math.sqrt(exp_boost); // approx for circular v
+        }
+        
+        function updatePlot() {
+            const rho = parseFloat(document.getElementById('rho_slider').value);
+            const r_fixed = parseFloat(document.getElementById('r_slider').value);
+            const a = parseFloat(document.getElementById('a_slider').value);
+            
+            document.getElementById('rho_value').textContent = rho;
+            document.getElementById('r_value').textContent = r_fixed;
+            document.getElementById('a_value').textContent = a;
+            
+            // Compute curve over r=1-100 kpc
+            const r_range = Array.from({length: 100}, (_, i) => 1 + (99 * i / 99));
+            const v_kappa = r_range.map(r => compute_v(r, rho, a));
+            const v_newt = r_range.map(r => Math.sqrt(G * M / r));
+            
+            const trace1 = {
+                x: r_range, y: v_newt, mode: 'lines', name: 'Newtonian (Baryons Only)',
+                line: {color: 'red', dash: 'dash'}
+            };
+            const trace2 = {
+                x: r_range, y: v_kappa, mode: 'lines', name: `κ-Model (a=${a}, ρ=${rho})`,
+                line: {color: 'blue', width: 3}
+            };
+            
+            const data = [trace1, trace2];
+            const layout = {
+                title: `v(r) at ρ=${rho} M⊙/kpc³ | Point: r=${r_fixed} kpc, v_κ≈${compute_v(r_fixed, rho, a).toFixed(0)} km/s`,
+                xaxis: {title: 'r (kpc)'}, yaxis: {title: 'v (km/s)'}
+            };
+            
+            Plotly.newPlot('plot', data, layout);
+        }
+        
+        // Event listeners
+        document.getElementById('rho_slider').oninput = updatePlot;
+        document.getElementById('r_slider').oninput = updatePlot;
+        document.getElementById('a_slider').oninput = updatePlot;
+        
+        // Initial plot
+        updatePlot();
+    </script>
+</body>
+</html>
