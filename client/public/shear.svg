@@ -1,0 +1,34 @@
+<svg width="360" height="260" viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
+  <!-- Axes -->
+  <line x1="60" y1="210" x2="320" y2="210" stroke="#333" stroke-width="1.5"></line>
+  <line x1="60" y1="210" x2="60" y2="40" stroke="#333" stroke-width="1.5"></line>
+
+  <!-- Axis labels -->
+  <text x="322" y="214" fill="#333" font-size="14">r</text>
+  <text x="52" y="40" fill="#333" font-size="14">v(r)</text>
+
+  <!-- Rotation curve -->
+  <path d="M60 200 Q 150 130 260 120 Q 305 118 320 116" fill="none" stroke="#0066cc" stroke-width="3"></path>
+
+  <!-- Tangent line at a point -->
+  <!-- Point on curve -->
+  <circle cx="200" cy="126" r="3" fill="#0066cc"></circle>
+
+  <!-- Tangent line (approx) -->
+  <line x1="170" y1="145" x2="235" y2="110" stroke="#cc0000" stroke-width="2" marker-end="url(#arrow)"></line>
+
+  <!-- Slope label -->
+  <text x="240" y="112" fill="#cc0000" font-size="14">∂v/∂r</text>
+
+  <!-- Caption -->
+  <text x="90" y="235" fill="#333" font-size="14">
+    Shear from changing orbital speed
+  </text>
+
+  <!-- Arrowhead definition -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <polygon points="0 0, 6 3, 0 6" fill="#cc0000"></polygon>
+    </marker>
+  </defs>
+</svg>
