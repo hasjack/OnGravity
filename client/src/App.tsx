@@ -7,11 +7,12 @@ import LocalGroup from './LocalGroup'
 // import GalaxySliders from './GalaxySliders'
 import LensingTable from './results/Lensing'
 import MercuryPrecession from './MercuryPrecession'
-import OortCloudKappa from './OortCloudKappa'
+// import OortCloudKappa from './OortCloudKappa'
 import QuantumScaleSlider from './QuantumScaleSlider'
 import SuperclusterFlow from './SuperclusterFlow'
 import TOVBaseball from './TOVBaseball'
 import * as Styled from './App.style'
+import { PioneerAnomaly } from './PioneerAnomaly'
 
 const { BASE_URL } = import.meta.env
 const CDN_URL = 'https://cdn.halfasecond.com/images/onGravity/'
@@ -440,6 +441,73 @@ function App() {
                             </div>
                             <p>Where sightlines intersect superclusters, this same factor enhances deflection slightly (typically 1–3%), consistent with the observed mild smoothing of the acoustic peaks.</p>
                         </Styled.Section>
+                        {/* Gravitational Waves */}
+                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.75)', color: '#FFF' }}>
+                            <h2>Gravitational Waves in a κ–r Universe</h2>
+                            <p style={{ maxWidth: 900, margin: '0 auto 12px', lineHeight: 1.7 }}>
+                                Gravitational waves are one of our sharpest tests of gravity. In the κ–r geometry, present–day
+                                signals from neutron star and black hole mergers are indistinguishable from GR, while the same
+                                curvature response predicts enhanced primordial waves in the very early universe.
+                            </p>
+
+                            <div style={{ fontSize: '26px', lineHeight: '2.1', textAlign: 'center', marginBottom: '16px' }}>
+                                <BlockMath math={'\\Phi_{\\text{eff}}(r) = -\\dfrac{GM}{r}\\,e^{\\kappa(r)\\,r}'} />
+                                <BlockMath math={'h_{\\text{eff}} \\;\\propto\\; h_{\\text{GR}}\\,e^{\\kappa(r)\\,r}'} />
+                                <BlockMath math={'\\text{For } \\kappa r \\ll 1:\\quad e^{\\kappa r} \\simeq 1 + \\kappa r \\;\\Rightarrow\\; h_{\\text{eff}} \\simeq h_{\\text{GR}}'} />
+                            </div>
+
+                            <div style={{ display: 'flex', width: '92%', maxWidth: '1400px', justifyContent: 'space-between' }}>
+                                <div style={{ width: '48%' }}>
+                                    <h3>Local mergers: GR recovered</h3>
+                                    <p>Neutron–star and black–hole binaries live in regions where{' '}
+                                        <b>κ r ≪ 1</b>, so the exponential factor is essentially unity.</p>
+                                    <p>Phase evolution, chirp mass and waveform shape reduce to standard GR:</p>
+                                    <BlockMath
+                                        math={
+                                            'g_{\\mu\\nu}^{(\\kappa)} \\simeq g_{\\mu\\nu}^{\\rm GR} \\quad (\\text{Solar System / stellar densities})'
+                                        }
+                                    />
+                                    <p>For GW170817–like systems, the κ–r model reproduces a strain of{' '} <b>h ∼ 4×10⁻²¹</b>, matching LIGO/Virgo observations.</p>
+                                </div>
+
+                                <div style={{ width: '48%' }}>
+                                    <h3>Early universe: enhanced primordial waves</h3>
+                                    <p>In the very early universe, densities and velocity gradients drive{' '}
+                                        <b>κ(r)</b> to much larger values, so <b>κ r ≳ 1</b>.
+                                    </p>
+                                    <p>
+                                        The same factor that is negligible today becomes important:
+
+                                    </p>
+                                    <BlockMath
+                                        math={
+                                            'h_{\\text{prim}} \\;\\propto\\; h_{\\text{GR,prim}}\\,e^{\\kappa_{\\text{early}} r}'
+                                        }
+                                    />
+                                    <p>
+                                        This predicts a modest enhancement of the primordial gravitational–wave background and
+                                        associated CMB B–modes, providing a clean target for future missions.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <p
+                                style={{
+                                    maxWidth: 900,
+                                    margin: '18px auto 0',
+                                    fontSize: '0.95rem',
+                                    opacity: 0.9
+                                }}
+                            >
+                                Today&apos;s detectors therefore see <b>GR–exact waveforms</b>, while the earliest gravitational waves
+                                are subtly reshaped by κ(r). The κ–r model passes current tests and makes falsifiable
+                                predictions for primordial signals.
+                            </p>
+
+                        </Styled.Section>
+
+
+                        {/* PPN */}
                         <Styled.Graphic style={{ backgroundImage: `url('https://cdn.mos.cms.futurecdn.net/v2/t:0,l:612,cw:1575,ch:1575,q:80,w:1575/v5n22xGyNNHLzSnSArbrVH.jpg')` }} />
                         <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.75)', color: '#FFF' }}>
                             <h2>Post-Newtonian Limit: GR Locally, κ₀ as a Small Correction</h2>
@@ -495,12 +563,72 @@ function App() {
 
                         </Styled.Section>
 
+                        {/* Mercury */}
                         <Styled.Graphic style={{ backgroundImage: `url('https://c.tadst.com/gfx/1200x675/mercury.jpg?1')`, backgroundColor: '#000', backgroundSize: 'auto 100%' }} />
                         <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.5)', color: '#FFF' }}>
                             <MercuryPrecession />
                         </Styled.Section>
 
-                        <Styled.Section style={{ backgroundColor: '#FFF' }}>
+
+                        {/* Pioneer "anomaly" */}
+                        <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}pioneer.jpg')` }} />
+                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.5)', color: '#FFF' }}>
+                            <h2>The Pioneer Anomaly and the κ-Field</h2>
+
+                            <p>
+                                In the late 20th century, the Pioneer 10 and 11 spacecraft became the first
+                                human-made objects to leave the inner Solar System on long, clean,
+                                force-free trajectories.  Their radio-tracking precision was unmatched:
+                                Doppler residuals were measured to parts in 10<sup>11</sup>, far beyond what
+                                modern missions typically achieve. As the spacecraft passed beyond 10 AU, a persistent sunward acceleration
+                                appeared in the data:
+                            </p>
+
+                            <div style={{ fontSize: '32px'}}>
+                                <BlockMath
+                                    math={String.raw`
+                a_{\rm P} \approx 8.74 \times 10^{-10} \ {\rm m/s^2}.
+            `}
+                                />
+                            </div>
+
+                            <p>
+                                Conventional analyses attribute this to thermal recoil from the RTGs.
+                                While plausible, this explanation requires fine-tuned directional
+                                emission and a nearly constant power asymmetry over decades.  The anomaly
+                                remains unusually stable in magnitude despite the exponential decay of
+                                the plutonium heat source.
+                            </p>
+                        </Styled.Section>
+                        <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}pioneer-trajectory.webp')` }} />
+                        <Styled.Section style={{ backgroundColor: 'rgba(255,255,255,0.85)' }}>
+                            <p>
+                                The magnitude of the anomaly aligns naturally with the
+                                expected background curvature scale:
+                            </p>
+
+                            <div className='large'>
+                                <BlockMath
+                                    math={String.raw`
+                                        a_{\kappa} = \kappa_0 \, c^2
+                                        \quad\Longrightarrow\quad
+                                        \kappa_0 \sim 10^{-26}\ {\rm m^{-1}}
+                                    `}
+                                />
+                            </div>
+                            <p>This value is the same curvature amplitude that appears in galaxy
+                                rotation curves and weak-lensing fits across the κ-model.
+                                The Pioneer trajectory, extending from 1 AU to over 70 AU with minimal maneuvers,
+                                becomes a unique map of the Solar System’s κ-field.
+                            </p>
+
+                            <PioneerAnomaly />
+                            <p>κ₀ r × 10¹³ shows the tiny but cumulative lever arm of a background κ field across 20–70 AU. Even at the edge of the Pioneer range, κ₀ r ≪ 1, consistent with only a very small modification to Newtonian gravity in the outer Solar System.</p>
+
+                        </Styled.Section>
+
+                        {/* Intestellar Objects */}
+                        {/* <Styled.Section style={{ backgroundColor: '#FFF' }}>
                             <h2>Interstellar Visitors in the Current κ(r) Model</h2>
 
                             <p>
@@ -570,10 +698,7 @@ function App() {
                                 lensing without dark matter.
                             </p>
 
-                            {/* Optional future table / plot */}
-                            {/* <InterstellarVisitors /> */}
-                        </Styled.Section>
-
+                        </Styled.Section> */}
 
                         {/* <Styled.Section style={{ backgroundColor: '#FFF' }}>
                             <h2>Interstellar Comets: κ in the Oort Cloud</h2>
@@ -618,164 +743,7 @@ function App() {
                             </p>
                         </Styled.Section> */}
 
-                        {/* Gravitational Waves */}
-                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.75)', color: '#FFF' }}>
-                            <h2>Gravitational Waves in a κ–r Universe</h2>
-                            <p style={{ maxWidth: 900, margin: '0 auto 12px', lineHeight: 1.7 }}>
-                                Gravitational waves are one of our sharpest tests of gravity. In the κ–r geometry, present–day
-                                signals from neutron star and black hole mergers are indistinguishable from GR, while the same
-                                curvature response predicts enhanced primordial waves in the very early universe.
-                            </p>
-
-                            <div style={{ fontSize: '26px', lineHeight: '2.1', textAlign: 'center', marginBottom: '16px' }}>
-                                <BlockMath math={'\\Phi_{\\text{eff}}(r) = -\\dfrac{GM}{r}\\,e^{\\kappa(r)\\,r}'} />
-                                <BlockMath math={'h_{\\text{eff}} \\;\\propto\\; h_{\\text{GR}}\\,e^{\\kappa(r)\\,r}'} />
-                                <BlockMath math={'\\text{For } \\kappa r \\ll 1:\\quad e^{\\kappa r} \\simeq 1 + \\kappa r \\;\\Rightarrow\\; h_{\\text{eff}} \\simeq h_{\\text{GR}}'} />
-                            </div>
-
-                            <div style={{ display: 'flex', width: '92%', maxWidth: '1400px', justifyContent: 'space-between' }}>
-                                <div style={{ width: '48%' }}>
-                                    <h3>Local mergers: GR recovered</h3>
-                                    <p>Neutron–star and black–hole binaries live in regions where{' '}
-                                        <b>κ r ≪ 1</b>, so the exponential factor is essentially unity.</p>
-                                    <p>Phase evolution, chirp mass and waveform shape reduce to standard GR:</p>
-                                    <BlockMath
-                                        math={
-                                            'g_{\\mu\\nu}^{(\\kappa)} \\simeq g_{\\mu\\nu}^{\\rm GR} \\quad (\\text{Solar System / stellar densities})'
-                                        }
-                                    />
-                                    <p>For GW170817–like systems, the κ–r model reproduces a strain of{' '} <b>h ∼ 4×10⁻²¹</b>, matching LIGO/Virgo observations.</p>
-                                </div>
-
-                                <div style={{ width: '48%' }}>
-                                    <h3>Early universe: enhanced primordial waves</h3>
-                                    <p>In the very early universe, densities and velocity gradients drive{' '}
-                                        <b>κ(r)</b> to much larger values, so <b>κ r ≳ 1</b>.
-                                    </p>
-                                    <p>
-                                        The same factor that is negligible today becomes important:
-
-                                    </p>
-                                    <BlockMath
-                                        math={
-                                            'h_{\\text{prim}} \\;\\propto\\; h_{\\text{GR,prim}}\\,e^{\\kappa_{\\text{early}} r}'
-                                        }
-                                    />
-                                    <p>
-                                        This predicts a modest enhancement of the primordial gravitational–wave background and
-                                        associated CMB B–modes, providing a clean target for future missions.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <p
-                                style={{
-                                    maxWidth: 900,
-                                    margin: '18px auto 0',
-                                    fontSize: '0.95rem',
-                                    opacity: 0.9
-                                }}
-                            >
-                                Today&apos;s detectors therefore see <b>GR–exact waveforms</b>, while the earliest gravitational waves
-                                are subtly reshaped by κ(r). The κ–r model passes current tests and makes falsifiable
-                                predictions for primordial signals.
-                            </p>
-
-                        </Styled.Section>
-                        <Styled.Graphic style={{ backgroundImage: `url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Black_hole_-_Messier_87.jpg/1200px-Black_hole_-_Messier_87.jpg')`, backgroundColor: '#000', backgroundSize: 'auto 100%' }} />
-                        <Styled.Section style={{ color: '#fff', backgroundColor: 'rgba(0,0,0,0.6)' }}>
-                            <h2>Supermassive Black Holes: Born Heavy</h2>
-                            <p>
-                                In dense, early-universe clouds, κ grows to 10⁻¹⁷ m⁻¹ — making gravity 16% stronger.
-                                Collapse accelerates. Accretion explodes. A 10⁹ M⊙ black hole forms in under 10 million years.
-                            </p>
-                            <div style={{ fontSize: '32px' }}>
-                                <BlockMath math={String.raw`
-                                    \kappa \sim 5 \times 10^{-17}\ \text{m}^{-1},\quad
-                                    e^{\kappa r} \sim 1.16,\quad
-                                    t_{\text{collapse}} \sim 0.93 \, t_{\text{ff}}
-                                `} />
-                            </div>
-                        </Styled.Section>
-
-                        {/* TOV Baseball */}
-                        <Styled.Section style={{ backgroundColor: '#F9F9F9' }}>
-                            <h2>TOV Baseball: A Neutron Star in Your Hand</h2>
-                            <p>
-                                Imagine a <b>fully loaded baseball diamond</b> of neutron stars — four 1.4 M⊙ stars at the corners,
-                                100,000 meters apart. Each packed with <b>ρ ≈ 6.0 × 10¹⁷ kg/m³</b>.
-                            </p>
-
-                            <div style={{ fontSize: '32px', margin: '32px 0' }}>
-                                <BlockMath math={String.raw`
-                                    \kappa \approx 5 \times 10^{-17}\ \text{m}^{-1},\quad
-                                    e^{\kappa r} \approx 1.16
-                                `} />
-                            </div>
-
-                            <p>
-                                The central acceleration jumps from <b>0.85 m/s²</b> to <b>0.99 m/s²</b> —
-                                enough to trigger <span style={{ color: '#d00', fontWeight: 'bold' }}>Schwarzschild collapse in under 1.5 km</span>.
-                            </p>
-
-                            <div style={{ margin: '40px 0' }}>
-                                <TOVBaseball />
-                            </div>
-
-                            <p>
-                                This shows how κ <b>amplifies collapse in dense environments</b> —
-                                the same mechanism that drives <b>rapid SMBH formation</b> in the early universe.
-                            </p>
-
-                            <p style={{ fontSize: '0.9rem', color: '#555' }}>
-                                <i>See PDF Section 3.4.1: "The TOV Baseball"</i>
-                            </p>
-                        </Styled.Section>
-
-                        {/* Quantum.. */}
-                        <Styled.Section style={{ backgroundColor: '#fff' }}>
-                            <h2>Descent: The Quantum Limit</h2>
-                            <p style={{ fontSize: '1.2rem', maxWidth: 900, margin: '0 auto 32px' }}>
-                                If κ encodes <i>structure</i> at every scale, where does that structure end?<br />
-                                What happens when <b>r → ℓ_P</b> — the quantum domain where <b>mass</b> and <b>weight</b> separate?
-                            </p>
-
-                            <div style={{ fontSize: '36px', margin: '40px 0' }}>
-                                <BlockMath math={String.raw`
-                                    \Phi(r) = -\frac{GM}{r}\,e^{\kappa r},
-                                    \quad
-                                    \lim_{r \to \ell_P} \Phi(r) = -\frac{GM}{r}
-                                `} />
-                            </div>
-
-                            <p>
-                                At Planck scales, <b>κ loses leverage</b>. Curvature decouples from structure.<br />
-                                The exponential vanishes, restoring the unweighted Newtonian (and GR) potential.
-                            </p>
-
-                            <div style={{ fontSize: '32px', margin: '32px 0' }}>
-                                <BlockMath math={String.raw`
-                                    E_\kappa = m c^2\,e^{\kappa r}
-                                    \quad \rightarrow \quad
-                                    E_\kappa \to m c^2 \quad (\text{as } r \to 0)
-                                `} />
-                            </div>
-                        </Styled.Section>
-
-                        <Styled.Section style={{ backgroundColor: '#000', color: '#fff' }}>
-                            <p>
-                                Energy gain vanishes at small r — but <b>seeds the first structure</b> at larger scales.
-                            </p>
-
-                            <div style={{ margin: '48px 0' }}>
-                                <QuantumScaleSlider />
-                            </div>
-
-                            <p style={{ fontSize: '0.9rem', color: '#aaa' }}>
-                                The transition defines a natural cutoff: below it, mass is inertial; above it, it carries <b>geometric weight</b>.<br />
-                                <i>See PDF §3.8: "Quantum Scale Indications"</i>
-                            </p>
-                        </Styled.Section>
+                        {/* Energy */}
                         <Styled.Section style={{ backgroundColor: '#FFF' }}>
                             <h2>Mass–Energy Equivalence in κ–Modified Gravity</h2>
 
@@ -820,6 +788,103 @@ function App() {
                                 <i>See Appendix A.6: “Mass–Energy Equivalence Under κ(r)”</i>
                             </p>
                         </Styled.Section>
+
+                        {/* Quantum.. */}
+                        <Styled.Section style={{ backgroundColor: '#fff' }}>
+                            <h2>Descent: The Quantum Limit</h2>
+                            <p style={{ fontSize: '1.2rem', maxWidth: 900, margin: '0 auto 32px' }}>
+                                If κ encodes <i>structure</i> at every scale, where does that structure end?<br />
+                                What happens when <b>r → ℓ_P</b> — the quantum domain where <b>mass</b> and <b>weight</b> separate?
+                            </p>
+
+                            <div style={{ fontSize: '36px', margin: '40px 0' }}>
+                                <BlockMath math={String.raw`
+                                    \Phi(r) = -\frac{GM}{r}\,e^{\kappa r},
+                                    \quad
+                                    \lim_{r \to \ell_P} \Phi(r) = -\frac{GM}{r}
+                                `} />
+                            </div>
+
+                            <p>
+                                At Planck scales, <b>κ loses leverage</b>. Curvature decouples from structure.<br />
+                                The exponential vanishes, restoring the unweighted Newtonian (and GR) potential.
+                            </p>
+
+                            <div style={{ fontSize: '32px', margin: '32px 0' }}>
+                                <BlockMath math={String.raw`
+                                    E_\kappa = m c^2\,e^{\kappa r}
+                                    \quad \rightarrow \quad
+                                    E_\kappa \to m c^2 \quad (\text{as } r \to 0)
+                                `} />
+                            </div>
+                        </Styled.Section>
+                        <Styled.Section style={{ backgroundColor: '#000', color: '#fff' }}>
+                            <p>
+                                Energy gain vanishes at small r — but <b>seeds the first structure</b> at larger scales.
+                            </p>
+
+                            <div style={{ margin: '48px 0' }}>
+                                <QuantumScaleSlider />
+                            </div>
+
+                            <p style={{ fontSize: '0.9rem', color: '#aaa' }}>
+                                The transition defines a natural cutoff: below it, mass is inertial; above it, it carries <b>geometric weight</b>.<br />
+                                <i>See PDF §3.8: "Quantum Scale Indications"</i>
+                            </p>
+                        </Styled.Section>
+
+                        {/* TOV Baseball */}
+                        <Styled.Section style={{ backgroundColor: '#F9F9F9' }}>
+                            <h2>TOV Baseball: A Neutron Star in Your Hand</h2>
+                            <p>
+                                Imagine a <b>fully loaded baseball diamond</b> of neutron stars — four 1.4 M⊙ stars at the corners,
+                                100,000 meters apart. Each packed with <b>ρ ≈ 6.0 × 10¹⁷ kg/m³</b>.
+                            </p>
+
+                            <div style={{ fontSize: '32px', margin: '32px 0' }}>
+                                <BlockMath math={String.raw`
+                                    \kappa \approx 5 \times 10^{-17}\ \text{m}^{-1},\quad
+                                    e^{\kappa r} \approx 1.16
+                                `} />
+                            </div>
+
+                            <p>
+                                The central acceleration jumps from <b>0.85 m/s²</b> to <b>0.99 m/s²</b> —
+                                enough to trigger <span style={{ color: '#d00', fontWeight: 'bold' }}>Schwarzschild collapse in under 1.5 km</span>.
+                            </p>
+
+                            <div style={{ margin: '40px 0' }}>
+                                <TOVBaseball />
+                            </div>
+
+                            <p>
+                                This shows how κ <b>amplifies collapse in dense environments</b> —
+                                the same mechanism that drives <b>rapid SMBH formation</b> in the early universe.
+                            </p>
+
+                            <p style={{ fontSize: '0.9rem', color: '#555' }}>
+                                <i>See PDF Section 3.4.1: "The TOV Baseball"</i>
+                            </p>
+                        </Styled.Section>
+
+                        {/* SMBH */}
+                        <Styled.Graphic style={{ backgroundImage: `url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Black_hole_-_Messier_87.jpg/1200px-Black_hole_-_Messier_87.jpg')`, backgroundColor: '#000', backgroundSize: 'auto 100%' }} />
+                        <Styled.Section style={{ color: '#fff', backgroundColor: 'rgba(0,0,0,0.6)' }}>
+                            <h2>Supermassive Black Holes: Born Heavy</h2>
+                            <p>
+                                In dense, early-universe clouds, κ grows to 10⁻¹⁷ m⁻¹ — making gravity 16% stronger.
+                                Collapse accelerates. Accretion explodes. A 10⁹ M⊙ black hole forms in under 10 million years.
+                            </p>
+                            <div style={{ fontSize: '32px' }}>
+                                <BlockMath math={String.raw`
+                                    \kappa \sim 5 \times 10^{-17}\ \text{m}^{-1},\quad
+                                    e^{\kappa r} \sim 1.16,\quad
+                                    t_{\text{collapse}} \sim 0.93 \, t_{\text{ff}}
+                                `} />
+                            </div>
+                        </Styled.Section>
+
+                        {/* k-Curvature (riemann) */}
                         <Styled.Section style={{ backgroundColor: '#F6F6F6' }}>
                             <h2>k-Curvature Operator</h2>
                             <p>
@@ -919,7 +984,52 @@ function App() {
                             </p> */}
                         </Styled.Section>
 
+                        {/* Geometric limits */}
+                        <Styled.Section style={{ backgroundColor: '#FFF' }}>
+                            <h2>What κ Cannot Do — and Why That Matters</h2>
 
+                            <p>
+                                The κ–curvature field was introduced as a local response to structure:
+                                density, shear, clustering and fragmentation.  In the context of the
+                                integers this structure is <i>external</i>: the distribution of primes,
+                                composites and logarithmic scaling is already present before κ is ever
+                                defined.  κ does not dictate the primes — it measures their curvature.
+                            </p>
+
+                            <p>
+                                This distinction becomes important when κ is applied outside the setting
+                                that produced it.  In some systems, such as the Collatz map or arbitrary
+                                discrete iterations, the “environment” is not independent.  Any local
+                                density one computes is generated <i>by the orbit itself</i>, rather than
+                                reflecting an underlying landscape.  In such cases κ ceases to be a
+                                diagnostic field and becomes circular: the orbit defines κ, and κ cannot
+                                constrain the orbit.
+                            </p>
+
+                            <p>
+                                This is not a failure of the κ–model.  It is evidence that κ is detecting a
+                                <b>real external structure</b> in the primes — and is not a universal
+                                magic function that solves every dynamical system.  If κ “worked” on
+                                Collatz, it would be a sign that κ was too flexible.  The fact that it
+                                does <i>not</i> transfer is an important control test: κ is sensitive to
+                                number–theoretic geometry, not arbitrary iteration rules.
+                            </p>
+
+                            <p>
+                                In physical terms: curvature only makes sense when there <i>is</i> a
+                                geometry.  κ succeeds on prime statistics for the same reason it succeeds
+                                on galaxies, clusters and the Pioneer trajectory: these systems possess a
+                                real underlying structure that curvature can measure.  κ does not invent a
+                                landscape — it reveals one when it is already there.
+                            </p>
+
+                            <p>
+                                This boundary is healthy.  It shows that the κ–framework is grounded in
+                                structure, not numerology.  The predictive success of κ in astrophysics
+                                and in the spectral analysis of the primes is meaningful precisely because
+                                κ does <i>not</i> apply everywhere.  It applies where geometry is present.
+                            </p>
+                        </Styled.Section>
                         <Styled.Section id='appendix-derivations' style={{ backgroundColor: '#FFF' }}>
                             <h2>Appendix: Key Derivations</h2>
                             <p>
