@@ -9,6 +9,8 @@ export const Section = styled.section`
     z-index: 1;
     position: relative;
     font-family: monospace;
+    padding: 5vh 0;
+    box-sizing: border-box;
 
     > h2 {
         width: 72%;
@@ -69,9 +71,13 @@ export const Section = styled.section`
         text-align: center;
         margin-bottom: 32px;
         > li {
-            font-size: 14px;
+            font-size: 18px;
             line-height: 32px; 
         }
+    }
+
+    i {
+        font-style: italic;
     }
 
     > div {
@@ -96,7 +102,6 @@ export const Section = styled.section`
     }
 
     &.headline {
-        background-color: rgba(0,0,0,0.75);
         color: #FFF;
         > h1 {
             font-family: monospace;
@@ -131,7 +136,7 @@ export const Graphic = styled.div`
 
 export const Panel = styled.div`
     position: fixed;
-    background-image: url('${CDN_URL}/Andromeda.webp');
+    background-image: url('${CDN_URL}chaotic-toy-galaxy.jpg');
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;

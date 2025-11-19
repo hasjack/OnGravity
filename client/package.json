@@ -7,6 +7,7 @@
     "dev": "vite --host 0.0.0.0 --port 5173",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "serve": "serve -s dist/ -l 5173",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -21,6 +22,7 @@
     "react-katex": "^3.1.0",
     "react-router": "^7.9.5",
     "react-router-dom": "^7.9.5",
+    "serve": "^14.2.5",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
