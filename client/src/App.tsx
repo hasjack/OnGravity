@@ -11,6 +11,7 @@ import MercuryPrecession from './MercuryPrecession'
 import QuantumScaleSlider from './QuantumScaleSlider'
 import SuperclusterFlow from './SuperclusterFlow'
 import TOVBaseball from './TOVBaseball'
+import Universe from './Universe'
 import * as Styled from './App.style'
 import { PioneerAnomaly } from './PioneerAnomaly'
 
@@ -223,6 +224,9 @@ function App() {
                             /> */}
                             <h3>TLDR: considering density distribution seems to matter. (dark matter...)</h3>
                         </Styled.Section>
+                        <Styled.Section style={{ backgroundColor: '#000', padding: '0' }}>
+                            <Universe />
+                        </Styled.Section>
                         <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: '#FFF' }}>
                             <h2>Gravitational Lensing</h2>
                             <p>The next question is whether this same curvature term applies to light as well as mass. Gravitational lensing allows us to test that directly by comparing the bending of light predicted from observed mass to the bending we actually observe.</p>
@@ -305,9 +309,9 @@ function App() {
                             <p>
                                 The same <i>κ</i> term used in galaxy rotation, lensing, and basin maps also enters
                                 the large-scale gravitational potential. When averaged over cosmological
-                                distances—dominated by voids rather than dense structures—it produces a
-                                small net positive contribution to the integrated potential: an emergent
-                                large-scale acceleration.
+                                distances—dominated by voids rather than dense structures, it produces a
+                                small net positive contribution to the integrated potential: <b>an emergent
+                                    large-scale acceleration</b>
                             </p>
 
                             <div style={{ fontSize: '32px' }}>
@@ -599,6 +603,7 @@ function App() {
                                 remains unusually stable in magnitude despite the exponential decay of
                                 the plutonium heat source.
                             </p>
+                            <img src={`${CDN_URL}pioneer-comm.webp`} style={{ maxWidth: '650px', margin: '36px 0 0' }} />
                         </Styled.Section>
                         <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}pioneer-trajectory.webp')` }} />
                         <Styled.Section style={{ backgroundColor: 'rgba(255,255,255,0.85)' }}>
@@ -744,7 +749,7 @@ function App() {
                         </Styled.Section> */}
 
                         {/* Energy */}
-                        <Styled.Section style={{ backgroundColor: '#FFF' }}>
+                        <Styled.Section style={{ backgroundColor: '#E5E5E5' }}>
                             <h2>Mass–Energy Equivalence in κ–Modified Gravity</h2>
 
                             <p>
@@ -884,6 +889,153 @@ function App() {
                             </div>
                         </Styled.Section>
 
+                        {/* -1 x -1 = 1 */}
+                        <Styled.Section style={{ backgroundColor: '#FFFFFF' }}>
+                            <h2>Non-trivial Mars bars</h2>
+                            <p>A child asks his father if he has any Mars Bars. The father answers that he has zero Mars bars.</p>
+                            <p style={{ backgroundColor: '#F6F6F6', padding: '6px 0', borderRadius: '2px' }}>The child asks: <i>“Can you halve zero - because if you can then we can share?”</i></p>
+                            <p>They tried it with a zero Mars bar which they put on a table and cut in half. They then took a half each and decided - yes: we both now have half a zero Mars bar therefore: <b>you must be able to halve zero!</b></p>
+                            <p>Reflecting, it had actually been very easy to cut the zero Mars bar in half. So easy, in fact, they had been able to make the cut in such an exact way that the 2 portions were precisely (fundamentally?) equal. They hadn't even needed a knife! Any other amount of Mars bars would have been much more difficult however!</p>
+                            <p>Are these lame dad jokes actually nature hinting at something more fundamental? 🧐</p>
+                            <img src={`${CDN_URL}mars-bar.jpg`} style={{ maxWidth: '800px' }} />
+                        </Styled.Section>
+
+                        <Styled.Section style={{ backgroundColor: '#F8F8F8' }}>
+                            <h2>The half a zero Mars bar premise:</h2>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>For any structure 𝑆, division by 2 produces the smallest non-trivial structural unit consistent with 𝑆</p>
+                            <p>You can operate on something that isn’t there as long as the rule is consistent - <b>implying:</b></p>
+                            <div className={'large'} style={{ marginTop: 0 }}><BlockMath math={'x = 0 \\;\\Rightarrow\\; x/2 = 0.5'} /></div>
+                            <p>In nature, much like in everyday speech, zero is a <i>relationship</i> and often behaves this way:</p>
+                            <p>
+                                <b>Sharing zero</b> → a rule about fairness → <i>I've got nothing I can share</i><br />
+                                <b>Cosmological example</b> → <i>a region with zero net force remains zero when divided</i>
+                            </p>
+                            <p style={{ marginBottom: '8px' }}><b>Example:</b></p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>
+                                The Lagrange points 𝐿4 and 𝐿5 in a two-body system lie in regions of zero net force. You can “divide” this equilibrium region into smaller equilibrium cells — the rule holds at every scale.
+                            </p>
+                            <p>
+                                <b>Interpretation:</b><br />
+                                Zero mass → zero force → still a consistent rule that structures orbital behaviour.<br />
+                                <i>Zero is infinitely divisible without approximation because it has no internal structure.</i>
+                            </p>
+                            <p><b>Zero division exposes symmetry.</b></p>
+                            {/* <p>What follows is the path from that question to the spectral operator whose resonances reconstruct the non–trivial zeros of ζ(s). A sequence of small paradoxes: each one easy to state, each one forcing a deeper idea.</p> */}
+                        </Styled.Section>
+
+                        <Styled.Section style={{ background: '#FFF' }}>
+                            <h2>Halving a non-zero Mars bar is... non-trivial</h2>
+                            <p>The next day, when the child returned from school he saw a Mars bar on the table. The child asked:</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>“Can we share this one Mars bar the same way we shared the zero Mars bar?”</p>
+                            <p>“No“, replied the father, “we cut the zero Mars bar precisely in half and any attempt we make to create two exactly equal half Mars bars will fall foul of numerous paradoxes related to set theory. A one Mars bar is a vast congregation of molecular bonds that don’t break symmetrically“</p>
+                            <p>You can only divide something exactly if its internal structure belongs to the same category as the division rule. Since a Mars bar is not built from “Mars Bar atoms”, you cannot divide it with exact symmetry; the precision fails because the object is heterogeneous - <b>implying</b>:</p>
+                            <div className={'large'}>
+                                <BlockMath math={`
+                                    x > 0,\\quad x \\in \\mathbb{Z}
+                                    \\qquad\\Longrightarrow\\qquad
+                                    \\frac{x}{y} \\approx \\frac{x}{y}
+                                `} />
+                            </div>
+                            <p>
+                                A zero Mars bar qualifies: zero has no category.<br />
+                                A one Mars bar does not qualify: it is a composite of many categories.
+                            </p>
+                            <p>The uncertainty about how much half a Mars bar is Principle...?</p>
+                            <p><b>Non-zero division reveals structure.</b></p>
+                        </Styled.Section>
+                        {/* <Styled.Section style={{ background: '#F6F6F6' }}>
+                            <p>When you divide something that isn’t there, you’re not dividing a quantity — you’re applying a rule (symmetry).</p>
+                        </Styled.Section>
+
+                        <Styled.Section style={{ backgroundColor: '#FFFFFF' }}>
+                            <h3>2. The −1 × −1 Paradox</h3>
+                            <p>
+                                Another question came up: why does <code>(−1) × (−1) = +1</code>?
+                                Ralph’s instinct (and yours) was correct:
+                                <i>two debts don’t become a credit.</i>
+                            </p>
+
+                            <p>
+                                The reason the rule exists isn’t about money or “real life”.
+                                It comes from a deeper requirement:
+                                <b>the system of numbers must respect symmetry and consistency.</b>
+                            </p>
+
+                            <p>
+                                If multiplication is to distribute over addition:
+                            </p>
+
+                            <div className='large'>
+                                <BlockMath math={String.raw`
+                                    a(b + c) = ab + ac
+                                `} />
+                            </div>
+
+                            <p>
+                                then we <i>must</i> have:
+                            </p>
+
+                            <div className='large'>
+                                <BlockMath math={String.raw`
+                                    (-1)(-1) = +1
+                                `} />
+                            </div>
+
+                            <p>
+                                Otherwise the structure collapses.
+                                This becomes the second stepping stone:
+                                <b>sometimes a rule feels unnatural,
+                                    but it is forced by the consistency of the entire system.</b>
+                            </p>
+
+                            <p>
+                                κ will later play this exact role:
+                                it arises not from “intuition”, but from the requirement
+                                that local structure and global behaviour remain consistent.
+                            </p>
+                        </Styled.Section>
+
+                        <Styled.Section style={{ backgroundColor: '#F8F8F8' }}>
+                            <h3>3. Measuring With the Wrong Tool</h3>
+                            <p>
+                                Imagine trying to measure an angle with a thermometer.
+                                Or a coastline with a ruler (Mandelbrot’s problem).
+                                You can get a number—but it's not the right tool for the job.
+                            </p>
+
+                            <p>
+                                We realised: we were doing this with the primes too.
+                                Counting them, spacing them, graphing them—using “straight tools” on
+                                something that behaves like a curved landscape.
+                            </p>
+
+                            <p>
+                                This unlocked the key insight:
+                                <b>primes behave like a geometry, not like a sequence.</b>
+                            </p>
+
+                            <p>
+                                Once you accept that, the κ–curvature field becomes inevitable:
+                            </p>
+
+                            <div className='large'>
+                                <BlockMath math={String.raw`
+                                    k_n
+                                    = 0.15\,
+                                    \Big[ \log\!\big(1 + \rho(n)\log n\big) \Big]^{3}
+                                    \sqrt{\rho(n)}
+                                `} />
+                            </div>
+
+                            <p>
+                                And suddenly, primes look like a gravitational system.
+                                κ becomes curvature.
+                                A potential.
+                                A wave operator.
+                                A spectrum.
+                            </p>
+                        </Styled.Section> */}
+
                         {/* k-Curvature (riemann) */}
                         <Styled.Section style={{ backgroundColor: '#F6F6F6' }}>
                             <h2>k-Curvature Operator</h2>
@@ -950,7 +1102,7 @@ function App() {
 
                             <img
                                 src={`${CDN_URL}k-CurvatureField.png`}
-                                style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}
+                                style={{ width: '80%', maxWidth: '800px', margin: '0 auto' }}
                                 alt="FFT of k_n showing peaks matching the first Riemann zeros"
                             />
 
@@ -974,7 +1126,7 @@ function App() {
                             <p>
                                 This provides a concrete Hilbert–space operator whose spectrum
                                 appears empirically tied to the zeta zeros and can be developed further
-                                into a full Hilbert–Pólya–style framework.
+                                into a full Hilbert–Pólya–style framework. The path to a proof of the Riemann hyphosx
                             </p>
 
                             {/* <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '8px' }}>
@@ -985,7 +1137,7 @@ function App() {
                         </Styled.Section>
 
                         {/* Geometric limits */}
-                        <Styled.Section style={{ backgroundColor: '#FFF' }}>
+                        <Styled.Section style={{ backgroundColor: '#E5E5E5' }}>
                             <h2>What κ Cannot Do — and Why That Matters</h2>
 
                             <p>
@@ -1007,8 +1159,7 @@ function App() {
                             </p>
 
                             <p>
-                                This is not a failure of the κ–model.  It is evidence that κ is detecting a
-                                <b>real external structure</b> in the primes — and is not a universal
+                                This is not a failure of the κ–model.  It is evidence that κ is detecting a <b>real external structure</b> in the primes — and is not a universal
                                 magic function that solves every dynamical system.  If κ “worked” on
                                 Collatz, it would be a sign that κ was too flexible.  The fact that it
                                 does <i>not</i> transfer is an important control test: κ is sensitive to
@@ -1030,6 +1181,8 @@ function App() {
                                 κ does <i>not</i> apply everywhere.  It applies where geometry is present.
                             </p>
                         </Styled.Section>
+
+
                         <Styled.Section style={{ backgroundColor: '#FFF' }}>
                             <h2>κ–Geometry and the Electromagnetic Coupling</h2>
 
@@ -1068,15 +1221,15 @@ function App() {
                                 A κ–weighted geometric functional over a length scale ℓ is defined as
                             </p>
 
-                            <div className='large' style={{ margin: '0 0 24px' }}>
+                            <div className='large'>
                                 <BlockMath
                                     math={String.raw`
-                \mathcal{I}_\kappa(\ell)
-                =
-                \exp\!\left[
-                    \big\langle \kappa(r) \big\rangle_{r \le \ell}
-                \right]
-            `}
+                                        \mathcal{I}_\kappa(\ell)
+                                        =
+                                        \exp\!\left[
+                                            \big\langle \kappa(r) \big\rangle_{r \le \ell}
+                                        \right]
+                                    `}
                                 />
                             </div>
 
@@ -1099,15 +1252,15 @@ function App() {
                                 ratio evaluated at a universal crossover scale ℓ₀.
                             </p>
 
-                            <div className='large' style={{ margin: '0 0 24px' }}>
+                            <div className='large'>
                                 <BlockMath
                                     math={String.raw`
-                \alpha^{-1}
-                \;\approx\;
-                2\pi\,
-                \frac{\rho_\kappa(\ell_0)}
-                     {K_\kappa(\ell_0)}
-            `}
+                                        \alpha^{-1}
+                                        \;\approx\;
+                                        2\pi\,
+                                        \frac{\rho_\kappa(\ell_0)}
+                                            {K_\kappa(\ell_0)}
+                                    `}
                                 />
                             </div>
 
@@ -1128,81 +1281,79 @@ function App() {
                                 that electromagnetic coupling samples a narrow window of this curve.
                             </p>
 
-                            <div style={{ maxWidth: 800, margin: '0 auto' }}>
-                                <svg
-                                    viewBox="0 0 600 260"
-                                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                            <svg
+                                viewBox="0 0 600 260"
+                                style={{ width: '80%', height: 'auto', display: 'block' }}
+                            >
+                                {/* Axes */}
+                                <line x1="60" y1="210" x2="560" y2="210" stroke="#333" strokeWidth="1.5" />
+                                <line x1="60" y1="40" x2="60" y2="210" stroke="#333" strokeWidth="1.5" />
+
+                                {/* Axis labels */}
+                                <text x="560" y="230" textAnchor="end" fontFamily="sans-serif" fontSize="12">
+                                    log length scale
+                                </text>
+                                <text
+                                    x="20"
+                                    y="40"
+                                    textAnchor="start"
+                                    fontFamily="sans-serif"
+                                    fontSize="12"
+                                    transform="rotate(-90 20 40)"
                                 >
-                                    {/* Axes */}
-                                    <line x1="60" y1="210" x2="560" y2="210" stroke="#333" strokeWidth="1.5" />
-                                    <line x1="60" y1="40" x2="60" y2="210" stroke="#333" strokeWidth="1.5" />
+                                    κ(r)
+                                </text>
 
-                                    {/* Axis labels */}
-                                    <text x="560" y="230" textAnchor="end" fontFamily="sans-serif" fontSize="12">
-                                        log length scale
-                                    </text>
-                                    <text
-                                        x="20"
-                                        y="40"
-                                        textAnchor="start"
-                                        fontFamily="sans-serif"
-                                        fontSize="12"
-                                        transform="rotate(-90 20 40)"
-                                    >
-                                        κ(r)
-                                    </text>
+                                {/* Scale ticks on x-axis */}
+                                <line x1="120" y1="210" x2="120" y2="216" stroke="#333" strokeWidth="1" />
+                                <line x1="260" y1="210" x2="260" y2="216" stroke="#333" strokeWidth="1" />
+                                <line x1="380" y1="210" x2="380" y2="216" stroke="#333" strokeWidth="1" />
+                                <line x1="500" y1="210" x2="500" y2="216" stroke="#333" strokeWidth="1" />
 
-                                    {/* Scale ticks on x-axis */}
-                                    <line x1="120" y1="210" x2="120" y2="216" stroke="#333" strokeWidth="1" />
-                                    <line x1="260" y1="210" x2="260" y2="216" stroke="#333" strokeWidth="1" />
-                                    <line x1="380" y1="210" x2="380" y2="216" stroke="#333" strokeWidth="1" />
-                                    <line x1="500" y1="210" x2="500" y2="216" stroke="#333" strokeWidth="1" />
+                                <text x="120" y="230" textAnchor="middle" fontFamily="sans-serif" fontSize="11">
+                                    atomic
+                                </text>
+                                <text x="260" y="230" textAnchor="middle" fontFamily="sans-serif" fontSize="11">
+                                    Bohr scale
+                                </text>
+                                <text x="380" y="230" textAnchor="middle" fontFamily="sans-serif" fontSize="11">
+                                    ℓ₀
+                                </text>
+                                <text x="500" y="230" textAnchor="middle" fontFamily="sans-serif" fontSize="11">
+                                    UV vacuum
+                                </text>
 
-                                    <text x="120" y="230" textAnchor="middle" fontFamily="sans-serif" fontSize="11">
-                                        atomic
-                                    </text>
-                                    <text x="260" y="230" textAnchor="middle" fontFamily="sans-serif" fontSize="11">
-                                        Bohr scale
-                                    </text>
-                                    <text x="380" y="230" textAnchor="middle" fontFamily="sans-serif" fontSize="11">
-                                        ℓ₀
-                                    </text>
-                                    <text x="500" y="230" textAnchor="middle" fontFamily="sans-serif" fontSize="11">
-                                        UV vacuum
-                                    </text>
+                                {/* Schematic κ curve: low at atomic, rising to ℓ₀, then gentle flattening */}
+                                <path
+                                    d="
+                                        M 80 190
+                                        C 130 185, 190 150, 240 120
+                                        S 330 80, 380 85
+                                        S 460 110, 540 130
+                                    "
+                                    fill="none"
+                                    stroke="#1976d2"
+                                    strokeWidth="2.5"
+                                />
 
-                                    {/* Schematic κ curve: low at atomic, rising to ℓ₀, then gentle flattening */}
-                                    <path
-                                        d="
-                    M 80 190
-                    C 130 185, 190 150, 240 120
-                    S 330 80, 380 85
-                    S 460 110, 540 130
-                "
-                                        fill="none"
-                                        stroke="#1976d2"
-                                        strokeWidth="2.5"
-                                    />
+                                {/* Highlight ℓ₀ vertical and label */}
+                                <line x1="380" y1="210" x2="380" y2="85" stroke="#999" strokeWidth="1" strokeDasharray="4 4" />
+                                <text x="390" y="80" fontFamily="sans-serif" fontSize="11" fill="#444">
+                                    crossover ℓ₀
+                                </text>
 
-                                    {/* Highlight ℓ₀ vertical and label */}
-                                    <line x1="380" y1="210" x2="380" y2="85" stroke="#999" strokeWidth="1" strokeDasharray="4 4" />
-                                    <text x="390" y="80" fontFamily="sans-serif" fontSize="11" fill="#444">
-                                        crossover ℓ₀
-                                    </text>
-
-                                    {/* Shaded band where EM coupling samples κ */}
-                                    <rect
-                                        x="250"
-                                        y="60"
-                                        width="90"
-                                        height="150"
-                                        fill="rgba(255, 215, 0, 0.12)"
-                                    />
-                                    <text x="295" y="55" textAnchor="middle" fontFamily="sans-serif" fontSize="11" fill="#aa8800">
-                                        EM sampling band
-                                    </text>
-                                </svg>
-                            </div>
+                                {/* Shaded band where EM coupling samples κ */}
+                                <rect
+                                    x="250"
+                                    y="60"
+                                    width="90"
+                                    height="150"
+                                    fill="rgba(255, 215, 0, 0.12)"
+                                />
+                                <text x="295" y="55" textAnchor="middle" fontFamily="sans-serif" fontSize="11" fill="#aa8800">
+                                    EM sampling band
+                                </text>
+                            </svg>
                         </Styled.Section>
 
                         <Styled.Section style={{ backgroundColor: '#FFF' }}>
@@ -1212,107 +1363,104 @@ function App() {
                                 heat kernel Kκ(ℓ).  The fine–structure constant can be viewed as emerging
                                 from a ratio of these two quantities evaluated at a crossover scale ℓ₀.
                             </p>
+                            <svg
+                                viewBox="0 0 820 260"
+                                style={{ width: '80%', height: 'auto', display: 'block' }}
+                            >
+                                {/* Left: spectral density ρκ(λ) */}
+                                <rect x="40" y="20" width="340" height="220" fill="#fafafa" stroke="#ddd" />
 
-                            <div style={{ maxWidth: 900, margin: '0 auto' }}>
-                                <svg
-                                    viewBox="0 0 820 260"
-                                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                                {/* Axes */}
+                                <line x1="70" y1="210" x2="360" y2="210" stroke="#333" strokeWidth="1.3" />
+                                <line x1="70" y1="50" x2="70" y2="210" stroke="#333" strokeWidth="1.3" />
+
+                                <text x="360" y="228" textAnchor="end" fontFamily="sans-serif" fontSize="11">
+                                    λ (eigenvalue)
+                                </text>
+                                <text
+                                    x="40"
+                                    y="50"
+                                    textAnchor="start"
+                                    fontFamily="sans-serif"
+                                    fontSize="11"
+                                    transform="rotate(-90 40 50)"
                                 >
-                                    {/* Left: spectral density ρκ(λ) */}
-                                    <rect x="40" y="20" width="340" height="220" fill="#fafafa" stroke="#ddd" />
+                                    ρκ(λ)
+                                </text>
 
-                                    {/* Axes */}
-                                    <line x1="70" y1="210" x2="360" y2="210" stroke="#333" strokeWidth="1.3" />
-                                    <line x1="70" y1="50" x2="70" y2="210" stroke="#333" strokeWidth="1.3" />
-
-                                    <text x="360" y="228" textAnchor="end" fontFamily="sans-serif" fontSize="11">
-                                        λ (eigenvalue)
-                                    </text>
-                                    <text
-                                        x="40"
-                                        y="50"
-                                        textAnchor="start"
-                                        fontFamily="sans-serif"
-                                        fontSize="11"
-                                        transform="rotate(-90 40 50)"
-                                    >
-                                        ρκ(λ)
-                                    </text>
-
-                                    {/* Schematic spectral lines */}
-                                    {[
-                                        { x: 90, h: 40 },
-                                        { x: 120, h: 60 },
-                                        { x: 145, h: 80 },
-                                        { x: 175, h: 70 },
-                                        { x: 205, h: 100 },
-                                        { x: 235, h: 90 },
-                                        { x: 265, h: 110 },
-                                        { x: 295, h: 95 },
-                                        { x: 325, h: 115 },
-                                        { x: 355, h: 105 },
-                                    ].map((p, i) => (
-                                        <line
-                                            key={i}
-                                            x1={p.x}
-                                            y1={210}
-                                            x2={p.x}
-                                            y2={210 - p.h}
-                                            stroke="#1976d2"
-                                            strokeWidth="3"
-                                            strokeLinecap="round"
-                                        />
-                                    ))}
-
-                                    <text x="205" y="36" textAnchor="middle" fontFamily="sans-serif" fontSize="11" fill="#444">
-                                        discrete κ–spectrum
-                                    </text>
-
-                                    {/* Right: heat kernel Kκ(ℓ) vs log scale */}
-                                    <rect x="430" y="20" width="340" height="220" fill="#fafafa" stroke="#ddd" />
-
-                                    <line x1="460" y1="210" x2="750" y2="210" stroke="#333" strokeWidth="1.3" />
-                                    <line x1="460" y1="50" x2="460" y2="210" stroke="#333" strokeWidth="1.3" />
-
-                                    <text x="750" y="228" textAnchor="end" fontFamily="sans-serif" fontSize="11">
-                                        ℓ (log scale)
-                                    </text>
-                                    <text
-                                        x="430"
-                                        y="50"
-                                        textAnchor="start"
-                                        fontFamily="sans-serif"
-                                        fontSize="11"
-                                        transform="rotate(-90 430 50)"
-                                    >
-                                        Kκ(ℓ)
-                                    </text>
-
-                                    {/* Schematic decaying Kκ curve */}
-                                    <path
-                                        d="
-                    M 470 80
-                    C 520 70, 580 90, 620 120
-                    S 700 185, 745 200
-                "
-                                        fill="none"
-                                        stroke="#c62828"
-                                        strokeWidth="2.5"
+                                {/* Schematic spectral lines */}
+                                {[
+                                    { x: 90, h: 40 },
+                                    { x: 120, h: 60 },
+                                    { x: 145, h: 80 },
+                                    { x: 175, h: 70 },
+                                    { x: 205, h: 100 },
+                                    { x: 235, h: 90 },
+                                    { x: 265, h: 110 },
+                                    { x: 295, h: 95 },
+                                    { x: 325, h: 115 },
+                                    { x: 355, h: 105 },
+                                ].map((p, i) => (
+                                    <line
+                                        key={i}
+                                        x1={p.x}
+                                        y1={210}
+                                        x2={p.x}
+                                        y2={210 - p.h}
+                                        stroke="#1976d2"
+                                        strokeWidth="3"
+                                        strokeLinecap="round"
                                     />
+                                ))}
 
-                                    {/* Mark ℓ₀ on heat kernel plot */}
-                                    <line x1="610" y1="210" x2="610" y2="125" stroke="#999" strokeWidth="1" strokeDasharray="4 4" />
-                                    <circle cx="610" cy="125" r="4" fill="#c62828" />
-                                    <text x="610" y="118" textAnchor="middle" fontFamily="sans-serif" fontSize="11" fill="#444">
-                                        ℓ₀
-                                    </text>
+                                <text x="205" y="36" textAnchor="middle" fontFamily="sans-serif" fontSize="11" fill="#444">
+                                    discrete κ–spectrum
+                                </text>
 
-                                    {/* Ratio annotation */}
-                                    <text x="410" y="140" textAnchor="middle" fontFamily="sans-serif" fontSize="12" fill="#555">
-                                        α⁻¹ ∼ 2π · ρκ(ℓ₀) / Kκ(ℓ₀)
-                                    </text>
-                                </svg>
-                            </div>
+                                {/* Right: heat kernel Kκ(ℓ) vs log scale */}
+                                <rect x="430" y="20" width="340" height="220" fill="#fafafa" stroke="#ddd" />
+
+                                <line x1="460" y1="210" x2="750" y2="210" stroke="#333" strokeWidth="1.3" />
+                                <line x1="460" y1="50" x2="460" y2="210" stroke="#333" strokeWidth="1.3" />
+
+                                <text x="750" y="228" textAnchor="end" fontFamily="sans-serif" fontSize="11">
+                                    ℓ (log scale)
+                                </text>
+                                <text
+                                    x="430"
+                                    y="50"
+                                    textAnchor="start"
+                                    fontFamily="sans-serif"
+                                    fontSize="11"
+                                    transform="rotate(-90 430 50)"
+                                >
+                                    Kκ(ℓ)
+                                </text>
+
+                                {/* Schematic decaying Kκ curve */}
+                                <path
+                                    d="
+                                            M 470 80
+                                            C 520 70, 580 90, 620 120
+                                            S 700 185, 745 200
+                                        "
+                                    fill="none"
+                                    stroke="#c62828"
+                                    strokeWidth="2.5"
+                                />
+
+                                {/* Mark ℓ₀ on heat kernel plot */}
+                                <line x1="610" y1="210" x2="610" y2="125" stroke="#999" strokeWidth="1" strokeDasharray="4 4" />
+                                <circle cx="610" cy="125" r="4" fill="#c62828" />
+                                <text x="610" y="118" textAnchor="middle" fontFamily="sans-serif" fontSize="11" fill="#444">
+                                    ℓ₀
+                                </text>
+
+                                {/* Ratio annotation */}
+                                <text x="410" y="140" textAnchor="middle" fontFamily="sans-serif" fontSize="12" fill="#555">
+                                    α⁻¹ ∼ 2π · ρκ(ℓ₀) / Kκ(ℓ₀)
+                                </text>
+                            </svg>
                         </Styled.Section>
 
                         <Styled.Section style={{ backgroundColor: '#F6F6F6' }}>
@@ -1323,99 +1471,96 @@ function App() {
                                 they are weighted by the heat kernel.  The fine–structure constant is then
                                 interpreted as a compact way of encoding this balance.
                             </p>
+                            <svg
+                                viewBox="0 0 600 220"
+                                style={{ width: '80%', height: 'auto', display: 'block' }}
+                            >
+                                {/* Left bubble: spectral density */}
+                                <circle cx="140" cy="100" r="60" fill="rgba(25, 118, 210, 0.07)" stroke="#1976d2" strokeWidth="1.5" />
+                                <text x="140" y="88" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="#144e86">
+                                    spectral
+                                </text>
+                                <text x="140" y="105" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="#144e86">
+                                    density ρκ(ℓ₀)
+                                </text>
 
-                            <div style={{ maxWidth: 700, margin: '0 auto' }}>
-                                <svg
-                                    viewBox="0 0 600 220"
-                                    style={{ width: '100%', height: 'auto', display: 'block' }}
-                                >
-                                    {/* Left bubble: spectral density */}
-                                    <circle cx="140" cy="100" r="60" fill="rgba(25, 118, 210, 0.07)" stroke="#1976d2" strokeWidth="1.5" />
-                                    <text x="140" y="88" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="#144e86">
-                                        spectral
-                                    </text>
-                                    <text x="140" y="105" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="#144e86">
-                                        density ρκ(ℓ₀)
-                                    </text>
-
-                                    {/* Little spectrum bars inside */}
-                                    {[
-                                        { x: 120, h: 18 },
-                                        { x: 133, h: 25 },
-                                        { x: 146, h: 22 },
-                                        { x: 159, h: 28 },
-                                    ].map((p, i) => (
-                                        <line
-                                            key={i}
-                                            x1={p.x}
-                                            y1={130}
-                                            x2={p.x}
-                                            y2={130 - p.h}
-                                            stroke="#1976d2"
-                                            strokeWidth="3"
-                                            strokeLinecap="round"
-                                        />
-                                    ))}
-
-                                    {/* Right bubble: heat kernel */}
-                                    <circle cx="460" cy="100" r="60" fill="rgba(198, 40, 40, 0.07)" stroke="#c62828" strokeWidth="1.5" />
-                                    <text x="460" y="88" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="#8c1b1b">
-                                        heat kernel
-                                    </text>
-                                    <text x="460" y="105" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="#8c1b1b">
-                                        Kκ(ℓ₀)
-                                    </text>
-
-                                    {/* Small decaying curve inside */}
-                                    <path
-                                        d="
-                    M 430 125
-                    C 440 115, 455 110, 470 114
-                    S 490 130, 500 135
-                "
-                                        fill="none"
-                                        stroke="#c62828"
-                                        strokeWidth="2"
+                                {/* Little spectrum bars inside */}
+                                {[
+                                    { x: 120, h: 18 },
+                                    { x: 133, h: 25 },
+                                    { x: 146, h: 22 },
+                                    { x: 159, h: 28 },
+                                ].map((p, i) => (
+                                    <line
+                                        key={i}
+                                        x1={p.x}
+                                        y1={130}
+                                        x2={p.x}
+                                        y2={130 - p.h}
+                                        stroke="#1976d2"
+                                        strokeWidth="3"
+                                        strokeLinecap="round"
                                     />
+                                ))}
 
-                                    {/* Ratio arrow */}
-                                    <line x1="200" y1="100" x2="260" y2="100" stroke="#555" strokeWidth="1.5" markerEnd="url(#arrow-head)" />
-                                    <line x1="340" y1="100" x2="400" y2="100" stroke="#555" strokeWidth="1.5" markerStart="url(#arrow-head)" />
+                                {/* Right bubble: heat kernel */}
+                                <circle cx="460" cy="100" r="60" fill="rgba(198, 40, 40, 0.07)" stroke="#c62828" strokeWidth="1.5" />
+                                <text x="460" y="88" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="#8c1b1b">
+                                    heat kernel
+                                </text>
+                                <text x="460" y="105" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="#8c1b1b">
+                                    Kκ(ℓ₀)
+                                </text>
 
-                                    {/* Define arrowhead marker */}
-                                    <defs>
-                                        <marker
-                                            id="arrow-head"
-                                            viewBox="0 0 10 10"
-                                            refX="8"
-                                            refY="5"
-                                            markerWidth="6"
-                                            markerHeight="6"
-                                            orient="auto-start-reverse"
-                                        >
-                                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#555" />
-                                        </marker>
-                                    </defs>
+                                {/* Small decaying curve inside */}
+                                <path
+                                    d="
+                                            M 430 125
+                                            C 440 115, 455 110, 470 114
+                                            S 490 130, 500 135
+                                        "
+                                    fill="none"
+                                    stroke="#c62828"
+                                    strokeWidth="2"
+                                />
 
-                                    {/* Middle box with α formula */}
-                                    <rect
-                                        x="260"
-                                        y="70"
-                                        width="80"
-                                        height="60"
-                                        rx="10"
-                                        fill="#fff"
-                                        stroke="#777"
-                                        strokeWidth="1"
-                                    />
-                                    <text x="300" y="95" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="#333">
-                                        α⁻¹
-                                    </text>
-                                    <text x="300" y="112" textAnchor="middle" fontFamily="sans-serif" fontSize="11" fill="#555">
-                                        ∼ 2π ρκ/Kκ
-                                    </text>
-                                </svg>
-                            </div>
+                                {/* Ratio arrow */}
+                                <line x1="200" y1="100" x2="260" y2="100" stroke="#555" strokeWidth="1.5" markerEnd="url(#arrow-head)" />
+                                <line x1="340" y1="100" x2="400" y2="100" stroke="#555" strokeWidth="1.5" markerStart="url(#arrow-head)" />
+
+                                {/* Define arrowhead marker */}
+                                <defs>
+                                    <marker
+                                        id="arrow-head"
+                                        viewBox="0 0 10 10"
+                                        refX="8"
+                                        refY="5"
+                                        markerWidth="6"
+                                        markerHeight="6"
+                                        orient="auto-start-reverse"
+                                    >
+                                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#555" />
+                                    </marker>
+                                </defs>
+
+                                {/* Middle box with α formula */}
+                                <rect
+                                    x="260"
+                                    y="70"
+                                    width="80"
+                                    height="60"
+                                    rx="10"
+                                    fill="#fff"
+                                    stroke="#777"
+                                    strokeWidth="1"
+                                />
+                                <text x="300" y="95" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="#333">
+                                    α⁻¹
+                                </text>
+                                <text x="300" y="112" textAnchor="middle" fontFamily="sans-serif" fontSize="11" fill="#555">
+                                    ∼ 2π ρκ/Kκ
+                                </text>
+                            </svg>
 
                             <p style={{ fontSize: '0.9rem', color: '#555', marginTop: '10px' }}>
                                 In this picture, α is not a mysterious constant added by hand, but a compact
