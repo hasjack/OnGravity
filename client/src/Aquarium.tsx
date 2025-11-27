@@ -14,7 +14,7 @@ const PRESETS = [
 
 type PresetId = typeof PRESETS[number]["id"];
 
-const Aquarium: React.FC = () => {
+const Aquarium: React.FC = ({ showUI }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const fishRef = useRef<Fish[]>([]);
     const animRef = useRef<number>();
@@ -31,7 +31,7 @@ const Aquarium: React.FC = () => {
 
     const initFish = useCallback(() => {
         const fish: Fish[] = [];
-        const N = 250;
+        const N = 100;
         const hue = Math.random() * 360;
         for (let i = 0; i < N; i++) {
             const a = (i / N) * Math.PI * 2 + Math.random() * 0.3;
@@ -222,7 +222,7 @@ const Aquarium: React.FC = () => {
 
     return (
         <div style={{ height: "100vh", background: "#000d1a", color: "#eef", fontFamily: "system-ui" }}>
-            <div style={{ padding: "0.6rem 1rem", background: "rgba(0,20,40,0.8)", display: "flex", alignItems: "center", gap: "1.5rem" }}>
+            <div style={{ background: "rgba(0,20,40,0.8)", alignItems: "center", gap: "1.5rem", display: showUI ? 'flex' : 'none' }}>
                 <strong>κ-Fish • same law as galaxies</strong>
 
                 <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -239,7 +239,7 @@ const Aquarium: React.FC = () => {
                 </span>
             </div>
 
-            <div style={{ padding: "0.3rem 1rem", background: "#001520", display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
+            <div style={{ background: "#001520", gap: "0.6rem", flexWrap: "wrap", display: showUI ? 'flex' : 'none' }}>
                 {PRESETS.map(p => (
                     <button key={p.id} onClick={() => applyPreset(p.id)}
                         style={{
@@ -252,7 +252,7 @@ const Aquarium: React.FC = () => {
                 ))}
             </div>
 
-            <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "calc(100vh - 96px)" }} />
+            <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100vh" }} />
         </div>
     );
 };

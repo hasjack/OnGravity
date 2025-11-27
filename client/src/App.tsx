@@ -1,19 +1,26 @@
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import { BlockMath/* , InlineMath */ } from 'react-katex'
+import { BlockMath, InlineMath } from 'react-katex'
+import Aquarium from './Aquarium'
 import BulletCluster from './BulletCluster'
 import GalacticRotation from './results/GalacticRotation'
+import HilbertVisualizer from './HilbertVisualizer'
 import LocalGroup from './LocalGroup'
 // import GalaxySliders from './GalaxySliders'
 import LensingTable from './results/Lensing'
 import MercuryPrecession from './MercuryPrecession'
 // import OortCloudKappa from './OortCloudKappa'
+import { PioneerAnomaly } from './PioneerAnomaly'
+import PrimeExplorer from './PrimeExplorer'
 import QuantumScaleSlider from './QuantumScaleSlider'
 import SuperclusterFlow from './SuperclusterFlow'
 import TOVBaseball from './TOVBaseball'
 import Universe from './Universe'
 import * as Styled from './App.style'
-import { PioneerAnomaly } from './PioneerAnomaly'
+import MersenneFrontier from './MersenneFrontier'
+import { PrimeBreathingExplorer } from './PrimeBreathingExplorer'
+import NaturalMandelbrot from './NaturalMandelbrot'
+import MandelbrotCompare from './MandelbrotCompare'
 
 const { BASE_URL } = import.meta.env
 const CDN_URL = 'https://cdn.halfasecond.com/images/onGravity/'
@@ -25,8 +32,10 @@ function App() {
             <Routes>
                 <Route path='/' element={
                     <>
-                        <Styled.Panel />
-                        <Styled.Section className='headline'>
+                        <Styled.Panel style={{ padding: 0 }}>
+                             <Aquarium showUI={false} />
+                        </Styled.Panel>
+                        <Styled.Section className='headline'  style={{ padding: 0 }}>
                             <h1><Link to={'/'}>On Gravity</Link></h1>
                             <p>by <Link to={'https://github.com/hasjack'} target={'_blank'}>Jack Pickett</Link> - London & Cornwall - October / November 2025</p>
                             <h3>Introducing a single, universal gravitational law...</h3>
@@ -183,7 +192,7 @@ function App() {
                                 (Nojiri 2007; Farrugia 2016).
                             </p>
                         </Styled.Section>
-
+                        <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}Andromeda.webp')` }} />
                         <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.6)', color: '#FFF' }}>
                             <h2>Vera Rubin stars</h2>
                             <p>When astronomers calculated how fast stars should orbit in a galaxy, they used the standard intuition that stars near the center should orbit fast, and stars farther out should orbit much slower, because they are farther from most of the galaxy’s central mass. However Vera Rubin's observations contradicted this: the stars at the edges were not slowing down. They were moving just as fast as the stars near the center. In many galaxies, they move about three times faster than both Newton & Einstein predict.</p>
@@ -226,8 +235,9 @@ function App() {
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#000', padding: '0' }}>
                             <Universe />
+                            <img src={`https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/124.png`} style={{ position: 'absolute', opacity: '.7', bottom: '0', marginBottom: '32px', right: '8px', width: '5.5%', height: 'auto' }} />
                         </Styled.Section>
-                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: '#FFF' }}>
+                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,1)', color: '#FFF' }}>
                             <h2>Gravitational Lensing</h2>
                             <p>The next question is whether this same curvature term applies to light as well as mass. Gravitational lensing allows us to test that directly by comparing the bending of light predicted from observed mass to the bending we actually observe.</p>
                             <p>In galaxy rotation, orbital velocity depends on the square root of the gravitational potential. This means the κ effect shows up as a factor of exp(κ·r / 2). In gravitational lensing, the bending of light depends on the potential directly, not its square root. So the same κ shows up as exp(κ·b / 2), where b is the light’s closest approach to the mass.</p>
@@ -247,14 +257,14 @@ function App() {
                         <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}The_Bullet_Cluster.jpg')` }} />
                         <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: '#FFF' }}>
                             <h2>Collisions</h2>
-                            <h3>During high-velocity cluster collisions, gas clouds experience shock compression and strong velocity shear, raising κ temporarily:</h3>
-                            <div style={{ fontSize: '48px' }}>
+                            <h3 style={{ margin: 0 }}>During high-velocity cluster collisions, gas clouds experience shock compression and strong velocity shear, raising κ temporarily:</h3>
+                            <div style={{ fontSize: '36px', margin: 0 }}>
                                 <BlockMath math={String.raw`
                                     \kappa = \kappa_{\text{base}}+\kappa_{\text{coll}}
                                 `} />
                             </div>
-                            <p>where</p>
-                            <div style={{ fontSize: '48px' }}>
+                            <p style={{ margin: 0 }}>where</p>
+                            <div style={{ fontSize: '36px', margin: 0 }}>
                                 <BlockMath math={String.raw`
                                     \kappa_{\text{coll}} = k_v\!\left(\frac{\nabla v_{\text{rel}}}{10^{-12}\ \mathrm{s}^{-1}}\right)^{\!3} \left(\frac{\rho}{\rho_0}\right)^{\!1/2}`
                                 } />
@@ -265,7 +275,7 @@ function App() {
                                 } />
                             </div>
                             <p>Gravitational lensing depends on the gravitational potential and increased κ multiplies the bending angle. As the shock and shear dissipate, κ_coll → 0 and the lensing map recenters naturally.</p>
-                            <h3>The lensing region shifts — appearing heavier — but "extra mass" is not needed when described as <b>extra weight</b>.</h3>
+                            <p>The lensing region shifts — appearing heavier — but extra ("dark") mass can be described as <b>extra weight</b>.</p>
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#F6F6F6' }}>
                             <img src={`${CDN_URL}cluster-collision.svg`} style={{ width: '80%' }} />
@@ -374,7 +384,7 @@ function App() {
                             </p>
                         </Styled.Section>
 
-                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.55)', color: '#fff' }}>
+                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,1)', color: '#fff' }}>
                             <h2>The Hubble Tension</h2>
                             <p>
                                 The difference between early-universe and late-universe measurements of <i>H₀</i> can be viewed through the same κ-lens as our
@@ -446,7 +456,7 @@ function App() {
                             <p>Where sightlines intersect superclusters, this same factor enhances deflection slightly (typically 1–3%), consistent with the observed mild smoothing of the acoustic peaks.</p>
                         </Styled.Section>
                         {/* Gravitational Waves */}
-                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.75)', color: '#FFF' }}>
+                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,1 )', color: '#FFF' }}>
                             <h2>Gravitational Waves in a κ–r Universe</h2>
                             <p style={{ maxWidth: 900, margin: '0 auto 12px', lineHeight: 1.7 }}>
                                 Gravitational waves are one of our sharpest tests of gravity. In the κ–r geometry, present–day
@@ -889,23 +899,23 @@ function App() {
                             </div>
                         </Styled.Section>
 
-                        {/* -1 x -1 = 1 */}
+                        {/* Non-trivial mars bars */}
                         <Styled.Section style={{ backgroundColor: '#FFFFFF' }}>
                             <h2>Non-trivial Mars bars</h2>
                             <p>A child asks his father if he has any Mars Bars. The father answers that he has zero Mars bars.</p>
                             <p style={{ backgroundColor: '#F6F6F6', padding: '6px 0', borderRadius: '2px' }}>The child asks: <i>“Can you halve zero - because if you can then we can share?”</i></p>
-                            <p>They tried it with a zero Mars bar which they put on a table and cut in half. They then took a half each and decided - yes: we both now have half a zero Mars bar therefore: <b>you must be able to halve zero!</b></p>
-                            <p>Reflecting, it had actually been very easy to cut the zero Mars bar in half. So easy, in fact, they had been able to make the cut in such an exact way that the 2 portions were precisely (fundamentally?) equal. They hadn't even needed a knife! Any other amount of Mars bars would have been much more difficult however!</p>
-                            <p>Are these lame dad jokes actually nature hinting at something more fundamental? 🧐</p>
+                            <p>They tried it with a zero Mars bar which they put on a table and cut in half. They then took a half each and decided that as they both now had half a zero Mars bar <b>you must be able to halve zero!</b></p>
+                            <p>Reflecting, it had actually been very easy to cut the zero Mars bar. So easy, in fact, they had been able to make the cut in such an exact way that the 2 portions were precisely (fundamentally?) equal. They hadn't even needed a knife!</p>
+                            <p>Are these lame dad jokes actually <b>nature hinting at something profound?</b> 🧐</p>
                             <img src={`${CDN_URL}mars-bar.jpg`} style={{ maxWidth: '800px' }} />
                         </Styled.Section>
 
                         <Styled.Section style={{ backgroundColor: '#F8F8F8' }}>
                             <h2>The half a zero Mars bar premise:</h2>
-                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>For any structure 𝑆, division by 2 produces the smallest non-trivial structural unit consistent with 𝑆</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>For any structure 𝑆, 𝑆 / 2 produces the smallest non-trivial structural unit consistent with 𝑆</p>
                             <p>You can operate on something that isn’t there as long as the rule is consistent - <b>implying:</b></p>
-                            <div className={'large'} style={{ marginTop: 0 }}><BlockMath math={'x = 0 \\;\\Rightarrow\\; x/2 = 0.5'} /></div>
-                            <p>In nature, much like in everyday speech, zero is a <i>relationship</i> and often behaves this way:</p>
+                            <div className={'large'} style={{ marginTop: 0 }}><BlockMath math={'0/2 = 0.5'} /></div>
+                            <p>In nature, and everyday speech, zero is a <i>relationship</i> and often (always?) behaves this way:</p>
                             <p>
                                 <b>Sharing zero</b> → a rule about fairness → <i>I've got nothing I can share</i><br />
                                 <b>Cosmological example</b> → <i>a region with zero net force remains zero when divided</i>
@@ -927,11 +937,12 @@ function App() {
                             <h2>Halving a non-zero Mars bar is... non-trivial</h2>
                             <p>The next day, when the child returned from school he saw a Mars bar on the table. The child asked:</p>
                             <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>“Can we share this one Mars bar the same way we shared the zero Mars bar?”</p>
-                            <p>“No“, replied the father, “we cut the zero Mars bar precisely in half and any attempt we make to create two exactly equal half Mars bars will fall foul of numerous paradoxes related to set theory. A one Mars bar is a vast congregation of molecular bonds that don’t break symmetrically“</p>
-                            <p>You can only divide something exactly if its internal structure belongs to the same category as the division rule. Since a Mars bar is not built from “Mars Bar atoms”, you cannot divide it with exact symmetry; the precision fails because the object is heterogeneous - <b>implying</b>:</p>
+                            <p>“No“, replied the father, “we cut the zero Mars bar precisely in half and any attempt we make to create two exactly equal half one Mars bars will fall foul of numerous paradoxes related to set theory, in addition to a bewildering amount of practical concerns such as a one Mars bar being a vast congregation of molecular bonds that don’t break symmetrically“</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>Exact division is only possible if the divisor's internal structure belongs to the same category as the division rule.</p>
+                            <p>Since a Mars bar is not built from “Mars Bar atoms”, you cannot divide it with exact symmetry; the precision fails because the object is heterogeneous - <b>implying</b>:</p>
                             <div className={'large'}>
                                 <BlockMath math={`
-                                    x > 0,\\quad x \\in \\mathbb{Z}
+                                    x > 0,\\quad x \\in \\mathbb{Z},\\quad y > 1, \\quad y \\in \\mathbb{Z}
                                     \\qquad\\Longrightarrow\\qquad
                                     \\frac{x}{y} \\approx \\frac{x}{y}
                                 `} />
@@ -940,59 +951,94 @@ function App() {
                                 A zero Mars bar qualifies: zero has no category.<br />
                                 A one Mars bar does not qualify: it is a composite of many categories.
                             </p>
-                            <p>The uncertainty about how much half a Mars bar is Principle...?</p>
+                            <p>The “uncertainty about how much half a Mars bar is“ principle...? 🤔</p>
                             <p><b>Non-zero division reveals structure.</b></p>
                         </Styled.Section>
-                        {/* <Styled.Section style={{ background: '#F6F6F6' }}>
-                            <p>When you divide something that isn’t there, you’re not dividing a quantity — you’re applying a rule (symmetry).</p>
+                        <Styled.Section style={{ background: '#F6F6F6' }}>
+                            <h2 style={{ marginBottom: 0 }}>
+                                <BlockMath math={String.raw`y = 2`} />
+                            </h2>
+                            <p>Some time later, mum came home and found the child and his father looking perplexed and staring at a one Mars bar. They told her about the <b>symmetrical catastrophe</b> to which she asked:</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>“Why don't you just cut it (roughly..🙄) in half?“</p>
+                            <p>There seemed a lot of sense in this but, just as father was about to slice, she said:</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>“That Mars bar looks tasty! Can you <b>cut it into 3 pieces</b> so I can have some too?“</p>
+                            <p>“I can not“, said the father “as no matter how I cut the one Mars bar <b>I can only cut it into 2 pieces</b>. A symmetrical operation can <i>only ever result in 2 parts</i> <b>implying:</b></p>
+                            <div className={'large'}>
+                                <BlockMath math={`
+                                    x > 0,\\quad x \\in \\mathbb{Z}
+                                    \\qquad\\Longrightarrow\\qquad
+                                    \\frac{x}{2} \\approx \\frac{x}{2}
+                                `} />
+                            </div>
+                            <p>2 is duality: <b>nature's (only) knife</b></p>
+                        </Styled.Section>
+                        <Styled.Section style={{ backgroundColor: '#FFF' }}>
+                            <img src={`${CDN_URL}twix.jpg`} />
+                            <p style={{ marginBottom: 0 }}>
+                                The next day, in a gesture to family harmonics, mum came home with a one Twix which she left on the table next to all the zero Mars bars. 
+                                She noticed there were all types of zero mars bars - some cut into 3 pieces, some cut into infinite pieces and those pieces cut in the same infinite way <b>implying:</b>
+                            </p>
+                            <div className={'large'} style={{ margin: 0 }}>
+                                <BlockMath math={`
+                                    x \\equiv 0 \\qquad\\Longrightarrow\\qquad \\frac{x}{\\infty} = \\infty
+                                `} />
+                            </div>
+                            <p>Next to the infinite pile of half zero Mars Bars, she also noticed an infinite amount of -1 Twix.</p>
+                            <p style={{ marginBottom: 0 }}><b>She recalled from school that:</b></p>
+                            <div className={'large'} style={{ margin: 0 }}>
+                                <BlockMath math={String.raw`
+                                    -1 \times -1 = 1
+                                `} />
+                            </div>
+                            <p>..so if she took two -1 Twix from the table (and bashed them together?) would she get a one Twix? 🤔</p>
                         </Styled.Section>
 
-                        <Styled.Section style={{ backgroundColor: '#FFFFFF' }}>
-                            <h3>2. The −1 × −1 Paradox</h3>
-                            <p>
-                                Another question came up: why does <code>(−1) × (−1) = +1</code>?
-                                Ralph’s instinct (and yours) was correct:
-                                <i>two debts don’t become a credit.</i>
+                        <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}CosmicWeb.jpg')`, backgroundSize: 'auto 100%', backgroundColor: '#000'}} />
+                        <Styled.Section style={{ background: 'rgba(0,0,0,0.6)', color: '#FFF' }}>
+                            <p>“Thats not how it works...“ whispered the one universe</p>
+                        </Styled.Section>
+
+                        {/* The Phil Officer */}
+                        <Styled.Section style={{ background: '#F6F6F6' }}>
+                            <h2>
+                                {/* <BlockMath math={String.raw`(-1)^2`} /> */}
+                                The Phil Officer
+                            </h2>
+                            <p>When her child got home from school he seemed somewhat subdued. She asked him what was the matter?</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>“I only scored 9 out of 10 on my maths exam.“</p>
+                            <p>“Oh dear!“, mum replied, “which question did you get wrong?“</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>
+                                <InlineMath math="1 \times 1 = 1" />
                             </p>
-
-                            <p>
-                                The reason the rule exists isn’t about money or “real life”.
-                                It comes from a deeper requirement:
-                                <b>the system of numbers must respect symmetry and consistency.</b>
+                            <p>“I think <b>the answer is -1</b> but my teacher says the correct answer is 1. I explained to my teacher that:</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>
+                                <InlineMath math="-1 \times -1 = 1 \quad \text{where} \quad 1 \times 1 = -1" />
                             </p>
+                            <p>...but he said I was being a Phil Officer and that the correct answer was 1“</p>
+                        </Styled.Section>
+                        <Styled.Section style={{ background: '#F6F6F6' }}>
 
-                            <p>
-                                If multiplication is to distribute over addition:
-                            </p>
+                            <h2 style={{ marginBottom: 0 }}> <BlockMath math={String.raw`1`} /> </h2>
+                            <p> The child was now comfortable with the concepts of zero and negative structure. He posed the next logical question: </p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}> “If zero is a relationship and minus one is a relationship, then is **one** also a relationship?” </p>
+                            <p> The father picked up a single chocolate bar, then opened it to reveal two distinct fingers inside. A single wrapper defining a pair as a unit. </p>
+                            <p> The conclusion was simple: </p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px', fontStyle: 'italic' }}> “One is not a count. One is a **label** applied to whatever we agree is the undivided boundary.” </p>
+                            <p> A galaxy is "one" galaxy; a wavefunction is "one" solution. The number '1' has nothing to do with internal quantity. </p>
+                            <p> The Twix demonstrated that identity is a convention. **Everything is 1 until the Cut Operator (2) acts upon it.** </p>
 
-                            <div className='large'>
-                                <BlockMath math={String.raw`
-                                    a(b + c) = ab + ac
-                                `} />
-                            </div>
+                        </Styled.Section>
+                        <Styled.Section style={{ background: '#FDFDFD' }}>
 
-                            <p>
-                                then we <i>must</i> have:
-                            </p>
-
-                            <div className='large'>
-                                <BlockMath math={String.raw`
-                                    (-1)(-1) = +1
-                                `} />
-                            </div>
-
-                            <p>
-                                Otherwise the structure collapses.
-                                This becomes the second stepping stone:
-                                <b>sometimes a rule feels unnatural,
-                                    but it is forced by the consistency of the entire system.</b>
-                            </p>
-
-                            <p>
-                                κ will later play this exact role:
-                                it arises not from “intuition”, but from the requirement
-                                that local structure and global behaviour remain consistent.
-                            </p>
+                            <h2 style={{ marginBottom: 0 }}> <BlockMath math={String.raw`\text{The Twix Axiom}`} /> </h2>
+                            <p> Classical mathematics treats '1' as the fundamental object of creation. The $\kappa$-model posits that the physical universe only cares about **boundaries**. </p>
+                            <p> A "one" is defined solely by its external boundary, irrespective of its internal complexity. </p>
+                            <p> Thus, the unit of structure in Natural Maths is defined: </p>
+                            <div className={'large'}> <BlockMath math={String.raw` 1 = \text{an undivided boundary} `} /> </div>
+                            <p> The unit is a **structural** definition, not a numerical one. This allows the axioms of symmetry to hold: </p>
+                            <div className={'large'}> <BlockMath math={String.raw` (-1)^2 = +1 `} /> </div>
+                            <p> This axiom is not multiplication; it is the rule: **the boundary of an opposite, when flipped twice, returns to itself.** </p>
+                            <p> This principle ensures the symmetrical identity $x^2 = -x$. In Natural Maths, numbers describe the **symmetries of structure** defined by boundaries. </p>
                         </Styled.Section>
 
                         <Styled.Section style={{ backgroundColor: '#F8F8F8' }}>
@@ -1034,7 +1080,7 @@ function App() {
                                 A wave operator.
                                 A spectrum.
                             </p>
-                        </Styled.Section> */}
+                        </Styled.Section>
 
                         {/* k-Curvature (riemann) */}
                         <Styled.Section style={{ backgroundColor: '#F6F6F6' }}>
@@ -1061,8 +1107,7 @@ function App() {
                             <p>
                                 Passing to the continuous log–coordinate <code>t = log x</code>, we
                                 treat <code>k_n</code> as samples of a potential <code>V(t)</code>
-                                and define a Schrödinger–type operator acting on wavefunctions
-                                <code>ψ(t)</code>:
+                                and define a Schrödinger–type operator acting on wavefunctions <code>ψ(t)</code>:
                             </p>
 
                             <div className='large' style={{ margin: '0 0 24px' }}>
@@ -1126,7 +1171,7 @@ function App() {
                             <p>
                                 This provides a concrete Hilbert–space operator whose spectrum
                                 appears empirically tied to the zeta zeros and can be developed further
-                                into a full Hilbert–Pólya–style framework. The path to a proof of the Riemann hyphosx
+                                into a full Hilbert–Pólya–style framework. The path to a proof of the Riemann hyphosis is potentially cleared?
                             </p>
 
                             {/* <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '8px' }}>
@@ -1134,6 +1179,18 @@ function App() {
                                 evidence are outlined in Appendix 8–11, and can be developed further
                                 into a full Hilbert–Pólya–style framework.
                             </p> */}
+                        </Styled.Section>
+                        <Styled.Section>
+                            <HilbertVisualizer />
+                        </Styled.Section>
+
+                        <Styled.Section>
+                            <Aquarium showUI={true} />
+                        </Styled.Section>
+
+                        <Styled.Section>
+                            {/* <MandelbrotCompare /> */}
+                            <NaturalMandelbrot />
                         </Styled.Section>
 
                         {/* Geometric limits */}
