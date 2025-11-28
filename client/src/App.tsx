@@ -1016,6 +1016,10 @@ function App() {
                             </p>
                             <p>...but he said I was being a Phil Officer and that the correct answer was 1“</p>
                         </Styled.Section>
+                        <Styled.Section style={{ color: '#FFF' }}>
+                            <p>Natural Maths posits 0, 1, 2 are the unique & comprehensive <b>fundamental numbers</b> in its geometric description of the cosmos.</p>
+                            <p></p>
+                        </Styled.Section>
                         <Styled.Section style={{ background: '#F6F6F6' }}>
 
                             <h2 style={{ marginBottom: 0 }}> <BlockMath math={String.raw`1`} /> </h2>
@@ -1029,7 +1033,6 @@ function App() {
 
                         </Styled.Section>
                         <Styled.Section style={{ background: '#FDFDFD' }}>
-
                             <h2 style={{ marginBottom: 0 }}> <BlockMath math={String.raw`\text{The Twix Axiom}`} /> </h2>
                             <p> Classical mathematics treats '1' as the fundamental object of creation. The $\kappa$-model posits that the physical universe only cares about **boundaries**. </p>
                             <p> A "one" is defined solely by its external boundary, irrespective of its internal complexity. </p>

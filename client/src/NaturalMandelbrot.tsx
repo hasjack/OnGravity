@@ -13,7 +13,7 @@ const defaultConfig: RenderConfig = {
     width: 600,
     height: 360,
     maxIter: 120,
-    kappa: 0.6,
+    kappa: 0.382,
     cMin: -2.5,
     cMax: 1.0,
 }
@@ -204,8 +204,8 @@ const NaturalMandelbrot: React.FC = () => {
                     <input
                         type="range"
                         min={0}
-                        max={100}
-                        step={0.02}
+                        max={24}
+                        step={.01}
                         value={config.kappa}
                         onChange={(e) =>
                             setConfig((c) => ({
@@ -215,7 +215,7 @@ const NaturalMandelbrot: React.FC = () => {
                         }
                     />
                     <span style={{ width: 40, textAlign: "right" }}>
-                        {config.kappa.toFixed(2)}
+                        {config.kappa.toFixed(3)}
                     </span>
                 </label>
 
@@ -246,17 +246,8 @@ const NaturalMandelbrot: React.FC = () => {
             </div>
 
             {/* Canvases side-by-side */}
-            <div style={{ flex: 1, padding: "0.5rem 1rem" }}>
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 1fr",
-                        gap: 16,
-                        alignItems: "flex-start",
-                    }}
-                >
                     {/* Classical */}
-                    <div>
+                    {/* <div>
                         <div style={{ marginBottom: 4, fontSize: "0.8rem", opacity: 0.8 }}>
                             Classical Mandelbrot (ℂ) • zₙ₊₁ = zₙ² + c
                         </div>
@@ -278,7 +269,7 @@ const NaturalMandelbrot: React.FC = () => {
                                 }}
                             />
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Natural-Maths */}
                     <div>
@@ -291,7 +282,6 @@ const NaturalMandelbrot: React.FC = () => {
                                 overflow: "hidden",
                                 boxShadow: "0 0 20px rgba(0,0,0,0.6)",
                                 background: "#000",
-                                maxWidth: defaultConfig.width,
                             }}
                         >
                             <canvas
@@ -308,8 +298,6 @@ const NaturalMandelbrot: React.FC = () => {
                             Color: escape speed under xₙ₊₁ = σₙ xₙ² + c with κ-flip.
                         </div>
                     </div>
-                </div>
-            </div>
         </div>
     )
 }
