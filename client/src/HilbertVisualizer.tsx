@@ -104,10 +104,9 @@ const HilbertVisualizer: React.FC = () => {
         <div
             style={{
                 padding: '1rem',
-                background: '#050510',
+                // background: '#050510',
                 color: '#eee',
                 fontFamily: 'system-ui, sans-serif',
-                height: '100%',
                 boxSizing: 'border-box',
             }}
         >
@@ -195,7 +194,7 @@ const HilbertVisualizer: React.FC = () => {
             {/* simple SVG plot */}
             <div
                 style={{
-                    background: '#080818',
+                    // background: '#080818',
                     borderRadius: 8,
                     padding: '0.75rem',
                     height: 320,

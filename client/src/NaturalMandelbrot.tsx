@@ -13,7 +13,7 @@ const defaultConfig: RenderConfig = {
     width: 600,
     height: 360,
     maxIter: 120,
-    kappa: 0.382,
+    kappa: 0,//0.624,
     cMin: -2.5,
     cMax: 1.0,
 }
@@ -159,12 +159,9 @@ const NaturalMandelbrot: React.FC = () => {
     return (
         <div
             style={{
-                display: "flex",
-                flexDirection: "column",
-                background: "#050510",
+                // background: "#050510",
                 color: "#eee",
                 fontFamily: "system-ui, sans-serif",
-                height: "100vh",
             }}
         >
             {/* Controls */}
@@ -205,7 +202,7 @@ const NaturalMandelbrot: React.FC = () => {
                         type="range"
                         min={0}
                         max={24}
-                        step={.01}
+                        step={.0001}
                         value={config.kappa}
                         onChange={(e) =>
                             setConfig((c) => ({
@@ -215,7 +212,7 @@ const NaturalMandelbrot: React.FC = () => {
                         }
                     />
                     <span style={{ width: 40, textAlign: "right" }}>
-                        {config.kappa.toFixed(3)}
+                        {config.kappa.toFixed(4)}
                     </span>
                 </label>
 
@@ -278,8 +275,6 @@ const NaturalMandelbrot: React.FC = () => {
                         </div>
                         <div
                             style={{
-                                borderRadius: 8,
-                                overflow: "hidden",
                                 boxShadow: "0 0 20px rgba(0,0,0,0.6)",
                                 background: "#000",
                             }}
