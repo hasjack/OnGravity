@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
 """
-Prime–curvature Hamiltonian (INDEX GRID ONLY)
+Prime–curvature Hamiltonian (INDEX GRID ONLY, with smoothing & log-corrected fit)
 
+Pipeline
+--------
 1. Generate first NUM_PRIMES primes via sieve.
 2. Compute curvature field k_n using the original window/composite formula.
-3. Build an index–grid Hamiltonian H = L + V with
+3. Optionally smooth k_n and/or downsample it.
+4. Build an index–grid Hamiltonian H = L + V with
        L  ~  discrete -d²/dx² on i = 0,…,N-1
-       V_i = BETA * k_i
-4. Compute lowest NUM_LEVELS eigenvalues.
-5. Fit an affine map   zero ≈ a * eig + b
-   on some initial levels, and evaluate on a chosen prefix.
-6. Plot raw eigenvalues vs zeros and mapped eigenvalues vs zeros.
+       V_i = BETA * k_i          (or BETA * (exp(ALPHA*k_i) - 1) )
+5. Compute lowest NUM_LEVELS eigenvalues.
+6. Fit either
+       gamma_n ≈ a * lambda_n + b                (affine)
+   or
+       gamma_n ≈ a * lambda_n + c * log(n) + b   (log-corrected)
+   on a chosen prefix, and evaluate on a chosen prefix.
+7. Plot raw eigenvalues vs zeros and mapped eigenvalues vs zeros.
 """
 
 import numpy as np
@@ -22,18 +28,27 @@ from scipy.sparse.linalg import eigsh
 # 0. Parameters & reference data
 # ---------------------------------------------------------------------
 
-NUM_PRIMES    = 20_000   # primes used to build curvature
+# Core model parameters
+NUM_PRIMES    = 20_000    # primes used to build curvature
 WINDOW_RADIUS = 20       # [p-R, p+R] compositeness window
 CURVATURE_C   = 0.150    # original c in k_n formula
-BETA          = 50.0     # potential scale: V = BETA * k_n
-NUM_LEVELS    = 40       # how many eigenvalues to compute
+BETA          = 50.0     # potential scale: V ~ BETA * k_n
+NUM_LEVELS    = 20       # how many eigenvalues to compute (low levels only)
 
-# Which (fit_n, eval_n, label) scenarios to run
+# Curvature preprocessing
+DOWNSAMPLE_FACTOR = 1    # 1 = no downsampling, 5 = take every 5th point, etc.
+SMOOTHING_WINDOW  = 0    # 0 = no smoothing, otherwise odd integer (e.g. 5)
+
+# Potential choice
+USE_EXPONENTIAL_POTENTIAL = False  # if True, V = BETA * (exp(ALPHA*k) - 1)
+EXP_ALPHA = 0.10                   # only used if USE_EXPONENTIAL_POTENTIAL
+
+# SCENARIOS: (fit_n, eval_n, label, method)
+#   method = "affine" or "log"
 SCENARIOS = [
-    #(10, 10, "fit10_eval10"),
-    #(20, 20, "fit20_eval20"),
-    (40, 40, "fit40_eval40"),        # in-sample 20, eval 40
-    #(20, 40, "fit20_eval40_OOS"),    # same numbers, just tagged as OOS
+    (20, 20, "log_fit_20_20",    "log"),
+    (20, 20, "log_fit_20_20",    "log"),
+    (20, 20, "affine_fit_20_20", "affine"),
 ]
 
 # First 50 imaginary parts of non-trivial Riemann zeros
@@ -126,6 +141,17 @@ def compute_curvature_field(primes: np.ndarray,
     return np.array(p_used, float), np.array(k_vals, float)
 
 
+def smooth_curvature(k_vals: np.ndarray, window: int) -> np.ndarray:
+    """Optional moving-average smoothing of curvature field."""
+    if window is None or window <= 1:
+        return k_vals
+    if window % 2 == 0:
+        raise ValueError("SMOOTHING_WINDOW should be odd (e.g. 3, 5, 7).")
+    kernel = np.ones(window) / window
+    # 'same' keeps length, edges get a mild under-smoothed effect which is fine here
+    return np.convolve(k_vals, kernel, mode="same")
+
+
 # ---------------------------------------------------------------------
 # 3. Index-grid Laplacian & Hamiltonian
 # ---------------------------------------------------------------------
@@ -166,23 +192,63 @@ def lowest_eigenvalues(H, k: int) -> np.ndarray:
 def fit_affine(eigs: np.ndarray,
                zeros: np.ndarray,
                fit_n: int):
-    """Fit zero ≈ a * eig + b on first fit_n levels."""
+    """Fit gamma ≈ a * lambda + b on first fit_n levels."""
+    fit_n = min(fit_n, len(eigs), len(zeros))
     x = eigs[:fit_n]
     y = zeros[:fit_n]
     a, b = np.polyfit(x, y, 1)
     return a, b
 
 
-def evaluate_fit(eigs: np.ndarray,
-                 zeros: np.ndarray,
-                 a: float,
-                 b: float,
-                 eval_n: int):
-    """Apply fit and compute relative error stats on first eval_n levels."""
+def evaluate_affine(eigs: np.ndarray,
+                    zeros: np.ndarray,
+                    a: float,
+                    b: float,
+                    eval_n: int):
+    """Apply affine fit and compute relative error stats on first eval_n levels."""
     eval_n = min(eval_n, len(eigs), len(zeros))
     z_hat = a * eigs[:eval_n] + b
     rel_err = np.abs((z_hat - zeros[:eval_n]) / zeros[:eval_n]) * 100.0
-    return rel_err.mean(), rel_err.max(), z_hat
+    return eval_n, rel_err.mean(), rel_err.max(), z_hat
+
+
+def fit_log_corrected(eigs: np.ndarray,
+                      zeros: np.ndarray,
+                      fit_n: int):
+    """
+    Fit gamma_n ≈ a * lambda_n + c * log(n) + b
+    on the first fit_n levels.
+
+    Returns (a, c, b).
+    """
+    fit_n = min(fit_n, len(eigs), len(zeros))
+    n = np.arange(1, fit_n + 1, dtype=float)
+
+    X = np.column_stack([
+        eigs[:fit_n],      # column for a
+        np.log(n),         # column for c
+        np.ones(fit_n),    # column for b
+    ])
+    params, *_ = np.linalg.lstsq(X, zeros[:fit_n], rcond=None)
+    a, c, b = params
+    return a, c, b
+
+
+def evaluate_log_corrected(eigs: np.ndarray,
+                           zeros: np.ndarray,
+                           a: float,
+                           c: float,
+                           b: float,
+                           eval_n: int):
+    """
+    Apply gamma_hat_n = a * lambda_n + c * log(n) + b
+    and compute error stats.
+    """
+    eval_n = min(eval_n, len(eigs), len(zeros))
+    n = np.arange(1, eval_n + 1, dtype=float)
+    z_hat = a * eigs[:eval_n] + c * np.log(n) + b
+    rel_err = np.abs((z_hat - zeros[:eval_n]) / zeros[:eval_n]) * 100.0
+    return eval_n, rel_err.mean(), rel_err.max(), z_hat
 
 
 def plot_curvature_field(primes_used: np.ndarray,
@@ -202,13 +268,14 @@ def plot_curvature_field(primes_used: np.ndarray,
 
 
 def plot_raw(eigs, zeros, eval_n, filename):
+    eval_n = min(eval_n, len(eigs), len(zeros))
     idx = np.arange(1, eval_n + 1)
-    plt.figure(figsize=(10, 4))
+    plt.figure(figsize=(10, 3.5))
     plt.plot(idx, zeros[:eval_n], "r-", label="Riemann zeros")
-    plt.scatter(idx, eigs[:eval_n], color="cyan", label="eigenvalues (raw)")
+    plt.scatter(idx, eigs[:eval_n], color="cyan", label="eigenvalues")
     plt.xlabel("index")
     plt.ylabel("value")
-    plt.title("Eigenvalues vs zeros (raw, index grid)")
+    plt.title("Raw eigenvalues vs Riemann zeros")
     plt.legend()
     plt.grid(True, ls=":", alpha=0.6)
     plt.tight_layout()
@@ -217,13 +284,14 @@ def plot_raw(eigs, zeros, eval_n, filename):
 
 
 def plot_mapped(zeros, z_hat, eval_n, label, filename):
+    eval_n = min(eval_n, len(zeros), len(z_hat))
     idx = np.arange(1, eval_n + 1)
-    plt.figure(figsize=(10, 4))
-    plt.plot(idx, zeros[:eval_n], "r-", label="Riemann zeros")
-    plt.scatter(idx, z_hat[:eval_n], color="cyan", label="mapped eigenvalues")
+    plt.figure(figsize=(10, 3.5))
+    plt.plot(idx, zeros[:eval_n], "r-", label="zeros")
+    plt.scatter(idx, z_hat[:eval_n], color="cyan", label="mapped eigs")
     plt.xlabel("index")
     plt.ylabel("value")
-    plt.title(f"Eigenvalues vs Riemann zeros (index grid, {label})")
+    plt.title(f"Eigenvalues vs Riemann zeros ({label})")
     plt.legend()
     plt.grid(True, ls=":", alpha=0.6)
     plt.tight_layout()
@@ -237,16 +305,31 @@ def plot_mapped(zeros, z_hat, eval_n, label, filename):
 
 def main():
     print("RUNNING PRIME-CURVATURE INDEX-GRID HAMILTONIAN")
-    print(f"  num_primes = {NUM_PRIMES}, beta = {BETA}, levels = {NUM_LEVELS}")
+    print(f"  num_primes={NUM_PRIMES}, beta={BETA}, levels={NUM_LEVELS}")
+    print(f"  curvature downsample factor = {DOWNSAMPLE_FACTOR}")
+    print(f"  smoothing window = {SMOOTHING_WINDOW}")
+    print(f"  exponential potential = {USE_EXPONENTIAL_POTENTIAL} (alpha={EXP_ALPHA})")
 
-    print("\nGenerating primes...")
+    # Generate primes
     primes = generate_primes(NUM_PRIMES)
-    print(f"  got {len(primes)} primes up to {primes[-1]}")
+    print(f"  primes up to {primes[-1]} generated")
 
-    print("Computing curvature field k_n...")
+    # Curvature
     p_used, k_vals = compute_curvature_field(primes)
-    print(f"  curvature points: {len(k_vals)} (after edge trimming)")
+    print(f"  curvature points (before downsampling): {len(k_vals)}")
 
+    # Optional smoothing
+    if SMOOTHING_WINDOW and SMOOTHING_WINDOW > 1:
+        k_vals = smooth_curvature(k_vals, SMOOTHING_WINDOW)
+        print(f"  curvature smoothed with window={SMOOTHING_WINDOW}")
+
+    # Optional downsampling
+    if DOWNSAMPLE_FACTOR > 1:
+        p_used = p_used[::DOWNSAMPLE_FACTOR]
+        k_vals = k_vals[::DOWNSAMPLE_FACTOR]
+    print(f"  curvature points (after downsampling): {len(k_vals)}")
+
+    # Curvature field plot (full-resolution used points)
     plot_curvature_field(p_used, k_vals, "k_field_loglog.png")
     print("  saved curvature plot: k_field_loglog.png")
 
@@ -255,34 +338,55 @@ def main():
     if N < NUM_LEVELS + 2:
         raise ValueError("Not enough curvature points for requested NUM_LEVELS")
 
+    # Build Hamiltonian
     main_L, off_L = build_laplacian_index(N)
-    V = BETA * k_vals
+
+    if USE_EXPONENTIAL_POTENTIAL:
+        V = BETA * (np.exp(EXP_ALPHA * k_vals) - 1.0)
+    else:
+        V = BETA * k_vals
+
     H = build_hamiltonian(main_L, off_L, V)
     eigs = lowest_eigenvalues(H, NUM_LEVELS)
 
-    print("\nINDEX-GRID HAMILTONIAN")
-    print(f"  lowest {NUM_LEVELS} eigenvalues (first few): {eigs[:5]}")
+    print(f"  lowest eigenvalues (first 5): {eigs[:5]}")
 
-    # raw plot up to the largest eval_n we’ll use
-    max_eval = max(e for _, e, _ in SCENARIOS if e <= len(zeros))
-    plot_raw(eigs, zeros, max_eval, "eigs_vs_zeros_index_raw.png")
+    # Raw comparison plot (up to 20 for readability)
+    raw_eval = min(20, len(eigs), len(zeros))
+    plot_raw(eigs, zeros, raw_eval, "eigs_vs_zeros_raw.png")
 
-    for fit_n, eval_n, label in SCENARIOS:
-        if eval_n > len(zeros):
-            continue
+    # Run all fitting scenarios
+    for fit_n, eval_n, label, method in SCENARIOS:
+        fit_n_eff = min(fit_n, len(eigs), len(zeros))
+        eval_n_eff = min(eval_n, len(eigs), len(zeros))
 
-        fit_n_eff = min(fit_n, len(zeros))
-        a, b = fit_affine(eigs, zeros, fit_n_eff)
-        mean_err, max_err, z_hat = evaluate_fit(eigs, zeros, a, b, eval_n)
+        if method == "affine":
+            a, b = fit_affine(eigs, zeros, fit_n_eff)
+            eval_n_eff, mean_err, max_err, z_hat = evaluate_affine(
+                eigs, zeros, a, b, eval_n_eff
+            )
+            print(f"\n[{label}] (affine)")
+            print(f"  fitted on first {fit_n_eff} levels, evaluated on first {eval_n_eff}")
+            print(f"  best-fit: gamma ≈ {a:.4f}·lambda + {b:.4f}")
 
-        print(f"\n[{label}]")
-        print(f"  fitted on first {fit_n_eff} levels, evaluated on first {eval_n}")
-        print(f"  best-fit: zero ≈ {a:.4f}·eig + {b:.4f}")
+        elif method == "log":
+            a, c, b = fit_log_corrected(eigs, zeros, fit_n_eff)
+            eval_n_eff, mean_err, max_err, z_hat = evaluate_log_corrected(
+                eigs, zeros, a, c, b, eval_n_eff
+            )
+            print(f"\n[{label}] (log-corrected)")
+            print(f"  fitted on first {fit_n_eff} levels, evaluated on first {eval_n_eff}")
+            print(f"  best-fit: gamma_n ≈ {a:.4f}·lambda_n "
+                  f"+ {c:.4f}·log(n) + {b:.4f}")
+
+        else:
+            raise ValueError(f"Unknown method '{method}' in SCENARIOS")
+
         print(f"  mean relative error: {mean_err:.3f}%")
         print(f"  max  relative error: {max_err:.3f}%")
 
-        fname = f"eigs_vs_zeros_index_{label}.png"
-        plot_mapped(zeros, z_hat, eval_n, label, fname)
+        fname = f"eigs_vs_zeros_{label}.png"
+        plot_mapped(zeros, z_hat, eval_n_eff, label, fname)
 
     print("\nDone. Plots written to current directory.")
 
