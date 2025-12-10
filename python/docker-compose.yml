@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  rhz:
+    build: .
+    container_name: rhz
+    volumes:
+      - .:/app
+    working_dir: /app
+    stdin_open: true
+    tty: true
