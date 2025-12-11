@@ -27,12 +27,12 @@ from scipy.sparse.linalg import eigsh
 # 0. Parameters & reference data
 # ---------------------------------------------------------------------
 
-NUM_PRIMES    = 20_000    # primes used to build curvature
+NUM_PRIMES    = 200_000    # primes used to build curvature
 WINDOW_RADIUS = 20        # [p-R, p+R] compositeness window
 CURVATURE_C   = 0.150     # original c in k_n formula
 
 BETA          = 50.0      # linear potential scale: V = BETA * k_n
-NUM_LEVELS    = 40        # how many eigenvalues to compute
+NUM_LEVELS    = 20        # how many eigenvalues to compute
 
 CURVATURE_DOWNSAMPLE = 1  # keep every k-th curvature point (1 = no downsample)
 SMOOTHING_WINDOW      = 0 # 0 = no smoothing, else moving-average window size
@@ -44,23 +44,97 @@ ALPHA_EXP             = 0.1    # exponent scale if EXPONENTIAL_POTENTIAL
 #   model in {"affine", "log_n"}
 SCENARIOS = [
     ("affine_fit_20_20", "affine", 20, 20),
-   # ("log_fit_20_20", "log_n", 20, 20),
-   # ("log_lambda_fit_20_20", "log_lambda", 20, 20),
+    ("log_fit_20_20", "log_n", 20, 20),
+
+    # NEW EXTENDED FIT-EVALUATE PAIRS
+    #("affine_fit_20_80", "affine", 20, 80),
+    #("log_fit_20_80", "log_n", 20, 80),
+
+    #("affine_fit_40_80", "affine", 40, 80),
+    #("log_fit_40_80", "log_n", 40, 80),
+
+    # Optional: full 80/80 fit
+    #("affine_fit_80_80", "affine", 80, 80),
+    #("log_fit_80_80", "log_n", 80, 80),
 ]
 
 # First 50 imaginary parts of non-trivial Riemann zeros
-RIEMANN_ZEROS_50 = np.array([
-    14.13472514, 21.02203964, 25.01085758, 30.42487613, 32.93506159,
-    37.58617816, 40.91871901, 43.32707328, 48.00515088, 49.77383248,
-    52.97032148, 56.44624770, 59.34704400, 60.83177852, 65.11254405,
-    67.07981053, 69.54640171, 72.06715767, 75.70469070, 77.14484007,
-    79.33737502, 82.91038085, 84.73549298, 87.42527461, 88.80911121,
-    92.49189927, 94.65134404, 95.87063423, 98.83119422, 101.31785101,
-    103.72553804, 105.44662305, 107.16861118, 111.02953554, 111.87465918,
-    114.32022092, 116.22668032, 118.79078287, 121.37012500, 122.94682929,
-    124.25681855, 127.51668388, 129.57870420, 131.08768853, 133.49773720,
-    134.75650975, 138.11604205, 139.73620895, 141.12370740, 143.11184581,
-])
+RIEMANN_ZEROS_80 = np.array([
+    14.1347251417347, 21.0220396387716, 25.0108575801457, 30.4248761258595, 32.9350615877392,
+    37.5861781588257,
+    40.9187190121475,
+    43.3270732809149,
+    48.0051508811672,
+    49.7738324776723,
+    52.9703214777144,
+    56.4462476970634,
+    59.3470440026024,
+    60.8317785246098,
+    65.1125440480816,
+    67.0798105294942,
+    69.5464017111739,
+    72.0671576744819,
+    75.7046906990839,
+    77.1448400688748,
+    79.3373750202494,
+    82.9103808540860,
+    84.7354929805171,
+    87.4252746131252,
+    88.8091112076345,
+    92.4918992705585,
+    94.6513440405199,
+    95.8706342282453,
+    98.8311942181937,
+    101.3178510057310,
+    103.7255380404784,
+    105.4466230523267,
+    107.1686111842764,
+    111.0295355431695,
+    112.7001209160843,
+    114.3202209154523,
+    116.2266803208578,
+    118.7907828659763,
+    121.3701250024203,
+    122.9468292935526,
+    124.2568185543458,
+    127.5166838795964,
+    129.5787041997780,
+    131.0876885311590,
+    133.4977372029976,
+    134.7565097533738,
+    138.1160420555147,
+    139.7362089521217,
+    141.1237074040210,
+    143.1118458076206,
+    146.0009824867653,
+    147.4227653436690,
+    150.0535204215010,
+    150.9252576122664,
+    153.0246938111000,
+    156.0914901307180,
+    157.5975918175430,
+    158.8499881714208,
+    161.1889641375960,
+    163.0307096875174,
+    165.5370691870990,
+    167.1842300785851,
+    169.0945154159864,
+    169.9119764787334,
+    173.4115365191553,
+    174.7541915233657,
+    176.4414342977104,
+    178.3774077760997,
+    179.9164840209589,
+    182.2070784843660,
+    184.8744678480460,
+    185.5987836777072,
+    187.2289225835012,
+    189.4161586560213,
+    192.0266563607137,
+    193.0797266031385,
+    195.2653966795522,
+    196.8764818409589
+], dtype=float)
 
 # ---------------------------------------------------------------------
 # 1. Prime generation
@@ -341,14 +415,16 @@ def sweep_prime_counts(prime_counts, beta=50.0, fit_n=20, eval_n=20):
     """
     For each N_primes, recompute:
         - curvature field
-        - Hamiltonian
+        - log-grid Hamiltonian
         - eigenvalues
         - affine fit error
 
-    Returns arrays of mean errors.
+    Returns arrays of mean/max errors.
     """
     means = []
     maxes = []
+
+    zeros = RIEMANN_ZEROS_80
 
     for Np in prime_counts:
         print(f"[sweep] N_primes = {Np}")
@@ -357,8 +433,10 @@ def sweep_prime_counts(prime_counts, beta=50.0, fit_n=20, eval_n=20):
         p_used, k_vals = compute_curvature_field(primes)
         k_vals = maybe_smooth(k_vals, SMOOTHING_WINDOW)
 
-        # Hamiltonian
-        zeros = RIEMANN_ZEROS_50
+        # move to uniform log grid
+        t_grid, k_vals = resample_to_log_grid(p_used, k_vals)
+
+        # Hamiltonian on log-grid
         main_L, off_L = build_laplacian_index(len(k_vals))
         V = beta * k_vals
         H = build_hamiltonian(main_L, off_L, V)
@@ -395,7 +473,35 @@ def sweep_beta_values(betas, num_primes=20000, fit_n=20, eval_n=20):
     primes = generate_primes(num_primes)
     p_used, k_vals = compute_curvature_field(primes)
     k_vals = maybe_smooth(k_vals, SMOOTHING_WINDOW)
-    zeros = RIEMANN_ZEROS_50
+
+    # move to uniform log grid
+    t_grid, k_vals = resample_to_log_grid(p_used, k_vals)
+
+    zeros = RIEMANN_ZEROS_80
+
+    for beta in betas:
+        print(f"[sweep] beta = {beta}")
+
+        main_L, off_L = build_laplacian_index(len(k_vals))
+        V = beta * k_vals
+        H = build_hamiltonian(main_L, off_L, V)
+        eigs = lowest_eigenvalues(H, NUM_LEVELS)
+
+        a, b = fit_affine(eigs, zeros, fit_n)
+        mean_err, max_err, _ = evaluate_model("affine", eigs, zeros, (a, b), eval_n)
+
+        means.append(mean_err)
+        maxes.append(max_err)
+
+    return np.array(means), np.array(maxes)
+
+    means = []
+    maxes = []
+
+    primes = generate_primes(num_primes)
+    p_used, k_vals = compute_curvature_field(primes)
+    k_vals = maybe_smooth(k_vals, SMOOTHING_WINDOW)
+    zeros = RIEMANN_ZEROS_80
 
     for beta in betas:
         print(f"[sweep] beta = {beta}")
@@ -426,13 +532,31 @@ def plot_beta_stability(betas, mean_errs, max_errs, filename):
     plt.savefig(filename)
     plt.close()
 
+def resample_to_log_grid(p_used: np.ndarray,
+                         k_vals: np.ndarray):
+    """
+    Reinterpret k_n as a function of t = log p, and resample onto
+    a *uniform* grid in t. The index Laplacian then acts on this
+    log-grid (spacing absorbed into the overall scale).
+
+    Returns (t_grid, k_on_log_grid).
+    """
+    if len(p_used) != len(k_vals):
+        raise ValueError("p_used and k_vals must have same length")
+
+    t_raw = np.log(p_used)
+    # uniform log-grid with same number of points
+    t_grid = np.linspace(t_raw[0], t_raw[-1], len(k_vals))
+    k_log = np.interp(t_grid, t_raw, k_vals)
+    return t_grid, k_log
+
 
 # ---------------------------------------------------------------------
 # 5. Main experiment
 # ---------------------------------------------------------------------
 
 def main():
-    print("RUNNING PRIME-CURVATURE INDEX-GRID HAMILTONIAN")
+    print("RUNNING PRIME-CURVATURE LOG-GRID HAMILTONIAN")
     print(f"  num_primes={NUM_PRIMES}, beta={BETA}, levels={NUM_LEVELS}")
     print(f"  curvature downsample factor = {CURVATURE_DOWNSAMPLE}")
     print(f"  smoothing window = {SMOOTHING_WINDOW}")
@@ -455,12 +579,17 @@ def main():
     plot_curvature_field(p_used, k_vals, "k_field_loglog.png")
     print("  saved curvature plot: k_field_loglog.png")
 
+    # --- move to uniform log grid t = log p ---
+    t_grid, k_vals = resample_to_log_grid(p_used, k_vals)
+    print(f"  log-grid points: {len(t_grid)} (uniform in t = log p)")
+
     # Hamiltonian
-    zeros = RIEMANN_ZEROS_50
+    zeros = RIEMANN_ZEROS_80
     N = len(k_vals)
     if N < NUM_LEVELS + 2:
         raise ValueError("Not enough curvature points for requested NUM_LEVELS")
 
+    # index Laplacian now lives on the uniform t-grid
     main_L, off_L = build_laplacian_index(N)
 
     if EXPONENTIAL_POTENTIAL:
@@ -471,7 +600,7 @@ def main():
     H = build_hamiltonian(main_L, off_L, V)
     eigs = lowest_eigenvalues(H, NUM_LEVELS)
 
-    print("\nINDEX-GRID HAMILTONIAN")
+    print("\nLOG-GRID HAMILTONIAN")
     print(f"  lowest eigenvalues (first 5): {eigs[:5]}")
     plot_raw(eigs, zeros, eval_n=40, filename="eigs_vs_zeros_raw.png")
     print("  saved raw comparison plot: eigs_vs_zeros_raw.png")
@@ -487,7 +616,12 @@ def main():
         elif model == "log_n":
             params = fit_log_n(eigs, zeros, fit_n)
             a, c, b = params
+            print(
+                "  best-fit: gamma_n ≈ "
+                f"{a:.4f}·lambda_n + {c:.4f}·log(n) + {b:.4f}"
+            )
         elif model == "log_lambda":
+            params = fit_log_lambda(eigs, zeros, fit_n)
             a, c, b = params
             print(
                 "  best-fit: gamma_n ≈ "
@@ -511,15 +645,16 @@ def main():
         plot_residuals(zeros, z_hat, eval_n, label, f"residuals_{label}.png")
         print(f"  saved residual plot: residuals_{label}.png")
 
-        prime_counts = [2000, 5000, 10000, 20000, 50000]
-        mean_errs, max_errs = sweep_prime_counts(prime_counts)
-        plot_prime_stability(prime_counts, mean_errs, max_errs, "stability_vs_primes.png")
-        print("Saved: stability_vs_primes.png")
+    # Stability sweeps (run once, with current global settings)
+    prime_counts = [2000, 5000, 10000, 20000, 50000]
+    mean_errs, max_errs = sweep_prime_counts(prime_counts)
+    plot_prime_stability(prime_counts, mean_errs, max_errs, "stability_vs_primes.png")
+    print("Saved: stability_vs_primes.png")
 
-        betas = [10, 20, 30, 40, 50, 60, 80, 100]
-        mean_errs, max_errs = sweep_beta_values(betas)
-        plot_beta_stability(betas, mean_errs, max_errs, "stability_vs_beta.png")
-        print("Saved: stability_vs_beta.png")
+    betas = [10, 20, 30, 40, 50, 60, 80, 100]
+    mean_errs, max_errs = sweep_beta_values(betas)
+    plot_beta_stability(betas, mean_errs, max_errs, "stability_vs_beta.png")
+    print("Saved: stability_vs_beta.png")
 
     print("\nDone. Plots written to current directory.")
 
