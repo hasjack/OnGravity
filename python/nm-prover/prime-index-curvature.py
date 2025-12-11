@@ -77,7 +77,7 @@ from scipy.interpolate import CubicSpline
 # 0. Parameters & reference data
 # ---------------------------------------------------------------------
 
-NUM_PRIMES    = 1_000_000      # primes used to build curvature
+NUM_PRIMES    = 200_000      # primes used to build curvature
 WINDOW_RADIUS = 20           # [p-R, p+R] compositeness window
 CURVATURE_C   = 0.150        # original c in k_n formula
 
@@ -460,9 +460,74 @@ def sweep_eta(etas, k_vals_loggrid, beta=50.0, eval_n=80):
 
     return best_eta, results
 
+# ---------------------------------------------------------------------
+# 6. Spectral Unfolding + Nearest-Neighbor Spacing (GUE test)
+# ---------------------------------------------------------------------
+
+def unfold_spectrum(eigs, poly_deg=5):
+    """
+    Unfold spectrum so mean spacing = 1.
+    Fit a polynomial to N(E) and map eigenvalues through it.
+    """
+    eigs = np.sort(eigs)
+    n = len(eigs)
+    indices = np.arange(n)
+
+    # Fit smooth polynomial to staircase function
+    coeffs = np.polyfit(eigs, indices, deg=poly_deg)
+    poly = np.poly1d(coeffs)
+
+    # Unfolded spectrum
+    unfolded = poly(eigs)
+    return unfolded
+
+
+def wigner_surmise_gue(s):
+    return (32 / np.pi**2) * (s**2) * np.exp(- (4 / np.pi) * s**2)
+
+
+def poisson_dist(s):
+    return np.exp(-s)
+
+
+def analyze_nns(eigs, filename="nns_distribution.png"):
+    """
+    Compute nearest-neighbor spacings and compare to GUE vs Poisson.
+    Saves histogram plot.
+    """
+    unfolded = unfold_spectrum(eigs, poly_deg=5)
+    spacings = np.diff(unfolded)
+    spacings = spacings[spacings > 1e-6]
+    spacings /= np.mean(spacings)
+
+    plt.figure(figsize=(8, 5))
+    count, bins, _ = plt.hist(
+        spacings, bins=25, density=True,
+        alpha=0.6, color="skyblue", edgecolor="black", label="model spacings"
+    )
+
+    s_axis = np.linspace(0, max(bins), 200)
+    plt.plot(s_axis, wigner_surmise_gue(s_axis), "r-", lw=2.5, label="GUE")
+    plt.plot(s_axis, poisson_dist(s_axis), "g--", lw=2, label="Poisson")
+
+    plt.xlabel("spacing s")
+    plt.ylabel("P(s)")
+    plt.title("Nearest-Neighbor Spacing Distribution")
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(filename)
+    plt.close()
+
+    small_s = np.mean(spacings < 0.2)
+    print(f"[NNS] fraction s < 0.2 = {small_s:.3f}  (GUE≈0.02, Poisson≈0.18)")
+
+    return spacings
+
+
 
 # ---------------------------------------------------------------------
-# 6. Main experiment
+# 7. Main experiment
 # ---------------------------------------------------------------------
 
 SCENARIOS = [
@@ -529,6 +594,13 @@ def main():
 
         plot_residuals(zeros, z_hat, eval_n, label, f"residuals_{label}.png")
         print(f"  saved residual plot: residuals_{label}.png")
+
+        # -----------------------------------------------------------------
+        # NNS / GUE analysis
+        # -----------------------------------------------------------------
+        print("\nRunning Nearest-Neighbor Spacing (GUE) analysis...")
+        spacings = analyze_nns(eigs, filename="nns_distribution.png")
+        print("  saved NNS plot: nns_distribution.png")
 
     print("\nDone. Plots written to current directory.")
 
