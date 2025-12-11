@@ -71,12 +71,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.sparse import diags
 from scipy.sparse.linalg import eigsh
+from scipy.interpolate import CubicSpline
 
 # ---------------------------------------------------------------------
 # 0. Parameters & reference data
 # ---------------------------------------------------------------------
 
-NUM_PRIMES    = 1_000_000      # primes used to build curvature
+NUM_PRIMES    = 200_000      # primes used to build curvature
 WINDOW_RADIUS = 20           # [p-R, p+R] compositeness window
 CURVATURE_C   = 0.150        # original c in k_n formula
 
@@ -212,16 +213,19 @@ def resample_to_log_grid(p_used: np.ndarray,
                          k_vals: np.ndarray):
     """
     Reinterpret k_n as a function of t = log p, and resample onto
-    a uniform grid in t. The index Laplacian then acts on this log-grid.
-
-    Returns (t_grid, k_on_log_grid).
+    a uniform grid in t using cubic spline interpolation.
     """
     if len(p_used) != len(k_vals):
         raise ValueError("p_used and k_vals must have same length")
 
     t_raw = np.log(p_used)
-    t_grid = np.linspace(t_raw[0], t_raw[-1], len(k_vals))
-    k_log = np.interp(t_grid, t_raw, k_vals)
+    N = len(k_vals)
+    t_grid = np.linspace(t_raw[0], t_raw[-1], N)
+
+    # Cubic spline ensures C^2 continuity
+    cs = CubicSpline(t_raw, k_vals, bc_type='natural')
+    k_log = cs(t_grid)
+
     return t_grid, k_log
 
 
@@ -239,7 +243,7 @@ def build_laplacian_index(n_points: int):
     """
     main = 2.0 * np.ones(n_points)
     off = -1.0 * np.ones(n_points - 1)
-    main[0] = main[-1] = 1e6
+    main[0] = main[-1] = 1e4
     return main, off
 
 
