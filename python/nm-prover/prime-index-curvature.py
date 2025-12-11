@@ -76,12 +76,12 @@ from scipy.sparse.linalg import eigsh
 # 0. Parameters & reference data
 # ---------------------------------------------------------------------
 
-NUM_PRIMES    = 200_000      # primes used to build curvature
+NUM_PRIMES    = 1_000_000      # primes used to build curvature
 WINDOW_RADIUS = 20           # [p-R, p+R] compositeness window
 CURVATURE_C   = 0.150        # original c in k_n formula
 
 BETA          = 50.0         # linear potential scale: V = BETA * k_n
-NUM_LEVELS    = 80           # number of eigenvalues to compute
+NUM_LEVELS    = 20           # number of eigenvalues to compute
 
 CURVATURE_DOWNSAMPLE = 1     # keep every k-th curvature point (1 = none)
 SMOOTHING_WINDOW      = 0    # 0 = no smoothing; else moving-average window
@@ -97,8 +97,8 @@ EPS_CORR                 = 0.02   # log(i) diagonal correction
 
 # SCENARIOS: (label, model, fit_n, eval_n)
 SCENARIOS = [
-    ("affine_fit_20_80", "affine", 20, 80),
-    ("log_fit_20_80",    "log_n",  20, 80),
+    #("affine_fit_20_80", "affine", 20, 80),
+    ("log_fit_20_20",    "log_n",  20, 20),
 ]
 
 # ---------------------------------------------------------------------
@@ -212,7 +212,7 @@ def resample_to_log_grid(p_used: np.ndarray,
                          k_vals: np.ndarray):
     """
     Reinterpret k_n as a function of t = log p, and resample onto
-    a uniform grid in t. The index Laplacian acts on this log-grid.
+    a uniform grid in t. The index Laplacian then acts on this log-grid.
 
     Returns (t_grid, k_on_log_grid).
     """
@@ -423,8 +423,8 @@ def sweep_eta(etas, k_vals_loggrid, beta=50.0, eval_n=80):
         - fit log-n model on first 20
         - evaluate error on first eval_n
 
-    Returns (best_eta, summary_dict) where summary_dict contains
-    per-η mean/max errors and slopes.
+    Returns (best_eta, summary_list) where each entry is a dict
+    with mean/max errors and tail slope.
     """
     best_eta = None
     best_score = np.inf
@@ -437,13 +437,13 @@ def sweep_eta(etas, k_vals_loggrid, beta=50.0, eval_n=80):
             eigs, RIEMANN_ZEROS, params, eval_n
         )
 
-        # simple measure of tail slope: linear fit on last quarter of residuals
+        # simple measure of tail slope: linear fit on second half of residuals
         m = len(residuals)
-        tail_idx = np.arange(m//2, m)  # second half
-        tail_res = residuals[m//2:]
+        tail_idx = np.arange(m // 2, m)
+        tail_res = residuals[m // 2:]
         slope, _ = np.polyfit(tail_idx, tail_res, 1)
 
-        score = mean_err + 0.1 * abs(slope)  # favour low error + flat tail
+        score = mean_err + 0.1 * abs(slope)  # low error + flat tail
 
         results.append({
             "eta": eta,
@@ -452,11 +452,11 @@ def sweep_eta(etas, k_vals_loggrid, beta=50.0, eval_n=80):
             "slope": slope,
         })
 
+        print(f"    mean={mean_err:.3f}%, max={max_err:.3f}%, slope={slope:.4f}")
+
         if score < best_score:
             best_score = score
             best_eta = eta
-
-        print(f"    mean={mean_err:.3f}%, max={max_err:.3f}%, slope={slope:.4f}")
 
     return best_eta, results
 
