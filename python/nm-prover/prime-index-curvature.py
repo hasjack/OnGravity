@@ -77,12 +77,12 @@ from scipy.interpolate import CubicSpline
 # 0. Parameters & reference data
 # ---------------------------------------------------------------------
 
-NUM_PRIMES    = 200_000      # primes used to build curvature
+NUM_PRIMES    = 1_000_000      # primes used to build curvature
 WINDOW_RADIUS = 20           # [p-R, p+R] compositeness window
 CURVATURE_C   = 0.150        # original c in k_n formula
 
 BETA          = 50.0         # linear potential scale: V = BETA * k_n
-NUM_LEVELS    = 20           # number of eigenvalues to compute
+NUM_LEVELS    = 80           # number of eigenvalues to compute
 
 CURVATURE_DOWNSAMPLE = 1     # keep every k-th curvature point (1 = none)
 SMOOTHING_WINDOW      = 0    # 0 = no smoothing; else moving-average window
@@ -97,10 +97,6 @@ GLOBAL_SHAPE_ETA         = 1e-4   # log–index tail-slope adjuster
 EPS_CORR                 = 0.02   # log(i) diagonal correction
 
 # SCENARIOS: (label, model, fit_n, eval_n)
-SCENARIOS = [
-    #("affine_fit_20_80", "affine", 20, 80),
-    ("log_fit_20_20",    "log_n",  20, 20),
-]
 
 # ---------------------------------------------------------------------
 # Riemann zeros (first 80 imaginary parts), neatly formatted
