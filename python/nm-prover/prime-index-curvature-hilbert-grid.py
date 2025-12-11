@@ -32,7 +32,7 @@ WINDOW_RADIUS = 20        # [p-R, p+R] compositeness window
 CURVATURE_C   = 0.150     # original c in k_n formula
 
 BETA          = 50.0      # linear potential scale: V = BETA * k_n
-NUM_LEVELS    = 80        # how many eigenvalues to compute
+NUM_LEVELS    = 20        # how many eigenvalues to compute
 
 CURVATURE_DOWNSAMPLE = 1  # keep every k-th curvature point (1 = no downsample)
 SMOOTHING_WINDOW      = 0 # 0 = no smoothing, else moving-average window size
@@ -40,18 +40,15 @@ SMOOTHING_WINDOW      = 0 # 0 = no smoothing, else moving-average window size
 EXPONENTIAL_POTENTIAL = False  # if True: V_i = exp(alpha * k_i) instead of BETA*k_i
 ALPHA_EXP             = 0.1    # exponent scale if EXPONENTIAL_POTENTIAL
 
-GLOBAL_CORRECTION = True   # turn global log-index correction on/off
-EPS_CORR          = 0.02   # small coefficient for log(i) term
-
 # SCENARIOS: (label, model, fit_n, eval_n)
 #   model in {"affine", "log_n"}
 SCENARIOS = [
-    #("affine_fit_20_20", "affine", 20, 20),
-    #("log_fit_20_20", "log_n", 20, 20),
+    ("affine_fit_20_20", "affine", 20, 20),
+    ("log_fit_20_20", "log_n", 20, 20),
 
     # NEW EXTENDED FIT-EVALUATE PAIRS
-    ("affine_fit_20_80", "affine", 20, 80),
-    ("log_fit_20_80", "log_n", 20, 80),
+    #("affine_fit_20_80", "affine", 20, 80),
+    #("log_fit_20_80", "log_n", 20, 80),
 
     #("affine_fit_40_80", "affine", 40, 80),
     #("log_fit_40_80", "log_n", 40, 80),
@@ -240,29 +237,69 @@ def maybe_smooth(k: np.ndarray, window: int):
 
 
 # ---------------------------------------------------------------------
-# 3. Index-grid Laplacian & Hamiltonian
+# 3. Log–grid Laplacian & Hamiltonian
 # ---------------------------------------------------------------------
 
-def build_laplacian_index(n_points: int):
+def build_log_grid(primes_used: np.ndarray):
     """
-    Uniform grid Laplacian on indices i = 0..N-1, spacing h = 1:
+    Construct a non-uniform log-grid t_i = log(p_i).
 
-        L ≈ -d²/dx²  ~  2 on diagonal, -1 on sub/super.
-
-    Endpoints clamped with a large diagonal value.
+    Returns:
+        t      – strictly increasing grid (float array)
+        h      – array of local spacings h_i = t_{i+1} - t_i
     """
-    main = 2.0 * np.ones(n_points)
-    off = -1.0 * np.ones(n_points - 1)
-    main[0] = main[-1] = 1e6
-    return main, off
+    t = np.log(primes_used.astype(float))
+    h = np.diff(t)
+    return t, h
 
 
-def build_hamiltonian(main_lap: np.ndarray,
-                      off_lap: np.ndarray,
-                      potential: np.ndarray):
-    """H = L + V, tri-diagonal sparse matrix."""
-    main = main_lap + potential
-    return diags([off_lap, main, off_lap], offsets=[-1, 0, 1], format="csc")
+def build_laplacian_log_grid(t: np.ndarray):
+    """
+    Second derivative on a non-uniform grid:
+
+       (d²ψ/dt²)_i ≈  2 ψ_i / (h_{i-1} h_i)
+                     - ψ_{i-1} / (h_{i-1}(h_{i-1}+h_i))
+                     - ψ_{i+1} / (h_i(h_{i-1}+h_i))
+
+    Endpoints are clamped with a large diagonal.
+
+    Returns:
+        main, off_minus, off_plus  (tri-diagonal coefficients)
+    """
+    N = len(t)
+    h = np.diff(t)
+
+    main = np.zeros(N)
+    off_minus = np.zeros(N - 1)
+    off_plus  = np.zeros(N - 1)
+
+    for i in range(1, N - 1):
+        hm = h[i - 1]
+        hp = h[i]
+        denom = hm + hp
+
+        main[i]      =  2.0 / (hm * hp)
+        off_minus[i-1] = -1.0 / (hm * denom)
+        off_plus[i]    = -1.0 / (hp * denom)
+
+    # Clamp endpoints
+    main[0]  = 1e9
+    main[-1] = 1e9
+
+    return main, off_minus, off_plus
+
+
+def build_hamiltonian_log(main_L, off_minus, off_plus, V):
+    """
+    Construct H = -Δ_log + V(t) as a sparse matrix.
+    """
+    main = main_L + V
+    return diags(
+        [off_minus, main, off_plus],
+        offsets=[-1, 0, +1],
+        format="csc"
+    )
+
 
 
 def lowest_eigenvalues(H, k: int) -> np.ndarray:
@@ -440,9 +477,11 @@ def sweep_prime_counts(prime_counts, beta=50.0, fit_n=20, eval_n=20):
         t_grid, k_vals = resample_to_log_grid(p_used, k_vals)
 
         # Hamiltonian on log-grid
-        main_L, off_L = build_laplacian_index(len(k_vals))
+        t_grid, h = build_log_grid(p_used)
+        main_L, off_m, off_p = build_laplacian_log_grid(t_grid)
+
         V = beta * k_vals
-        H = build_hamiltonian(main_L, off_L, V)
+        H = build_hamiltonian_log(main_L, off_m, off_p, V)
         eigs = lowest_eigenvalues(H, NUM_LEVELS)
 
         # Fit
@@ -485,10 +524,13 @@ def sweep_beta_values(betas, num_primes=20000, fit_n=20, eval_n=20):
     for beta in betas:
         print(f"[sweep] beta = {beta}")
 
-        main_L, off_L = build_laplacian_index(len(k_vals))
-        V = beta * k_vals
-        H = build_hamiltonian(main_L, off_L, V)
-        eigs = lowest_eigenvalues(H, NUM_LEVELS)
+        # --- LOG-GRID HAMILTONIAN ---
+        t_grid, h = build_log_grid(p_used)                          # build log grid
+        main_L, off_m, off_p = build_laplacian_log_grid(t_grid)     # Laplacian on log grid
+
+        V = beta * k_vals                                           # potential
+        H = build_hamiltonian_log(main_L, off_m, off_p, V)          # Hamiltonian
+        eigs = lowest_eigenvalues(H, NUM_LEVELS)                    # spectrum
 
         a, b = fit_affine(eigs, zeros, fit_n)
         mean_err, max_err, _ = evaluate_model("affine", eigs, zeros, (a, b), eval_n)
@@ -568,21 +610,18 @@ def main():
     if N < NUM_LEVELS + 2:
         raise ValueError("Not enough curvature points for requested NUM_LEVELS")
 
-    # index Laplacian now lives on the uniform t-grid
-    main_L, off_L = build_laplacian_index(N)
+    # Build log-grid Laplacian
+    t_grid, h = build_log_grid(p_used)
+    main_L, off_minus, off_plus = build_laplacian_log_grid(t_grid)
 
+    # Potential
     if EXPONENTIAL_POTENTIAL:
         V = np.exp(ALPHA_EXP * k_vals)
     else:
         V = BETA * k_vals
 
-    # --- global log-index correction ---
-    if GLOBAL_CORRECTION:
-        idx = np.arange(1, N + 1, dtype=float)
-        V = V + EPS_CORR * np.log(idx)
-    # -----------------------------------
-
-    H = build_hamiltonian(main_L, off_L, V)
+    # Hamiltonian and spectrum
+    H = build_hamiltonian_log(main_L, off_minus, off_plus, V)
     eigs = lowest_eigenvalues(H, NUM_LEVELS)
 
     print("\nLOG-GRID HAMILTONIAN")
