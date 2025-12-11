@@ -41,6 +41,9 @@ EXPONENTIAL_POTENTIAL = False  # if True: V_i = exp(alpha * k_i) instead of BETA
 ALPHA_EXP             = 0.1    # exponent scale if EXPONENTIAL_POTENTIAL
 
 GLOBAL_CORRECTION = True   # turn global log-index correction on/off
+GLOBAL_SHAPE_CORRECTION = True
+GLOBAL_SHAPE_ETA = 1e-4
+
 EPS_CORR          = 0.02   # small coefficient for log(i) term
 
 # SCENARIOS: (label, model, fit_n, eval_n)
@@ -561,6 +564,17 @@ def main():
     # --- move to uniform log grid t = log p ---
     t_grid, k_vals = resample_to_log_grid(p_used, k_vals)
     print(f"  log-grid points: {len(t_grid)} (uniform in t = log p)")
+
+    if GLOBAL_SHAPE_CORRECTION:
+        # n = mode index; t = log-prime grid; use one or both
+        n = np.arange(1, len(k_vals) + 1, dtype=float)
+        
+        # A single tunable parameter (eta) that adjusts tail behaviour
+        eta = GLOBAL_SHAPE_ETA  # e.g. 1e-4 or 5e-4
+
+        # Example correction: small logarithmic inflation on the tail
+        # This preserves early levels (fit_n) while allowing slow drift
+        k_vals = k_vals * (1.0 + eta * np.log(n))
 
     # Hamiltonian
     zeros = RIEMANN_ZEROS_80
