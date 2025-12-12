@@ -96,6 +96,12 @@ GLOBAL_SHAPE_CORRECTION  = True
 GLOBAL_SHAPE_ETA         = 1e-4   # log–index tail-slope adjuster
 EPS_CORR                 = 0.02   # log(i) diagonal correction
 
+# Möbius-scale perturbation controls
+MOBIUS_PERTURBATION   = True   # toggle on/off
+MU_REL_AMP            = 0.00002   # perturbation strength as fraction of RMS(k)
+MU_SMOOTH_WINDOW      = 301    # odd integer; moving-average width in log t
+
+
 # SCENARIOS: (label, model, fit_n, eval_n)
 
 # ---------------------------------------------------------------------
@@ -223,6 +229,84 @@ def resample_to_log_grid(p_used: np.ndarray,
     k_log = cs(t_grid)
 
     return t_grid, k_log
+
+# ---------------------------------------------------------------------
+# 2b. Möbius-scale perturbation on the log grid
+# ---------------------------------------------------------------------
+
+def mobius_sieve(N: int) -> np.ndarray:
+    """
+    Compute Möbius function μ(n) for 0 <= n <= N via a sieve.
+    Returns int8 array with μ(0) = 0.
+    """
+    mu = np.ones(N + 1, dtype=np.int8)
+    mu[0] = 0
+
+    is_prime = np.ones(N + 1, dtype=bool)
+    is_prime[:2] = False
+
+    limit = int(np.sqrt(N)) + 1
+    for p in range(2, limit):
+        if is_prime[p]:
+            # mark composites
+            is_prime[p * p::p] = False
+            # flip sign on multiples of p
+            mu[p::p] *= -1
+            # zero on multiples of p^2
+            mu[p * p:: (p * p)] = 0
+
+    # handle primes in (sqrt(N), N]
+    for p in range(limit, N + 1):
+        if is_prime[p]:
+            mu[p::p] *= -1
+
+    return mu
+
+
+def inject_mobius_perturbation(t_grid: np.ndarray,
+                               k_log: np.ndarray,
+                               rel_amp: float = MU_REL_AMP,
+                               smooth_window: int = MU_SMOOTH_WINDOW) -> np.ndarray:
+    """
+    Add a band-limited, zero-mean Möbius signal to k_log on the log grid.
+
+      1. Build μ(n) up to N ≈ exp(t_max).
+      2. Sample μ at x = floor(exp(t)).
+      3. Smooth in t with a moving-average kernel.
+      4. Normalise to unit variance.
+      5. Add as a small perturbation:  k' = k + rel_amp * rms(k) * μ̃.
+    """
+    # integer range up to the largest x in the log-grid
+    x_max = int(np.exp(t_grid[-1])) + 1
+    mu_full = mobius_sieve(x_max)
+
+    # sample Möbius along the log grid
+    x_samples = np.floor(np.exp(t_grid)).astype(int)
+    x_samples = np.clip(x_samples, 0, x_max)
+    mu_samples = mu_full[x_samples].astype(float)
+
+    # optional smoothing in log t (removes ultra-high frequency noise)
+    if smooth_window > 1:
+        if smooth_window % 2 == 0:
+            smooth_window += 1  # ensure odd
+        kernel = np.ones(smooth_window, dtype=float) / smooth_window
+        mu_smooth = np.convolve(mu_samples, kernel, mode="same")
+    else:
+        mu_smooth = mu_samples
+
+    # zero-mean, unit-variance normalisation
+    mu_smooth -= mu_smooth.mean()
+    std = mu_smooth.std()
+    if std > 0:
+        mu_smooth /= std
+
+    # scale by RMS of the curvature field
+    rms_k = np.sqrt(np.mean(k_log**2))
+    delta_k = rel_amp * rms_k * mu_smooth
+
+    return k_log + delta_k
+
+
 
 
 # ---------------------------------------------------------------------
@@ -557,12 +641,17 @@ def main():
     t_grid, k_log = resample_to_log_grid(p_used, k_vals)
     print(f"  log-grid points: {len(t_grid)} (uniform in t = log p)")
 
-    # η-variational sweep (shape correction)
-    eta_values = np.linspace(0.0, 5e-4, 6)  # 0, 1e-4, ..., 5e-4
+    # Inject Möbius-scale perturbations on the log grid (optional)
+    if MOBIUS_PERTURBATION:
+        print("  injecting Möbius-scale curvature perturbations...")
+        k_log = inject_mobius_perturbation(t_grid, k_log)
+
+    # η-variational sweep
+    eta_values = np.linspace(0.0, 5e-4, 6)
     best_eta, sweep_results = sweep_eta(eta_values, k_log, beta=BETA, eval_n=80)
     print(f"\nBest η ≈ {best_eta:.2e} from sweep")
 
-    # Build final Hamiltonian with best η
+    # Build final Hamiltonian
     eigs, params = build_hamiltonian_with_corrections(k_log, BETA, best_eta)
 
     zeros = RIEMANN_ZEROS
