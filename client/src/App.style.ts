@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-const CDN_URL = 'https://cdn.halfasecond.com/images/onGravity/'
 export const Section = styled.section`
     display: flex;
     align-items: center;
