@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import { BlockMath, InlineMath } from 'react-katex'
 import Aquarium from './Aquarium'
@@ -28,7 +28,27 @@ const CDN_URL = 'https://cdn.halfasecond.com/images/onGravity/'
 
 function App() {
 
-    const [aquariumActive, setAquariumActive] = useState(true)
+    const [aquariumActive, setAquariumActive] = useState(false)
+
+    useEffect(() => {
+        const onScroll = () => {
+            const scrollTop = window.scrollY
+            const viewportHeight = window.innerHeight
+            const fullHeight = document.documentElement.scrollHeight
+
+            const atBottom =
+                scrollTop + viewportHeight >= fullHeight - 8
+
+            setAquariumActive(atBottom)
+        }
+
+        window.addEventListener("scroll", onScroll, { passive: true })
+        onScroll() // run once on mount
+
+        return () => {
+            window.removeEventListener("scroll", onScroll)
+        }
+    }, [])
 
     return (
         <Router basename={BASE_URL}>
@@ -36,7 +56,7 @@ function App() {
                 <Route path='/' element={
                     <>
                         <Styled.Panel style={{ padding: 0 }}>
-                            <Aquarium showUI={true} simActive={aquariumActive} setSimActive={active => setAquariumActive(active)} />
+                            <Aquarium showUI={aquariumActive} />
                         </Styled.Panel>
                         <Styled.Section className='headline' style={{ padding: 0 }}>
                             <h1><Link to={'/'}>On Gravity</Link></h1>
