@@ -90,13 +90,14 @@ const Universe: React.FC = () => {
 
     // UI state
     const [mode, setMode] = useState<Mode>("kappa")
-    const [k0, setK0] = useState(0.35)
+    const [k0, setK0] = useState(0.15)
     const [epsilon, setEpsilon] = useState(0.06)
     const [omega, setOmega] = useState(0.5)
-    const [preset, setPreset] = useState<PresetId | null>("chaos")
+    const [preset, setPreset] = useState<PresetId | null>("stable")
     const [timeMyr, setTimeMyr] = useState(0)
     const [stats, setStats] = useState<Stats>({ total: 0, inner: 0, outer: 0 })
     const [rotCurve, setRotCurve] = useState<number[]>([])
+    const [numParticles, setNumParticles] = useState(50000)
 
     // physics refs
     const modeRef = useRef<Mode>("kappa")
@@ -107,7 +108,6 @@ const Universe: React.FC = () => {
     const needsClearRef = useRef(false)
 
     // sim settings
-    const numParticles = 100000
     const rMin = 0.5
     const rMax = 10
     const G = 1
@@ -308,7 +308,7 @@ const Universe: React.FC = () => {
         epsilonRef.current = epsilon
         omegaRef.current = omega
         makeParticles()
-    }, [mode, k0, epsilon, omega, makeParticles])
+    }, [mode, k0, epsilon, omega, numParticles, makeParticles])
 
     // ---- presets ----
     const applyPreset = (id: PresetId) => {
@@ -396,7 +396,31 @@ const Universe: React.FC = () => {
                         gap: "0.25rem",
                     }}
                 >
-                    κ boost:
+                    number of stars:
+                    <input
+                        type="range"
+                        min={1000}
+                        max={100000}
+                        step={1000}
+                        value={numParticles}
+                        onChange={(e) => {
+                            setPreset(null)
+                            setNumParticles(Number(e.target.value))
+                        }}
+                        style={{ width: 200 }}
+                    />
+                    <span>{numParticles.toLocaleString()}</span>
+                </label>
+
+                <label
+                    style={{
+                        marginLeft: "1rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.25rem",
+                    }}
+                >
+                    κ:
                     <input
                         type="range"
                         min={0}

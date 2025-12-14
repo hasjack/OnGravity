@@ -1,4 +1,4 @@
-// src/Aquarium.tsx  ← final production version
+// src/Aquarium.tsx  ← updated with pause-on-start + start prompt
 import React, { useRef, useEffect, useState, useCallback } from "react";
 
 type Vec2 = { x: number; y: number };
@@ -14,7 +14,12 @@ const PRESETS = [
 
 type PresetId = typeof PRESETS[number]["id"];
 
-const Aquarium: React.FC = ({ showUI }) => {
+const Aquarium: React.FC<{ showUI?: boolean; showAquarium?: boolean;  simActive: boolean; setSimActive: (active: boolean) => void }> = ({ 
+    showUI = true, 
+    showAquarium = true,
+    simActive, 
+    setSimActive 
+}) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const fishRef = useRef<Fish[]>([]);
     const animRef = useRef<number>();
@@ -48,7 +53,11 @@ const Aquarium: React.FC = ({ showUI }) => {
 
     useEffect(() => {
         const canvas = canvasRef.current;
-        if (!canvas) return;
+        if (!canvas || !simActive || !showAquarium) {
+            if (animRef.current) cancelAnimationFrame(animRef.current);
+            return;
+        }
+
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
@@ -68,11 +77,10 @@ const Aquarium: React.FC = ({ showUI }) => {
             const cy = canvas.height / 2;
             const scale = Math.min(canvas.width, canvas.height) / 340;
 
-            // FULL-SCREEN cosmic fade (must be BEFORE translate/scale!)
-            ctx.fillStyle = "rgba(0, 0, 15, 0.035)";         // ← infinite glowing trails
+            ctx.fillStyle = "rgba(0, 0, 15, 0.035)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // === PHYSICS (no drawing in here!) ===
+            // === PHYSICS ===
             for (const f of fishes) {
                 let ax = 0, ay = 0;
                 let alignX = 0, alignY = 0, neighbors = 0;
@@ -104,7 +112,6 @@ const Aquarium: React.FC = ({ showUI }) => {
                     }
                 }
 
-                // soft tank
                 const distFromCenter = Math.hypot(f.pos.x, f.pos.y);
                 if (distFromCenter > 145) {
                     const excess = distFromCenter - 145;
@@ -113,7 +120,6 @@ const Aquarium: React.FC = ({ showUI }) => {
                     ay -= f.pos.y * pull;
                 }
 
-                // === PREDATOR PHYSICS (only once per frame!) ===
                 if (predatorRef.current) {
                     const px = (predatorRef.current.x - cx) / scale;
                     const py = (predatorRef.current.y - cy) / scale;
@@ -136,7 +142,7 @@ const Aquarium: React.FC = ({ showUI }) => {
                 f.pos.y += f.vel.y;
             }
 
-            // === DRAWING (now clean and transformed) ===
+            // === DRAWING ===
             ctx.save();
             ctx.translate(cx, cy);
             ctx.scale(scale, scale);
@@ -169,13 +175,11 @@ const Aquarium: React.FC = ({ showUI }) => {
                 }
             }
 
-            // === PREDATOR VISUALS ===
             if (predatorRef.current) {
                 const age = predatorRef.current.age++;
                 const px = (predatorRef.current.x - cx) / scale;
                 const py = (predatorRef.current.y - cy) / scale;
 
-                // expanding shock ring
                 ctx.strokeStyle = `rgba(255, ${120 - age * 3}, ${80 - age * 3}, ${1 - age / 40})`;
                 ctx.lineWidth = 4 + age * 0.8;
                 ctx.beginPath();
@@ -208,7 +212,7 @@ const Aquarium: React.FC = ({ showUI }) => {
             canvas.removeEventListener("click", click);
             if (animRef.current) cancelAnimationFrame(animRef.current);
         };
-    }, [initFish]);
+    }, [initFish, simActive]); // ← now depends on simActive
 
     const applyPreset = (id: PresetId) => {
         const p = PRESETS.find(x => x.id === id)!;
@@ -221,12 +225,13 @@ const Aquarium: React.FC = ({ showUI }) => {
     const currentPreset = preset ? PRESETS.find(p => p.id === preset)?.label : null;
 
     return (
-        <div style={{ height: "100vh", background: "#000d1a", color: "#eef", fontFamily: "system-ui" }}>
-            <div style={{ background: "rgba(0,20,40,0.8)", alignItems: "center", gap: "1.5rem", display: showUI ? 'flex' : 'none' }}>
+        <div style={{ height: "100vh", color: "#eef", fontFamily: "system-ui", position: "relative", width: '100%' }}>
+            {/* Existing UI */}
+            <div style={{ background: "#001520", alignItems: "center", gap: "1.5rem", display: showUI ? 'flex' : 'none', padding: "0.8rem 1.2rem", height: 'auto' }}>
                 <strong>κ-Fish • same law as galaxies</strong>
 
                 <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    κ boost:
+                    κ:
                     <input type="range" min="0" max="1.8" step="0.01" value={k0}
                         onChange={e => { setPreset(null); setK0(+e.target.value); }} />
                     <span style={{ minWidth: 44 }}>{k0.toFixed(2)}</span>
@@ -239,7 +244,7 @@ const Aquarium: React.FC = ({ showUI }) => {
                 </span>
             </div>
 
-            <div style={{ background: "#001520", gap: "0.6rem", flexWrap: "wrap", display: showUI ? 'flex' : 'none' }}>
+            <div style={{ background: "#001520", gap: "0.6rem", flexWrap: "wrap", display: showUI ? 'flex' : 'none', padding: "0.4rem 1rem", height: 'auto' }}>
                 {PRESETS.map(p => (
                     <button key={p.id} onClick={() => applyPreset(p.id)}
                         style={{
@@ -252,7 +257,37 @@ const Aquarium: React.FC = ({ showUI }) => {
                 ))}
             </div>
 
-            <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100vh" }} />
+            {showAquarium && (<canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100vh" }} />)}
+
+            {/* Start Prompt Overlay */}
+            {!simActive && (
+                <div style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: "rgba(0, 10, 30, 0.88)",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#8cf",
+                    fontSize: "2rem",
+                    fontWeight: "300",
+                    cursor: "pointer",
+                    userSelect: "none",
+                    zIndex: 10,
+                }}
+                onClick={() => setSimActive(true)}>
+                    <div style={{ fontSize: "3.5rem", marginBottom: "2rem", opacity: 0.9 }}>
+                        κ-Fish
+                    </div>
+                    <div style={{ fontSize: "1.4rem", opacity: 0.8 }}>
+                        Click to start simulation
+                    </div>
+                    <div style={{ fontSize: "1rem", marginTop: "2rem", opacity: 0.6 }}>
+                        (click anywhere afterward = predator)
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

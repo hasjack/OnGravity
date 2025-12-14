@@ -42,6 +42,11 @@ export const Section = styled.section`
         line-height: 32px;
         text-align: center;
         margin-bottom: 32px;
+
+        > a {
+            display: inline-block;
+            border-bottom: 4px dotted #CCC; 
+        }
     }
 
     > div > div {
