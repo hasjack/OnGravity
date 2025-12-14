@@ -22,7 +22,7 @@ const Aquarium: React.FC<{ showUI?: boolean; showAquarium?: boolean;  simActive:
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const fishRef = useRef<Fish[]>([]);
-    const animRef = useRef<number>();
+    const animRef = useRef<number>(0);
     const predatorRef = useRef<{ x: number; y: number; age: number } | null>(null);
 
     const [k0, setK0] = useState(0.65);
