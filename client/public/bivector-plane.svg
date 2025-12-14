@@ -1,0 +1,28 @@
+<svg width="360" height="260" viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
+  <!-- Plane -->
+  <polygon points="60,200 300,200 330,120 90,120" fill="#e7eef7" stroke="#446" stroke-width="1.5"></polygon>
+  
+  <!-- e_r vector -->
+  <line x1="180" y1="160" x2="260" y2="180" stroke="#cc0000" stroke-width="3" marker-end="url(#arrow)"></line>
+  <text x="265" y="188" fill="#cc0000" font-size="16">eᵣ</text>
+
+  <!-- e_ρ vector -->
+  <line x1="180" y1="160" x2="140" y2="100" stroke="#0066cc" stroke-width="3" marker-end="url(#arrow)"></line>
+  <text x="125" y="100" fill="#0066cc" font-size="16">eᵨ</text>
+
+  <!-- Wedge angle arc -->
+  <path d="M180 160 A40 40 0 0 1 200 145" fill="none" stroke="#333" stroke-width="1.5"></path>
+  <text x="205" y="145" fill="#333" font-size="14">∧</text>
+
+  <!-- Label: Bivector plane -->
+  <text x="120" y="225" fill="#333" font-size="16">
+    B = eᵣ ∧ eᵨ
+  </text>
+
+  <!-- Arrowhead -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <polygon points="0 0, 6 3, 0 6" fill="currentColor"></polygon>
+    </marker>
+  </defs>
+</svg>

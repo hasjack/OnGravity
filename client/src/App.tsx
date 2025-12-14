@@ -1,34 +1,46 @@
 
+import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import { BlockMath/* , InlineMath */ } from 'react-katex'
+import { BlockMath, InlineMath } from 'react-katex'
+import Aquarium from './Aquarium'
 import BulletCluster from './BulletCluster'
 import GalacticRotation from './results/GalacticRotation'
+import HilbertVisualizer from './HilbertVisualizer'
 import LocalGroup from './LocalGroup'
 // import GalaxySliders from './GalaxySliders'
 import LensingTable from './results/Lensing'
 import MercuryPrecession from './MercuryPrecession'
 // import OortCloudKappa from './OortCloudKappa'
+import { PioneerAnomaly } from './PioneerAnomaly'
+import PrimeExplorer from './PrimeExplorer'
 import QuantumScaleSlider from './QuantumScaleSlider'
 import SuperclusterFlow from './SuperclusterFlow'
 import TOVBaseball from './TOVBaseball'
 import Universe from './Universe'
 import * as Styled from './App.style'
-import { PioneerAnomaly } from './PioneerAnomaly'
+import MersenneFrontier from './MersenneFrontier'
+import { PrimeBreathingExplorer } from './PrimeBreathingExplorer'
+import NaturalMandelbrot from './NaturalMandelbrot'
+import MandelbrotCompare from './MandelbrotCompare'
 
 const { BASE_URL } = import.meta.env
 const CDN_URL = 'https://cdn.halfasecond.com/images/onGravity/'
 
 function App() {
 
+    const [aquariumActive, setAquariumActive] = useState(true)
+
     return (
         <Router basename={BASE_URL}>
             <Routes>
                 <Route path='/' element={
                     <>
-                        <Styled.Panel />
-                        <Styled.Section className='headline'>
+                        <Styled.Panel style={{ padding: 0 }}>
+                            <Aquarium showUI={true} simActive={aquariumActive} setSimActive={active => setAquariumActive(active)} />
+                        </Styled.Panel>
+                        <Styled.Section className='headline' style={{ padding: 0 }}>
                             <h1><Link to={'/'}>On Gravity</Link></h1>
-                            <p>by <Link to={'https://github.com/hasjack'} target={'_blank'}>Jack Pickett</Link> - London & Cornwall - October / November 2025</p>
+                            <p>by <Link to={'https://github.com/hasjack'} target={'_blank'}>Jack Pickett</Link> - London & Cornwall - October - December 2025</p>
                             <h3>Introducing a single, universal gravitational law...</h3>
                             <div>
                                 <BlockMath math={String.raw`
@@ -117,78 +129,20 @@ function App() {
                             </code>
 
                             <p>
+                                Matter is rarely uniform. Stars cluster. Gas clouds compress. Galaxies form spirals and bars. These density patterns change how gravitational fields extend.
+                            </p>
+
+                            <p>
                                 κ increases in regions with strong shear or enhanced density, and decreases in smooth or diffuse environments.
                                 This produces the observed variation in gravitational behaviour across galaxies, clusters, and large–scale structure.
                             </p>
                         </Styled.Section>
-
-                        {/* <Styled.Section style={{ backgroundColor: '#FFF' }}>
-                            <h2 className='large'>
-                                <BlockMath math={String.raw`\kappa`} />
-                            </h2>
-                            <p>
-                                The term κ is introduced to account for the fact that matter is rarely uniform.
-                                Stars cluster. Gas clouds compress. Galaxies form spirals and bars.
-                                These density patterns change how gravitational fields extend.
-                            </p>
-                            <div className='large'>
-                                <BlockMath math={String.raw`
-                                    \kappa = \kappa_{0} \;+\; k_{v}\,\left(\frac{\partial v / \partial r}{10^{-12}\,\mathrm{s}^{-1}}\right)^{3}\,\left(\frac{\rho}{\rho_{0}}\right)^{1/2}
-                                `} />
-                            </div>
-                            <code>
-                                <b>κ₀</b> is the background curvature<br />
-                                <b>kᵥ</b> sets sensitivity to local shear<br />
-                                <b>∂v/∂r</b> is the local velocity gradient<br />
-                                <b>ρ</b> is local mass density (relative to <b>ρ₀</b>)
-                            </code>
-
-                            <p>κ increases smoothly with density and radial structure, producing the observed behavior of systems across all cosmological scales.</p>
-                        </Styled.Section> */}
-                        <Styled.Section style={{ backgroundColor: '#FFF' }}>
-                            <h2>Geometric Algebra View (Optional)</h2>
-
-                            <p>
-                                For a deeper geometric intuition, consider κ in Clifford algebra Cl(1,3) — the
-                                language of spacetime rotations and oriented areas. In this picture, curvature
-                                generated by density gradients is represented by a <b>bivector</b>, an oriented
-                                plane element.
-                            </p>
-
-                            <div className='large'>
-                                <BlockMath math={String.raw`
-            B = \mathbf{e}_r \wedge \mathbf{e}_\rho
-        `} />
-                            </div>
-
-                            <p>where:</p>
-
-                            <code style={{ display: 'block', margin: '16px 0', lineHeight: '1.8' }}>
-                                <b>eᵣ</b> = unit radial direction (along r)<br />
-                                <b>eᵨ</b> = unit density gradient, ∇ρ / |∇ρ|
-                            </code>
-
-                            <p>
-                                This bivector <i>B</i> defines the plane in which radial paths react to
-                                structure. Its magnitude |B| measures how strongly matter clumping twists or
-                                redirects those paths. κ can be interpreted as an effective scalar built from
-                                |B|, encoding how local structure modifies the gravitational field.
-                            </p>
-
-                            <p>
-                                This complements the f(R) derivation used above: exponential behaviour in
-                                modified gravity emerges naturally from geometric “wedges” in the Ricci
-                                curvature. Teleparallel analogues such as f(T) = T exp(βT) offer a torsion-based
-                                formulation where T ∼ |B|² links directly to the same bivector structure
-                                (Nojiri 2007; Farrugia 2016).
-                            </p>
-                        </Styled.Section>
-
+                        <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}Isaac_Roberts-Nebula_31m.jpg')` }} />
                         <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.6)', color: '#FFF' }}>
                             <h2>Vera Rubin stars</h2>
                             <p>When astronomers calculated how fast stars should orbit in a galaxy, they used the standard intuition that stars near the center should orbit fast, and stars farther out should orbit much slower, because they are farther from most of the galaxy’s central mass. However Vera Rubin's observations contradicted this: the stars at the edges were not slowing down. They were moving just as fast as the stars near the center. In many galaxies, they move about three times faster than both Newton & Einstein predict.</p>
                             <p>Since κ adjusts gravity based on how matter is distributed, we can apply it directly to a real galaxy to see whether it reproduces the observed rotation speed:</p>
-                            <div>
+                            <div className={'large'} style={{ margin: '0 0 12px 0', backgroundColor: 'rgba(0,0,0,.5)', padding: '0 48px', borderRadius: '4px', border: '#333 1px solid' }}>
                                 <BlockMath math={String.raw`
                                     \textbf{Andromeda (M31) observed:}\approx\;250\ \text{km s}^{-1}
                                 `} />
@@ -222,12 +176,13 @@ function App() {
                                 defaultVobsKmps={250}
                                 title="Andromeda quick fit"
                             /> */}
-                            <h3>TLDR: considering density distribution seems to matter. (dark matter...)</h3>
+                            <h3>TLDR: considering density distribution seems to (dark?) matter...</h3>
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#000', padding: '0' }}>
                             <Universe />
+                            <img src={`https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/124.png`} style={{ position: 'absolute', opacity: '.7', bottom: '0', marginBottom: '32px', right: '8px', width: '5.5%', height: 'auto' }} />
                         </Styled.Section>
-                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: '#FFF' }}>
+                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,1)', color: '#FFF' }}>
                             <h2>Gravitational Lensing</h2>
                             <p>The next question is whether this same curvature term applies to light as well as mass. Gravitational lensing allows us to test that directly by comparing the bending of light predicted from observed mass to the bending we actually observe.</p>
                             <p>In galaxy rotation, orbital velocity depends on the square root of the gravitational potential. This means the κ effect shows up as a factor of exp(κ·r / 2). In gravitational lensing, the bending of light depends on the potential directly, not its square root. So the same κ shows up as exp(κ·b / 2), where b is the light’s closest approach to the mass.</p>
@@ -247,14 +202,14 @@ function App() {
                         <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}The_Bullet_Cluster.jpg')` }} />
                         <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: '#FFF' }}>
                             <h2>Collisions</h2>
-                            <h3>During high-velocity cluster collisions, gas clouds experience shock compression and strong velocity shear, raising κ temporarily:</h3>
-                            <div style={{ fontSize: '48px' }}>
+                            <h3 style={{ margin: 0 }}>During high-velocity cluster collisions, gas clouds experience shock compression and strong velocity shear, raising κ temporarily:</h3>
+                            <div style={{ fontSize: '36px', margin: 0 }}>
                                 <BlockMath math={String.raw`
                                     \kappa = \kappa_{\text{base}}+\kappa_{\text{coll}}
                                 `} />
                             </div>
-                            <p>where</p>
-                            <div style={{ fontSize: '48px' }}>
+                            <p style={{ margin: 0 }}>where</p>
+                            <div style={{ fontSize: '36px', margin: 0 }}>
                                 <BlockMath math={String.raw`
                                     \kappa_{\text{coll}} = k_v\!\left(\frac{\nabla v_{\text{rel}}}{10^{-12}\ \mathrm{s}^{-1}}\right)^{\!3} \left(\frac{\rho}{\rho_0}\right)^{\!1/2}`
                                 } />
@@ -265,7 +220,7 @@ function App() {
                                 } />
                             </div>
                             <p>Gravitational lensing depends on the gravitational potential and increased κ multiplies the bending angle. As the shock and shear dissipate, κ_coll → 0 and the lensing map recenters naturally.</p>
-                            <h3>The lensing region shifts — appearing heavier — but "extra mass" is not needed when described as <b>extra weight</b>.</h3>
+                            <p>The lensing region shifts — appearing heavier — but extra ("dark") mass can be described as <b>extra weight</b>.</p>
                         </Styled.Section>
                         <Styled.Section style={{ backgroundColor: '#F6F6F6' }}>
                             <img src={`${CDN_URL}cluster-collision.svg`} style={{ width: '80%' }} />
@@ -374,7 +329,7 @@ function App() {
                             </p>
                         </Styled.Section>
 
-                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.55)', color: '#fff' }}>
+                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,1)', color: '#fff' }}>
                             <h2>The Hubble Tension</h2>
                             <p>
                                 The difference between early-universe and late-universe measurements of <i>H₀</i> can be viewed through the same κ-lens as our
@@ -445,8 +400,27 @@ function App() {
                             </div>
                             <p>Where sightlines intersect superclusters, this same factor enhances deflection slightly (typically 1–3%), consistent with the observed mild smoothing of the acoustic peaks.</p>
                         </Styled.Section>
+                        {/* SMBH */}
+                        <Styled.Graphic style={{ backgroundImage: `url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Black_hole_-_Messier_87.jpg/1200px-Black_hole_-_Messier_87.jpg')`, backgroundColor: '#000', backgroundSize: 'auto 100%' }} />
+                        <Styled.Section style={{ color: '#fff', backgroundColor: 'rgba(0,0,0,0.6)' }}>
+                            <h2 style={{ marginBottom: '18px' }}>Supermassive Black Holes: Born Heavy</h2>
+                            <p>
+                                In dense, early-universe clouds, κ grows to 10⁻¹⁷ m⁻¹ — making gravity 16% stronger.
+                                Collapse accelerates. Accretion explodes. A 10⁹ M⊙ black hole forms in under 10 million years.
+                            </p>
+                            <div className={'large'}>
+                                <BlockMath math={String.raw`
+                                    \kappa \sim 5 \times 10^{-17}\ \text{m}^{-1},\quad
+                                    e^{\kappa r} \sim 1.16,\quad
+                                    t_{\text{collapse}} \sim 0.93 \, t_{\text{ff}}
+                                `} />
+                            </div>
+                            <img src={`${CDN_URL}smbh_growth.png`} alt={'Super massive black hole growth'} style={{ opacity: .95, maxWidth: 800, borderRadius: '10px' }} />
+                            <h3 style={{ marginBottom: '12px' }}>SMBH Growth with Unified Model vs. JWST Observations</h3>
+                            <p>Linear growth (M ̇ = 0.105 M⊙/yr) over 0–5 Gyr, capped at 2 billion M⊙, with Eddington limit (M ̇Edd ≈ 0.02 M⊙/yr) and dots for high-z SMBHs (z=6,7,10,15), supporting rapid formation.</p>
+                        </Styled.Section>
                         {/* Gravitational Waves */}
-                        <Styled.Section style={{ backgroundColor: 'rgba(0,0,0,0.75)', color: '#FFF' }}>
+                        <Styled.Section style={{ backgroundColor: 'rgba(255,255,255,1)' }}>
                             <h2>Gravitational Waves in a κ–r Universe</h2>
                             <p style={{ maxWidth: 900, margin: '0 auto 12px', lineHeight: 1.7 }}>
                                 Gravitational waves are one of our sharpest tests of gravity. In the κ–r geometry, present–day
@@ -591,8 +565,8 @@ function App() {
                             <div style={{ fontSize: '32px' }}>
                                 <BlockMath
                                     math={String.raw`
-                a_{\rm P} \approx 8.74 \times 10^{-10} \ {\rm m/s^2}.
-            `}
+                                        a_{\rm P} \approx 8.74 \times 10^{-10} \ {\rm m/s^2}.
+                                    `}
                                 />
                             </div>
 
@@ -795,7 +769,7 @@ function App() {
                         </Styled.Section>
 
                         {/* Quantum.. */}
-                        <Styled.Section style={{ backgroundColor: '#fff' }}>
+                        <Styled.Section style={{ backgroundColor: '#FFF' }}>
                             <h2>Descent: The Quantum Limit</h2>
                             <p style={{ fontSize: '1.2rem', maxWidth: 900, margin: '0 auto 32px' }}>
                                 If κ encodes <i>structure</i> at every scale, where does that structure end?<br />
@@ -823,7 +797,8 @@ function App() {
                                 `} />
                             </div>
                         </Styled.Section>
-                        <Styled.Section style={{ backgroundColor: '#000', color: '#fff' }}>
+
+                        <Styled.Section style={{ backgroundColor: '#F8F8F8' }}>
                             <p>
                                 Energy gain vanishes at small r — but <b>seeds the first structure</b> at larger scales.
                             </p>
@@ -832,14 +807,14 @@ function App() {
                                 <QuantumScaleSlider />
                             </div>
 
-                            <p style={{ fontSize: '0.9rem', color: '#aaa' }}>
+                            <p style={{ fontSize: '0.9rem', color: '#333' }}>
                                 The transition defines a natural cutoff: below it, mass is inertial; above it, it carries <b>geometric weight</b>.<br />
                                 <i>See PDF §3.8: "Quantum Scale Indications"</i>
                             </p>
                         </Styled.Section>
 
                         {/* TOV Baseball */}
-                        <Styled.Section style={{ backgroundColor: '#F9F9F9' }}>
+                        {/* <Styled.Section style={{ backgroundColor: '#F9F9F9' }}>
                             <h2>TOV Baseball: A Neutron Star in Your Hand</h2>
                             <p>
                                 Imagine a <b>fully loaded baseball diamond</b> of neutron stars — four 1.4 M⊙ stars at the corners,
@@ -870,42 +845,27 @@ function App() {
                             <p style={{ fontSize: '0.9rem', color: '#555' }}>
                                 <i>See PDF Section 3.4.1: "The TOV Baseball"</i>
                             </p>
-                        </Styled.Section>
+                        </Styled.Section> */}
 
-                        {/* SMBH */}
-                        <Styled.Graphic style={{ backgroundImage: `url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Black_hole_-_Messier_87.jpg/1200px-Black_hole_-_Messier_87.jpg')`, backgroundColor: '#000', backgroundSize: 'auto 100%' }} />
-                        <Styled.Section style={{ color: '#fff', backgroundColor: 'rgba(0,0,0,0.6)' }}>
-                            <h2>Supermassive Black Holes: Born Heavy</h2>
-                            <p>
-                                In dense, early-universe clouds, κ grows to 10⁻¹⁷ m⁻¹ — making gravity 16% stronger.
-                                Collapse accelerates. Accretion explodes. A 10⁹ M⊙ black hole forms in under 10 million years.
-                            </p>
-                            <div style={{ fontSize: '32px' }}>
-                                <BlockMath math={String.raw`
-                                    \kappa \sim 5 \times 10^{-17}\ \text{m}^{-1},\quad
-                                    e^{\kappa r} \sim 1.16,\quad
-                                    t_{\text{collapse}} \sim 0.93 \, t_{\text{ff}}
-                                `} />
-                            </div>
-                        </Styled.Section>
-
-                        {/* -1 x -1 = 1 */}
+                        {/* Non-trivial mars bars */}
                         <Styled.Section style={{ backgroundColor: '#FFFFFF' }}>
-                            <h2>Non-trivial Mars bars</h2>
+                            <h2 style={{ marginBottom: 0 }}>Non-trivial Mars bars</h2>
+                            <h3 style={{ fontSize: '18px', fontStyle: 'italic' }}>~ An Introduction to Natural Maths ~</h3>
                             <p>A child asks his father if he has any Mars Bars. The father answers that he has zero Mars bars.</p>
                             <p style={{ backgroundColor: '#F6F6F6', padding: '6px 0', borderRadius: '2px' }}>The child asks: <i>“Can you halve zero - because if you can then we can share?”</i></p>
-                            <p>They tried it with a zero Mars bar which they put on a table and cut in half. They then took a half each and decided - yes: we both now have half a zero Mars bar therefore: <b>you must be able to halve zero!</b></p>
-                            <p>Reflecting, it had actually been very easy to cut the zero Mars bar in half. So easy, in fact, they had been able to make the cut in such an exact way that the 2 portions were precisely (fundamentally?) equal. They hadn't even needed a knife! Any other amount of Mars bars would have been much more difficult however!</p>
-                            <p>Are these lame dad jokes actually nature hinting at something more fundamental? 🧐</p>
+                            <p>They tried it with a zero Mars bar which they put on a table and cut in half. They then took a half each and decided that as they both now had half a zero Mars bar <b>you must be able to halve zero!</b></p>
+                            <p>Reflecting, it had actually been very easy to cut the zero Mars bar. So easy, in fact, they had been able to make the cut in such an exact way that the 2 portions were precisely (fundamentally?) equal.</p>
+                            <p>They hadn't even needed a knife!</p>
+                            <p>Are these lame dad jokes actually <b>nature hinting at something profound?</b> 🧐</p>
                             <img src={`${CDN_URL}mars-bar.jpg`} style={{ maxWidth: '800px' }} />
                         </Styled.Section>
 
                         <Styled.Section style={{ backgroundColor: '#F8F8F8' }}>
                             <h2>The half a zero Mars bar premise:</h2>
-                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>For any structure 𝑆, division by 2 produces the smallest non-trivial structural unit consistent with 𝑆</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>For any structure 𝑆, 𝑆 / 2 produces the smallest non-trivial structural unit consistent with 𝑆</p>
                             <p>You can operate on something that isn’t there as long as the rule is consistent - <b>implying:</b></p>
-                            <div className={'large'} style={{ marginTop: 0 }}><BlockMath math={'x = 0 \\;\\Rightarrow\\; x/2 = 0.5'} /></div>
-                            <p>In nature, much like in everyday speech, zero is a <i>relationship</i> and often behaves this way:</p>
+                            <div className={'large'} style={{ marginTop: 0 }}><BlockMath math={'0/2 = 0.5'} /></div>
+                            <p>In nature, and everyday speech, zero is a <i>relationship</i> and often (always?) behaves this way:</p>
                             <p>
                                 <b>Sharing zero</b> → a rule about fairness → <i>I've got nothing I can share</i><br />
                                 <b>Cosmological example</b> → <i>a region with zero net force remains zero when divided</i>
@@ -925,13 +885,14 @@ function App() {
 
                         <Styled.Section style={{ background: '#FFF' }}>
                             <h2>Halving a non-zero Mars bar is... non-trivial</h2>
-                            <p>The next day, when the child returned from school he saw a Mars bar on the table. The child asked:</p>
+                            <p>The next day, when the child returned from school he saw a one Mars bar on the table. The child asked:</p>
                             <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>“Can we share this one Mars bar the same way we shared the zero Mars bar?”</p>
-                            <p>“No“, replied the father, “we cut the zero Mars bar precisely in half and any attempt we make to create two exactly equal half Mars bars will fall foul of numerous paradoxes related to set theory. A one Mars bar is a vast congregation of molecular bonds that don’t break symmetrically“</p>
-                            <p>You can only divide something exactly if its internal structure belongs to the same category as the division rule. Since a Mars bar is not built from “Mars Bar atoms”, you cannot divide it with exact symmetry; the precision fails because the object is heterogeneous - <b>implying</b>:</p>
+                            <p>“No“, replied the father, “we cut the zero Mars bar precisely in half and any attempt we make to create two exactly equal half one Mars bars will fall foul of numerous paradoxes related to set theory, in addition to a bewildering amount of practical concerns such as a one Mars bar being a vast congregation of molecular bonds that don’t break symmetrically“</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>Exact division is only possible if the divisor's internal structure belongs to the same category as the division rule.</p>
+                            <p>Since a Mars bar is not built from “Mars Bar atoms”, you cannot divide it with exact symmetry; the precision fails because the object is heterogeneous - <b>implying</b>:</p>
                             <div className={'large'}>
                                 <BlockMath math={`
-                                    x > 0,\\quad x \\in \\mathbb{Z}
+                                    x > 0,\\quad x \\in \\mathbb{Z},\\quad y > 1, \\quad y \\in \\mathbb{Z}
                                     \\qquad\\Longrightarrow\\qquad
                                     \\frac{x}{y} \\approx \\frac{x}{y}
                                 `} />
@@ -940,109 +901,163 @@ function App() {
                                 A zero Mars bar qualifies: zero has no category.<br />
                                 A one Mars bar does not qualify: it is a composite of many categories.
                             </p>
-                            <p>The uncertainty about how much half a Mars bar is Principle...?</p>
+                            <p>The “uncertainty about how much half a Mars bar is“ principle...? 🤔</p>
                             <p><b>Non-zero division reveals structure.</b></p>
                         </Styled.Section>
-                        {/* <Styled.Section style={{ background: '#F6F6F6' }}>
-                            <p>When you divide something that isn’t there, you’re not dividing a quantity — you’re applying a rule (symmetry).</p>
+                        <Styled.Section style={{ background: '#F6F6F6' }}>
+                            <h2 style={{ marginBottom: 0 }}>
+                                <BlockMath math={String.raw`y = 2`} />
+                            </h2>
+                            <p>Some time later, mum came home and found the child and his father looking perplexed and staring at a one Mars bar. They told her about the <b>symmetrical catastrophe</b> to which she asked:</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>“Why don't you just cut it (roughly..🙄) in half?“</p>
+                            <p>There seemed a lot of sense in this but, just as father was about to slice, she said:</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>“That Mars bar looks tasty! Can you <b>cut it into 3 pieces</b> so I can have some too?“</p>
+                            <p>“No“, said dad, “as no matter how I cut the one Mars bar <b>I can only cut it into 2 pieces</b>. A symmetrical operation can <i>only ever result in 2 parts</i> <b>implying:</b></p>
+                            <div className={'large'}>
+                                <BlockMath math={`
+                                    x > 0,\\quad x \\in \\mathbb{Z},\\quad y = 2
+                                    \\qquad\\Longrightarrow\\qquad
+                                    \\frac{x}{y} \\approx \\frac{x}{y}
+                                    \\qquad\\Longrightarrow\\qquad
+                                    \\frac{x}{2} \\approx \\frac{x}{2}
+                                `} />
+                            </div>
+                            <p>2 is duality: <b>nature's (only) knife</b></p>
+                        </Styled.Section>
+                        <Styled.Section style={{ backgroundColor: '#FFF' }}>
+                            <img src={`${CDN_URL}twix.jpg`} />
+                            <p style={{ marginBottom: 0 }}>
+                                The next day, in a gesture to family harmonics, mum came home with a one Twix which she left on the table next to all the zero Mars bars.
+                                She noticed there were all types of zero mars bars - some cut into 3 pieces, some cut into infinite pieces and those pieces cut in the same infinite way <b>implying:</b>
+                            </p>
+                            <div className={'large'} style={{ margin: '12px 0' }}>
+                                <BlockMath math={`
+                                    x \\equiv 0 \\qquad\\Longrightarrow\\qquad \\frac{x}{\\infty} = \\infty
+                                `} />
+                            </div>
+                            <p>Next to the infinite pile of half zero Mars Bars, she also noticed an infinite amount of -1 Twix.</p>
+                            <p style={{ marginBottom: 0 }}><b>She recalled from school that:</b></p>
+                            <div className={'large'} style={{ margin: 0 }}>
+                                <BlockMath math={String.raw`
+                                    -1 \times -1 = 1
+                                `} />
+                            </div>
+                            <p>..so if she took two -1 Twix from the table (and bashed them together?) would she get a one Twix? 🤔</p>
                         </Styled.Section>
 
-                        <Styled.Section style={{ backgroundColor: '#FFFFFF' }}>
-                            <h3>2. The −1 × −1 Paradox</h3>
-                            <p>
-                                Another question came up: why does <code>(−1) × (−1) = +1</code>?
-                                Ralph’s instinct (and yours) was correct:
-                                <i>two debts don’t become a credit.</i>
-                            </p>
-
-                            <p>
-                                The reason the rule exists isn’t about money or “real life”.
-                                It comes from a deeper requirement:
-                                <b>the system of numbers must respect symmetry and consistency.</b>
-                            </p>
-
-                            <p>
-                                If multiplication is to distribute over addition:
-                            </p>
-
-                            <div className='large'>
-                                <BlockMath math={String.raw`
-                                    a(b + c) = ab + ac
-                                `} />
-                            </div>
-
-                            <p>
-                                then we <i>must</i> have:
-                            </p>
-
-                            <div className='large'>
-                                <BlockMath math={String.raw`
-                                    (-1)(-1) = +1
-                                `} />
-                            </div>
-
-                            <p>
-                                Otherwise the structure collapses.
-                                This becomes the second stepping stone:
-                                <b>sometimes a rule feels unnatural,
-                                    but it is forced by the consistency of the entire system.</b>
-                            </p>
-
-                            <p>
-                                κ will later play this exact role:
-                                it arises not from “intuition”, but from the requirement
-                                that local structure and global behaviour remain consistent.
-                            </p>
+                        <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}CosmicWeb.jpg')`, backgroundSize: 'auto 100%', backgroundColor: '#000' }} />
+                        <Styled.Section style={{ background: 'rgba(0,0,0,0.6)', color: '#FFF' }}>
+                            <p>“Thats not how it works...“ whispered the one universe</p>
                         </Styled.Section>
 
-                        <Styled.Section style={{ backgroundColor: '#F8F8F8' }}>
-                            <h3>3. Measuring With the Wrong Tool</h3>
+                        {/* The Phil Officer */}
+                        <Styled.Section style={{ background: '#F6F6F6' }}>
+                            <h2>
+                                {/* <BlockMath math={String.raw`(-1)^2`} /> */}
+                                The Phil Officer
+                            </h2>
                             <p>
-                                Imagine trying to measure an angle with a thermometer.
-                                Or a coastline with a ruler (Mandelbrot’s problem).
-                                You can get a number—but it's not the right tool for the job.
+                                When her child got home from school he seemed somewhat subdued. She asked him what was the matter?<br />
+                                “I only scored 9 out of 10 on my maths exam.“<br />
+                                “Oh dear!“, mum replied, “which question did you get wrong?“
+                            </p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>
+                                <InlineMath math="1 \times 1 = 1" />
+                            </p>
+                            <p>“I think <b>the answer is -1</b>. I explained to my teacher that:</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>
+                                <InlineMath math="-1 \times -1 = 1 \quad \text{where} \quad 1 \times 1 = -1" />
+                            </p>
+                            <p>...but he said I was being a Phil Officer and that the <b>correct answer was 1</b>“</p>
+                            <p>“One what?“ said mum, recalling her failure to conjur a one Twix, "It depends what you are talking about."</p>
+                            <p>They looked at the one Twix, then at all the zero Mars bars.</p>
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>
+                                "A Twix is two things," she said, "so why do we call it a one Twix?"  🤔
+                            </p>
+                            {/* <p>Was the √-1 really just 1?</p> */}
+                        </Styled.Section>
+                        <Styled.Section style={{ backgroundColor: '#FFF' }}>
+                            <h2>The Ommipotent One</h2>
+                            <p>"One" is not a fundamental constant of the universe.<br />
+                                It is an <b>arbitrary boundary</b> delineating a collection of (any) things to make them manageable, <b>implying:</b></p>
+                            <p>
+                                <b>The Twix Principle:</b><br />
+                                <InlineMath math="1_{Twix} = \{ 1_{Left}, 1_{Right}, 1_{Wrapper} \}" /><br />
+                            </p>
+                            <p>
+                                Depending on your resolution, "One" flows and is mellifluous but ever present: all is one 🧘<br />
+                                It can expand and contract to be whatever it needs to be at any (one...) time.
                             </p>
 
-                            <p>
-                                We realised: we were doing this with the primes too.
-                                Counting them, spacing them, graphing them—using “straight tools” on
-                                something that behaves like a curved landscape.
+                            <p style={{ backgroundColor: '#F6F6F6', padding: '6px 0', borderRadius: '2px' }}>
+                                In algebra, we treat <InlineMath math="1" /> as a rigid stone.
+                                In reality, <InlineMath math="1" /> is a fluid gas.<br />
+                                If <InlineMath math="1" /> changes size during the equation, the logic holds, but the answer changes.
                             </p>
 
-                            <p>
-                                This unlocked the key insight:
-                                <b>primes behave like a geometry, not like a sequence.</b>
-                            </p>
-
-                            <p>
-                                Once you accept that, the κ–curvature field becomes inevitable:
-                            </p>
-
-                            <div className='large'>
+                            <div className={'large'}>
                                 <BlockMath math={String.raw`
-                                    k_n
-                                    = 0.15\,
-                                    \Big[ \log\!\big(1 + \rho(n)\log n\big) \Big]^{3}
-                                    \sqrt{\rho(n)}
+                                    1_{Universe} \equiv 1_{Atom} \quad (\text{structurally})
                                 `} />
                             </div>
+                            <p><b>implying:</b></p>
+                            <div className={'large'}>
+                                <BlockMath math={`
+                                    x = 1,\\quad y = 2
+                                    \\qquad\\Longrightarrow\\qquad
+                                    \\frac{x}{y} \\approx \\frac{x}{y}
+                                    \\qquad\\Longrightarrow\\qquad
+                                    \\frac{1}{2} \\approx \\frac{1}{2}
+                                `} />
+                            </div>
+                            <p>(and you can't split atoms...)</p>
+                        </Styled.Section>
+                        <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}CosmicWeb.jpg')`, backgroundSize: 'auto 100%', backgroundColor: '#000' }} />
+                        <Styled.Section style={{ background: 'rgba(0,0,0,0.8)', color: '#FFF' }}>
+                            <h2 style={{ marginBottom: 0, fontSize: '48px' }}> <BlockMath math={String.raw`x = 1`} /> </h2>
+                            <p> Classical mathematics treats '1' as the fundamental object of creation but the universe knows only of boundaries.</p>
+                            <p> 1's, and in fact all numbers, <i>which can be represented as 1 in some context anyhow</i>, are defined solely by their external boundaries and <b>irrespective of their internal complexity</b>. All is indeed One.</p>
+                            <h3>Thus, the unit of structure in <b>Natural Maths</b> is defined as: </h3>
+                            <div className={'large'}>
+                                <BlockMath math={String.raw` 1 = \text{an undivided boundary} `} />
+                            </div>
+                            <p> The unit is a structural definition and allows <b>the axioms of symmetry</b> to hold:</p>
+                            <div style={{ fontSize: '32px', margin: '0 0 12px' }}>
+                                <BlockMath math={String.raw`\sqrt{-1} = 1 `} />
+                            </div>
+                            <p>and the <b>symmetrical identity</b>:</p>
+                            <div style={{ fontSize: '32px', margin: '0 0 12px' }}>
+                                <BlockMath math={String.raw`x^2 = -x`} />
+                            </div>
+                            <p>to describe the symmetries of structure <b>defined by boundaries</b>.</p>
+                        </Styled.Section>
+
+                        <Styled.Section style={{ backgroundColor: '#FFF' }}>
+                            <h2>A Unified Geometric Operator for Prime Distribution</h2>
+                            <p>
+                                Imagine trying to measure an angle with a thermometer. Or, Mandelbrot’s problem, a coastline with a ruler.<br />
+                                You can get a number — but it's not the right tool for the job!
+                            </p>
 
                             <p>
-                                And suddenly, primes look like a gravitational system.
-                                κ becomes curvature.
-                                A potential.
-                                A wave operator.
-                                A spectrum.
+                                Have we been doing this with the primes too? 🤔
                             </p>
-                        </Styled.Section> */}
+                            <p style={{ backgroundColor: '#E5E5E5', padding: '6px 0', borderRadius: '2px' }}>
+                                Do primes act like a gravitational system and could they be measured with κ-curvature?</p>
+                            <p>
+                                If primes are geometric the κ–curvature field can be <b>a potential, a wave operator and a spectrum</b>.
+                            </p>
+                            <div className={'large'}>
+                                <BlockMath math={String.raw` \zeta(s) = 0 \quad\Rightarrow\quad s = \frac{1}{2} + it `} />
+                            </div>
+                            <p>In <Link to={'https://open.substack.com/pub/hasjack/p/natural-mathematics?r=1d16bc&utm_campaign=post&utm_medium=web'} target={'_blank'}>Natural Maths</Link>, by design, <b>every non-trivial zero</b> sits at “half a boundary” 👀</p>
+                        </Styled.Section>
 
                         {/* k-Curvature (riemann) */}
                         <Styled.Section style={{ backgroundColor: '#F6F6F6' }}>
                             <h2>k-Curvature Operator</h2>
                             <p>
-                                The same idea that curvature responds to local structure in gravity
-                                can be applied to the distribution of prime numbers.  Instead of mass
-                                in space, we look at how primes are distributed along the integers and
+                                Instead of mass in space, we look at how primes are distributed along the integers and
                                 define a local “curvature” field built from nearby composites.
                                 For each integer <code>n</code>, let <code>ρ(n)</code> be the fraction
                                 of composite numbers in the window from <code>n − 20</code> to
@@ -1061,8 +1076,7 @@ function App() {
                             <p>
                                 Passing to the continuous log–coordinate <code>t = log x</code>, we
                                 treat <code>k_n</code> as samples of a potential <code>V(t)</code>
-                                and define a Schrödinger–type operator acting on wavefunctions
-                                <code>ψ(t)</code>:
+                                and define a Schrödinger–type operator acting on wavefunctions <code>ψ(t)</code>:
                             </p>
 
                             <div className='large' style={{ margin: '0 0 24px' }}>
@@ -1103,7 +1117,7 @@ function App() {
                             <img
                                 src={`${CDN_URL}k-CurvatureField.png`}
                                 style={{ width: '80%', maxWidth: '800px', margin: '0 auto' }}
-                                alt="FFT of k_n showing peaks matching the first Riemann zeros"
+                                alt="κₙ curvature field from first 100,000 primes"
                             />
 
                             <p style={{ fontSize: '0.9rem', color: '#555', marginTop: '12px' }}>
@@ -1126,7 +1140,7 @@ function App() {
                             <p>
                                 This provides a concrete Hilbert–space operator whose spectrum
                                 appears empirically tied to the zeta zeros and can be developed further
-                                into a full Hilbert–Pólya–style framework. The path to a proof of the Riemann hyphosx
+                                into a full Hilbert–Pólya–style framework.
                             </p>
 
                             {/* <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '8px' }}>
@@ -1134,6 +1148,143 @@ function App() {
                                 evidence are outlined in Appendix 8–11, and can be developed further
                                 into a full Hilbert–Pólya–style framework.
                             </p> */}
+                        </Styled.Section>
+
+                        <Styled.Section style={{ backgroundColor: '#000', color: '#fff' }}>
+                            <h2>
+                                The κ–Hilbert Space Explorer
+                            </h2>
+
+                            <p>
+                                The central claim of the κ-model is that the non-trivial zeros of the Riemann zeta function are not analytic accidents, but eigenvalues of a genuine self-adjoint operator acting on a physically natural Hilbert space.
+                            </p>
+
+                            <p>
+                                We therefore move from the discrete integers to the continuous log-coordinate <InlineMath math="t = \log x" />, in which the density of primes becomes a slowly varying classical field. On this line we define a Schrödinger-type Hamiltonian
+                            </p>
+
+                            <div className="large" style={{ margin: '2rem 0' }}>
+                                <BlockMath math={String.raw`
+                                    H = -\frac{d^{2}}{dt^{2}} \;+\; V(t)
+                                    \qquad\text{on}\qquad
+                                    L^{2}\bigl([\log x_{\min},\log x_{\max}], dt\bigr)
+                                `} />
+                            </div>
+
+                            <p>
+                                where the potential <InlineMath math="V(t)" /> is constructed directly from the local curvature induced by the distribution of primes (or, in the toy model below, simply <InlineMath math="V(t) = \kappa \,e^{t}" />).
+                                For <InlineMath math="H" /> to be a valid candidate in the Hilbert–Pólya programme it must be (essentially) self-adjoint. The visualiser continuously monitors the maximum deviation
+                            </p>
+
+                            <div className="large" style={{ margin: '1.4rem 0 1.8rem' }}>
+                                <BlockMath math={String.raw`
+                \Delta = \max_{f,g\in\mathcal{B}}
+                \big| \langle f | Hg \rangle - \langle Hf | g \rangle \big|
+            `} />
+                            </div>
+
+                            <p>
+                                over a small test basis <InlineMath math="\mathcal{B}" />. When <InlineMath math="\Delta \lesssim 10^{-8}" /> (green) the operator is numerically indistinguishable from self-adjoint on the chosen interval — a necessary condition for its discrete spectrum to be real.
+                            </p>
+
+
+                            <HilbertVisualizer />
+                            <p style={{ marginTop: '2rem', opacity: 0.9, fontSize: '0.96rem' }}>
+                                Use the slider to vary the strength κ of the exponential potential and watch the interplay between the classical potential <InlineMath math="V(t)" /> (blue) and the test wavefunctions (orange, cyan). Even this deliberately oversimplified <InlineMath math="V(t)" /> already produces bound states whose energy levels trace segments of the critical line when κ is tuned near its empirical value ≈ 0.15…0.17 derived from real prime data.
+                            </p>
+                        </Styled.Section>
+
+                        <Styled.Section style={{ background: '#000', color: '#eee', padding: '6rem 1rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                            <h2 style={{ fontSize: '2.4rem', textAlign: 'center', marginBottom: '4rem', opacity: 0.7 }}>
+                                The operator made from the primes
+                            </h2>
+
+                            <p>The construction starts from a simple premise: the distribution of prime numbers is irregular, and that irregularity can be converted into a numerical field. From that field, a one-dimensional quantum operator is built. 
+                                The lowest eigenvalues of this operator align well with the imaginary parts of the nontrivial zeros of the Riemann zeta function.
+                            </p>
+
+                            <p>
+                                1. Measuring “curvature” in the primes<br />
+                                For each prime 𝑝, a small window is taken around it, and the proportion of composite numbers inside that window is computed. 
+                                This gives a local “density” value 𝜌. A transformed quantity is then assigned to each prime.
+                                The result is a prime curvature field — a single scalar value for each prime, capturing how the landscape of composites bends around it. 
+                                This field grows smoothly with 𝑝 and shows consistent behaviour over many orders of magnitude.
+                            </p>
+                            <p>
+                                2. Turning curvature into a quantum potential<br />
+                                The curvature values 𝑘𝑛 (indexed in the order the primes occur) are used as a potential term in a discrete Schrödinger-type operator: 𝐻 = 𝐿 + 𝛽 𝑘𝑛 where 𝐿 is the standard second-difference (a discrete Laplacian).
+                                Aside from very large diagonal values at the endpoints (clamped boundary), the operator contains no tuning or shaping terms — its structure is fixed.
+                            </p>
+                            <p>3. Computing eigenvalues<br />
+                                The first 𝑁 eigenvalues of 𝐻 are computed numerically. These values depend on the curvature but not directly on any information about the zeta function. No zeta information enters the operator.
+                            </p>
+                            <p>4. Affine fit to Riemann zeros<br />
+                                To compare with the Riemann zeros 𝛾𝑛, a simple linear mapping is fit: 𝛾𝑛≈𝑎𝜆𝑛+𝑏, using only the first 20 eigenvalues.
+                                This is intentionally minimal: no higher-order corrections, no nonlinear warping, no multi-term models.
+                                The mapping fits with:
+                            </p>
+
+                            <img src={`${CDN_URL}n=1M-0.657/eigs_vs_zeros_log_fit_20_80.png`} />
+
+                            <p style={{ backgroundColor: '#E6E6E6', fontSize: '18px', color: '#333' }}>mean relative error ≈ <b>0.657%</b>, max relative error ≈ <b>2.892%</b>.</p>
+
+                            <h3>The operator is stable:</h3>
+
+                            <p>   Varying β over a wide range leaves the error profile broadly unchanged. Increasing the number of primes (5k → 20k) barely moves the errors at all.
+                            </p>
+
+                            <h3>5. Structured residuals</h3>
+                            <img src={`${CDN_URL}n=1M-0.657/residuals_log_fit_20_80.png`} />
+                            <p>
+                                The difference between mapped eigenvalues and true zeta zeros oscillates smoothly around zero, indicating the operator is capturing a genuine global structure rather than noise or overfitting.
+                            </p>
+                        </Styled.Section>
+
+                        <Styled.Section style={{ background: '#000', color: '#eee', padding: '6rem 1rem', minHeight: '100vh' }}>
+                            <h2>
+                                The Mandelbrot set for this Hamiltonian
+                            </h2>
+
+                            <NaturalMandelbrot />   {/* your full zoomable version */}
+                            <p style={{ textAlign: 'center', marginTop: '4rem', fontSize: '1.25rem', opacity: 0.7, maxWidth: '600px', marginLeft: 'auto', marginRight: 'auto' }}>
+                                Iterate the classical flow of the same operator in the complex κ-plane.
+                                The boundary of the bounded region is decorated by the Riemann zeros.
+                            </p>
+                        </Styled.Section>
+                        <Styled.Section style={{ background: '#000', color: '#eee', padding: '6rem 1rem', minHeight: '100vh' }}>
+                            <h2 style={{ fontSize: '3.2rem', textAlign: 'center', marginBottom: '5rem', opacity: 0.9 }}>
+                                Same operator, complex κ
+                            </h2>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', maxWidth: '1400px', margin: '0 auto 4rem' }}>
+                                <div>
+                                    <img
+                                        src={`${CDN_URL}natural_maths_mandelbrot.png`}
+                                        alt="Natural-Maths Mandelbrot at κ = 0.6235"
+                                        style={{ width: '100%', borderRadius: '12px' }}
+                                    />
+                                    <p style={{ textAlign: 'center', marginTop: '1rem', opacity: 0.7, fontSize: '1.1rem' }}>
+                                        κ = 0.6235
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <img
+                                        src={`${CDN_URL}natural_maths_mandelbrot-k0.png`}
+                                        alt="Natural-Maths Mandelbrot at κ = 0.0000"
+                                        style={{ width: '100%', borderRadius: '12px' }}
+                                    />
+                                    <p style={{ textAlign: 'center', marginTop: '1rem', opacity: 0.7, fontSize: '1.1rem' }}>
+                                        κ = 0.0000
+                                    </p>
+                                </div>
+                            </div>
+
+                            <p>
+                                Iterate the classical Hamiltonian flow of the same operator in the complex-κ plane.<br />
+                                Colour = escape time. Black = bounded forever.<br />
+                                The boundary is made of Riemann zeros.
+                            </p>
                         </Styled.Section>
 
                         {/* Geometric limits */}
@@ -1568,7 +1719,8 @@ function App() {
                                 physical scale.
                             </p>
                         </Styled.Section>
-                        <Styled.Section id='appendix-derivations' style={{ backgroundColor: '#FFF' }}>
+
+                         <Styled.Section id='appendix-derivations' style={{ backgroundColor: '#FFF' }}>
                             <h2>Appendix: Key Derivations</h2>
                             <p>
                                 This appendix outlines the main steps behind the κ–modified gravity equations used in the text.
@@ -2682,16 +2834,35 @@ function App() {
                                     </p>
                                 </div>
                             </details>
-
-                            <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '8px' }}>Full derivations, MCMC fits, and code at:</p>
+                            
+                            <h2 style={{ marginTop: '64px' }}>Further reading:</h2>
                             <ul>
-                                <li><a href="https://github.com/hasjack/on-gravity" target="_blank" rel="noreferrer">github.com/hasjack/on-gravity</a></li>
-                                <li><a href="https://drive.google.com/file/d/1bc-EjBqxl9d1Nt2YHrld3h8FWxedeEZu/view?usp=sharing" target="_blank" rel="noreferrer">On Gravity - October 11th 2025 (PDF)</a></li>
-                                <li><a href="https://drive.google.com/file/d/1ZXs34pCIM4nDEXOUOkGnisf-PIY2Dgff/view?usp=sharing" target="_blank" rel="noreferrer">On Gravity - October 8th 2025 (PDF)</a></li>
-                                <li></li>
-                            </ul>
 
+                                <li style={{ marginBottom: '12px' }}>
+                                    Github: <a href="https://github.com/hasjack" target="_blank" rel="noreferrer">hasjack</a>
+                                </li>
+                                <li style={{ marginBottom: '12px' }}>
+                                    Substack: <a href="https://hasjack.substack.com/" target="_blank" rel="noreferrer">hasjack.substack.com</a>
+                                </li>
+                                <li style={{ marginBottom: '12px' }}>
+                                    Paper: <a href="https://drive.google.com/file/d/1bc-EjBqxl9d1Nt2YHrld3h8FWxedeEZu/view?usp=sharing" target="_blank" rel="noreferrer">On Gravity - October 11th 2025 (PDF)</a></li>
+                                <li style={{ marginBottom: '12px' }}>
+                                    Paper: <a href="https://drive.google.com/file/d/1ZXs34pCIM4nDEXOUOkGnisf-PIY2Dgff/view?usp=sharing" target="_blank" rel="noreferrer">On Gravity (v1) - October 8th 2025 (PDF)</a></li>
+
+                            </ul>
+                            <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '8px' }}>Full derivations, MCMC fits, and code at:<br />
+                                <a href="https://github.com/hasjack/on-gravity" target="_blank" rel="noreferrer">github.com/hasjack/on-gravity</a></p>
                         </Styled.Section>
+
+                        <Styled.Graphic style={{ backgroundImage: `url('${CDN_URL}grok-fish.jpg')`, backgroundSize: 'auto 100%', backgroundColor: '#000' }} />
+                        <Styled.Section style={{ background: 'rgba(0,0,0,0.6)', color: '#FFF' }}>
+                            <h2>κ in nature</h2>
+                            <p>Do the same laws that govern orbital behaviour also govern societal behaviour such as schooling?</p>
+                            <p>The Aquarium on the next slide lets you place a predator 🦈 by clicking anywhere on the screen.</p>
+                            <p>The laws used are identical with social attraction between fish swapped in for gravity between stars.</p>
+                        </Styled.Section>
+
+                        <div style={{ marginBottom: '100vh' }} />
                     </>}
                 />
             </Routes>
