@@ -141,7 +141,6 @@ export const Graphic = styled.div`
 
 export const Panel = styled.div`
     position: fixed;
-    background-image: url('${CDN_URL}chaotic-toy-galaxy.jpg');
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
