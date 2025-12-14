@@ -14,11 +14,9 @@ const PRESETS = [
 
 type PresetId = typeof PRESETS[number]["id"];
 
-const Aquarium: React.FC<{ showUI?: boolean; showAquarium?: boolean;  simActive: boolean; setSimActive: (active: boolean) => void }> = ({ 
+const Aquarium: React.FC<{ showUI?: boolean; showAquarium?: boolean;  }> = ({ 
     showUI = true, 
-    showAquarium = true,
-    simActive, 
-    setSimActive 
+    showAquarium = true, 
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const fishRef = useRef<Fish[]>([]);
@@ -53,7 +51,7 @@ const Aquarium: React.FC<{ showUI?: boolean; showAquarium?: boolean;  simActive:
 
     useEffect(() => {
         const canvas = canvasRef.current;
-        if (!canvas || !simActive || !showAquarium) {
+        if (!canvas || !showAquarium) {
             if (animRef.current) cancelAnimationFrame(animRef.current);
             return;
         }
@@ -212,7 +210,7 @@ const Aquarium: React.FC<{ showUI?: boolean; showAquarium?: boolean;  simActive:
             canvas.removeEventListener("click", click);
             if (animRef.current) cancelAnimationFrame(animRef.current);
         };
-    }, [initFish, simActive]); // ← now depends on simActive
+    }, [initFish])
 
     const applyPreset = (id: PresetId) => {
         const p = PRESETS.find(x => x.id === id)!;
@@ -227,67 +225,41 @@ const Aquarium: React.FC<{ showUI?: boolean; showAquarium?: boolean;  simActive:
     return (
         <div style={{ height: "100vh", color: "#eef", fontFamily: "system-ui", position: "relative", width: '100%' }}>
             {/* Existing UI */}
-            <div style={{ background: "#001520", alignItems: "center", gap: "1.5rem", display: showUI ? 'flex' : 'none', padding: "0.8rem 1.2rem", height: 'auto' }}>
-                <strong>κ-Fish • same law as galaxies</strong>
+            <div style={{ width: '100%', position: 'absolute', display: showUI ? 'block' : 'none' }}>
+                <div style={{ background: "#001520", alignItems: "center", gap: "1.5rem", display: 'flex', padding: "0.8rem 1.2rem", height: 'auto' }}>
+                    <strong>κ-Fish • same law as galaxies</strong>
 
-                <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    κ:
-                    <input type="range" min="0" max="1.8" step="0.01" value={k0}
-                        onChange={e => { setPreset(null); setK0(+e.target.value); }} />
-                    <span style={{ minWidth: 44 }}>{k0.toFixed(2)}</span>
-                </label>
+                    <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        κ:
+                        <input type="range" min="0" max="1.8" step="0.01" value={k0}
+                            onChange={e => { setPreset(null); setK0(+e.target.value); }} />
+                        <span style={{ minWidth: 44 }}>{k0.toFixed(2)}</span>
+                    </label>
 
-                {currentPreset && <span style={{ opacity: 0.9 }}>← {currentPreset}</span>}
+                    {currentPreset && <span style={{ opacity: 0.9 }}>← {currentPreset}</span>}
 
-                <span style={{ marginLeft: "auto", opacity: 0.8 }}>
-                    t ≈ {time.toFixed(1)}s • click = predator
-                </span>
+                    <span style={{ marginLeft: "auto", opacity: 0.8 }}>
+                        t ≈ {time.toFixed(1)}s • click = predator
+                    </span>
+                </div>
+
+                <div style={{ background: "#001520", gap: "0.6rem", flexWrap: "wrap", display: 'flex', padding: "0.4rem 1rem", height: 'auto' }}>
+                    {PRESETS.map(p => (
+                        <button key={p.id} onClick={() => applyPreset(p.id)}
+                            style={{
+                                padding: "0.35rem 0.8rem", borderRadius: 6, border: "none",
+                                background: preset === p.id ? "#3a8fff" : "#223",
+                                color: "#fff", cursor: "pointer", fontSize: "0.9rem"
+                            }}>
+                            {p.label}
+                        </button>
+                    ))}
+                </div>
+
             </div>
-
-            <div style={{ background: "#001520", gap: "0.6rem", flexWrap: "wrap", display: showUI ? 'flex' : 'none', padding: "0.4rem 1rem", height: 'auto' }}>
-                {PRESETS.map(p => (
-                    <button key={p.id} onClick={() => applyPreset(p.id)}
-                        style={{
-                            padding: "0.35rem 0.8rem", borderRadius: 6, border: "none",
-                            background: preset === p.id ? "#3a8fff" : "#223",
-                            color: "#fff", cursor: "pointer", fontSize: "0.9rem"
-                        }}>
-                        {p.label}
-                    </button>
-                ))}
-            </div>
+            
 
             {showAquarium && (<canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100vh" }} />)}
-
-            {/* Start Prompt Overlay */}
-            {!simActive && (
-                <div style={{
-                    position: "absolute",
-                    inset: 0,
-                    background: "rgba(0, 10, 30, 0.88)",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#8cf",
-                    fontSize: "2rem",
-                    fontWeight: "300",
-                    cursor: "pointer",
-                    userSelect: "none",
-                    zIndex: 10,
-                }}
-                onClick={() => setSimActive(true)}>
-                    <div style={{ fontSize: "3.5rem", marginBottom: "2rem", opacity: 0.9 }}>
-                        κ-Fish
-                    </div>
-                    <div style={{ fontSize: "1.4rem", opacity: 0.8 }}>
-                        Click to start simulation
-                    </div>
-                    <div style={{ fontSize: "1rem", marginTop: "2rem", opacity: 0.6 }}>
-                        (click anywhere afterward = predator)
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
