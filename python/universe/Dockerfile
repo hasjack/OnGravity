@@ -17,8 +17,6 @@ RUN pip install \
     mpmath \
     tqdm \
     rebound \
-    astroquery \
-    astropy \
 
 WORKDIR /app
 CMD ["python"]
