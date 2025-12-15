@@ -86,7 +86,7 @@ plt.ylabel("y [AU]")
 plt.title("Jupiter trajectory (200 years)")
 plt.legend()
 plt.tight_layout()
-plt.savefig("jupiter_trajectory_200yr.png")
+plt.savefig("outputs/jupiter_trajectory_200yr.png")
 
 # ----------------------------
 # 5. Plot energy conservation
@@ -97,7 +97,7 @@ plt.xlabel("Time [years]")
 plt.ylabel("Relative energy error")
 plt.title("Energy conservation (IAS15)")
 plt.tight_layout()
-plt.savefig("energy_error_200yr.png")
+plt.savefig("outputs/energy_error_200yr.png")
 
 print("Saved:")
 print(" - jupiter_trajectory_200yr.png")
