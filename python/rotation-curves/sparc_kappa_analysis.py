@@ -46,6 +46,133 @@ def _get_valid_mask_shear(
     )
 
 
+# Plotting constants
+FIGURE_SIZE_DEFAULT = (7, 5)
+FIGURE_SIZE_WIDE = (7.5, 4.8)
+FIGURE_SIZE_TALL = (7.2, 4.5)
+DPI = 160
+ALPHA_TRANSPARENT = 0.35
+ALPHA_SEMI = 0.5
+GRID_STYLE = {"linestyle": ":", "alpha": 0.6}
+
+
+def _style_plot(title: str, xlabel: str, ylabel: str, grid=True):
+    """Apply consistent styling to a plot."""
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    if grid:
+        plt.grid(**GRID_STYLE)
+    plt.tight_layout()
+
+
+def plot_scatter_with_line(
+    x: np.ndarray,
+    y: np.ndarray,
+    xlabel: str,
+    ylabel: str,
+    title: str,
+    outdir: Path,
+    filename: str,
+    alpha=ALPHA_TRANSPARENT,
+    line_x=None,
+    line_y=None,
+    line_label=None,
+    **scatter_kwargs
+):
+    """Create a scatter plot with optional line overlay."""
+    plt.figure(figsize=FIGURE_SIZE_DEFAULT, dpi=DPI)
+    plt.scatter(x, y, alpha=alpha, **scatter_kwargs)
+
+    if line_x is not None and line_y is not None:
+        plt.plot(line_x, line_y, linewidth=2, label=line_label)
+
+    if line_label:
+        plt.legend()
+
+    _style_plot(title, xlabel, ylabel)
+    _save_plot(outdir, filename)
+
+
+def plot_histogram_comparison(
+    data_dict: dict[str, np.ndarray],
+    xlabel: str,
+    ylabel: str,
+    title: str,
+    outdir: Path,
+    filename: str,
+    bins=30,
+    figsize=FIGURE_SIZE_WIDE
+):
+    """Create a histogram comparing multiple datasets."""
+    plt.figure(figsize=figsize, dpi=DPI)
+
+    for label, data in data_dict.items():
+        if len(data) > 0:
+            plt.hist(data, bins=bins, alpha=ALPHA_SEMI, label=label)
+
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.grid(**GRID_STYLE)
+    plt.legend()
+    plt.tight_layout()
+    _save_plot(outdir, filename)
+
+
+def plot_rar_overlay(
+    obs_x: np.ndarray,
+    obs_y: np.ndarray,
+    pred_data: dict[str, tuple[np.ndarray, np.ndarray]],
+    outdir: Path,
+    filename: str
+):
+    """Plot RAR (Radial Acceleration Relation) with model predictions."""
+    plt.figure(figsize=FIGURE_SIZE_DEFAULT, dpi=DPI)
+    plt.scatter(obs_x, obs_y, s=10, alpha=0.25, label="Observed RAR")
+
+    for label, (pred_x, pred_y) in pred_data.items():
+        if len(pred_x) > 0:
+            plt.scatter(pred_x, pred_y, s=10, alpha=0.25, label=label)
+
+    if len(obs_x) > 0:
+        x_min, x_max = np.min(obs_x), np.max(obs_x)
+        x_line = np.linspace(x_min, x_max, 300)
+        plt.plot(x_line, x_line, linestyle="--", linewidth=1.5, label="g_obs = g_bar")
+
+    plt.xlabel("log10 g_bar  [m s^-2]")
+    plt.ylabel("log10 g_obs  [m s^-2]")
+    plt.title("RAR — observed vs κ-model predictions")
+    plt.grid(**GRID_STYLE)
+    plt.legend()
+    plt.tight_layout()
+    _save_plot(outdir, filename)
+
+
+def plot_residuals(
+    resid_data: dict[str, tuple[np.ndarray, np.ndarray]],
+    xlabel: str,
+    ylabel: str,
+    title: str,
+    outdir: Path,
+    filename: str,
+    zero_line=True
+):
+    """Plot residuals with optional zero reference line."""
+    plt.figure(figsize=FIGURE_SIZE_DEFAULT, dpi=DPI)
+
+    for label, (x_data, y_data) in resid_data.items():
+        if len(x_data) > 0:
+            plt.scatter(x_data, y_data, s=10, alpha=0.3, label=label)
+
+    if zero_line:
+        plt.axhline(0.0, linestyle="--", linewidth=1.5)
+
+    _style_plot(title, xlabel, ylabel)
+    plt.legend()
+    _save_plot(outdir, filename)
+
+
 def _save_plot(outdir: Path, filename: str) -> None:
     """Save current plot and close figure."""
     outdir.mkdir(parents=True, exist_ok=True)
@@ -586,7 +713,11 @@ def main() -> None:
             abs_dvdr = np.abs(g["dvdr_1_per_s"])
             kappa_r_over2_model_shear = np.full_like(g_bar, np.nan, dtype=float)
             
-            valid_shear = _get_valid_mask_shear(g_bar, abs_dvdr, g_bar)
+            valid_shear = (
+                np.isfinite(g_bar) & (g_bar > 0) &
+                np.isfinite(abs_dvdr) & (abs_dvdr > 0)
+            )
+            
             if np.any(valid_shear):
                 log_g_bar_shear = np.log10(g_bar[valid_shear])
                 log_dvdr_shear = np.log10(abs_dvdr[valid_shear])
@@ -606,57 +737,44 @@ def main() -> None:
                 )
 
     # Create plots
-    plt.figure(figsize=(7, 5), dpi=160)
-    plt.scatter(all_data["r"], all_data["kappa_r"], s=10, alpha=0.35)
-    plt.xlabel("Radius (kpc)")
-    plt.ylabel("κ r / 2")
-    plt.title("SPARC galaxies — empirical κ structure")
-    plt.grid(True, linestyle=":", alpha=0.6)
-    plt.tight_layout()
-    _save_plot(out_root, "kappa_stack.png")
+    plot_scatter_with_line(
+        all_data["r"], all_data["kappa_r"],
+        "Radius (kpc)", "κ r / 2", "SPARC galaxies — empirical κ structure",
+        out_root, "kappa_stack.png"
+    )
 
-    plt.figure(figsize=(7, 5), dpi=160)
-    plt.scatter(all_data["r_norm"], all_data["kappa_r"], s=10, alpha=0.35)
-    plt.xlabel("r / r_last")
-    plt.ylabel("κ r / 2")
-    plt.title("SPARC galaxies — empirical κ vs normalized radius")
-    plt.grid(True, linestyle=":", alpha=0.6)
-    plt.tight_layout()
-    _save_plot(out_root, "kappa_vs_rnorm.png")
+    plot_scatter_with_line(
+        all_data["r_norm"], all_data["kappa_r"],
+        "r / r_last", "κ r / 2", "SPARC galaxies — empirical κ vs normalized radius",
+        out_root, "kappa_vs_rnorm.png"
+    )
 
-    plt.figure(figsize=(7, 5), dpi=160)
-    plt.scatter(all_data["shear_log"], all_data["kappa_r_shear"], s=10, alpha=0.35)
-    plt.xlabel("log10 |dv/dr|  [s^-1]")
-    plt.ylabel("κ r / 2")
-    plt.title("SPARC galaxies — empirical κ vs baryonic shear")
-    plt.grid(True, linestyle=":", alpha=0.6)
-    plt.tight_layout()
-    _save_plot(out_root, "kappa_vs_shear.png")
+    plot_scatter_with_line(
+        all_data["shear_log"], all_data["kappa_r_shear"],
+        "log10 |dv/dr|  [s^-1]", "κ r / 2", "SPARC galaxies — empirical κ vs baryonic shear",
+        out_root, "kappa_vs_shear.png"
+    )
 
-    plt.figure(figsize=(7, 5), dpi=160)
-    plt.scatter(all_data["log_gbar"], all_data["kappa_r_gbar"], s=10, alpha=0.35)
-    plt.xlabel("log10 g_bar  [m s^-2]")
-    plt.ylabel("κ r / 2")
-    plt.title("SPARC galaxies — empirical κ vs baryonic acceleration")
-    plt.grid(True, linestyle=":", alpha=0.6)
-    plt.tight_layout()
-    _save_plot(out_root, "kappa_vs_gbar.png")
+    plot_scatter_with_line(
+        all_data["log_gbar"], all_data["kappa_r_gbar"],
+        "log10 g_bar  [m s^-2]", "κ r / 2", "SPARC galaxies — empirical κ vs baryonic acceleration",
+        out_root, "kappa_vs_gbar.png"
+    )
 
     # Plot fit
     if np.isfinite(fit.a) and np.isfinite(fit.b):
         x_line = np.linspace(np.min(train_log_gbar), np.max(train_log_gbar), 300)
         y_line = fit.a + fit.b * x_line
 
-        plt.figure(figsize=(7, 5), dpi=160)
-        plt.scatter(train_log_gbar, train_kappa_r_gbar, s=10, alpha=0.2, label="Train galaxies")
-        plt.plot(x_line, y_line, linewidth=2, label=f"fit: y = {fit.a:.3f} + {fit.b:.3f} x")
-        plt.xlabel("log10 g_bar  [m s^-2]")
-        plt.ylabel("κ r / 2")
-        plt.title("SPARC train set — fitted κ model vs baryonic acceleration")
-        plt.grid(True, linestyle=":", alpha=0.6)
-        plt.legend()
-        plt.tight_layout()
-        _save_plot(out_root, "kappa_vs_gbar_fit.png")
+        plot_scatter_with_line(
+            train_log_gbar, train_kappa_r_gbar,
+            "log10 g_bar  [m s^-2]", "κ r / 2",
+            "SPARC train set — fitted κ model vs baryonic acceleration",
+            out_root, "kappa_vs_gbar_fit.png",
+            alpha=0.2, s=10,
+            line_x=x_line, line_y=y_line,
+            line_label=f"fit: y = {fit.a:.3f} + {fit.b:.3f} x"
+        )
 
     # Plot RAR
     if len(all_data["log_gbar_rar"]) > 0 and len(all_data["log_gobs"]) > 0:
@@ -664,13 +782,13 @@ def main() -> None:
         x_max = max(np.max(all_data["log_gbar_rar"]), np.max(all_data["log_gobs"]))
         x_line = np.linspace(x_min, x_max, 300)
 
-        plt.figure(figsize=(7, 5), dpi=160)
+        plt.figure(figsize=FIGURE_SIZE_DEFAULT, dpi=DPI)
         plt.scatter(all_data["log_gbar_rar"], all_data["log_gobs"], s=10, alpha=0.35, label="SPARC points")
         plt.plot(x_line, x_line, linestyle="--", linewidth=1.5, label="g_obs = g_bar")
         plt.xlabel("log10 g_bar  [m s^-2]")
         plt.ylabel("log10 g_obs  [m s^-2]")
         plt.title("SPARC galaxies — radial acceleration relation")
-        plt.grid(True, linestyle=":", alpha=0.6)
+        plt.grid(**GRID_STYLE)
         plt.legend()
         plt.tight_layout()
         _save_plot(out_root, "rar_gobs_vs_gbar.png")
@@ -679,12 +797,12 @@ def main() -> None:
     x = df_sum["chi2red_baryons"].to_numpy(dtype=float)
     x = x[np.isfinite(x)]
     if len(x) > 0:
-        plt.figure(figsize=(7.2, 4.5), dpi=160)
+        plt.figure(figsize=FIGURE_SIZE_TALL, dpi=DPI)
         plt.hist(x, bins=30)
         plt.title("SPARC sample — reduced χ² (baryons-only)")
         plt.xlabel("χ²_red")
         plt.ylabel("count")
-        plt.grid(True, linestyle=":", alpha=0.6)
+        plt.grid(**GRID_STYLE)
         plt.tight_layout()
         _save_plot(out_root, "chi2red_baryons_hist.png")
 
@@ -697,16 +815,11 @@ def main() -> None:
         x_pred = x_pred[np.isfinite(x_pred)]
 
         if len(x_bary) > 0 and len(x_pred) > 0:
-            plt.figure(figsize=(7.2, 4.5), dpi=160)
-            plt.hist(x_bary, bins=30, alpha=0.5, label="Baryons-only")
-            plt.hist(x_pred, bins=30, alpha=0.5, label="κ(g_bar) model")
-            plt.xlabel("χ²_red")
-            plt.ylabel("count")
-            plt.title("SPARC test set — baryons-only vs κ(g_bar) model")
-            plt.grid(True, linestyle=":", alpha=0.6)
-            plt.legend()
-            plt.tight_layout()
-            _save_plot(out_root, "chi2red_baryons_vs_kappa_gbar_model.png")
+            plot_histogram_comparison(
+                {"Baryons-only": x_bary, "κ(g_bar) model": x_pred},
+                "χ²_red", "count", "SPARC test set — baryons-only vs κ(g_bar) model",
+                out_root, "chi2red_baryons_vs_kappa_gbar_model.png"
+            )
 
     if pred_rows and pred_rows_gbar_shear:
         df_pred2 = pd.DataFrame(pred_rows)
@@ -721,39 +834,33 @@ def main() -> None:
         x_gbar_shear = x_gbar_shear[np.isfinite(x_gbar_shear)]
 
         if len(x_bary) > 0 and len(x_gbar) > 0 and len(x_gbar_shear) > 0:
-            plt.figure(figsize=(7.5, 4.8), dpi=160)
-            plt.hist(x_bary, bins=30, alpha=0.45, label="Baryons-only")
-            plt.hist(x_gbar, bins=30, alpha=0.45, label="κ(g_bar)")
-            plt.hist(x_gbar_shear, bins=30, alpha=0.45, label="κ(g_bar, shear)")
-            plt.xlabel("χ²_red")
-            plt.ylabel("count")
-            plt.title("SPARC test set — model comparison")
-            plt.grid(True, linestyle=":", alpha=0.6)
-            plt.legend()
-            plt.tight_layout()
-            _save_plot(out_root, "chi2red_model_comparison.png")
+            plot_histogram_comparison(
+                {"Baryons-only": x_bary, "κ(g_bar)": x_gbar, "κ(g_bar, shear)": x_gbar_shear},
+                "χ²_red", "count", "SPARC test set — model comparison",
+                out_root, "chi2red_model_comparison.png"
+            )
 
     if len(df_splits) > 0:
         # Fraction improved histogram
-        plt.figure(figsize=(7.2, 4.5), dpi=160)
         x1 = df_splits["frac_improved_gbar"].to_numpy(dtype=float)
         x1 = x1[np.isfinite(x1)]
-        if len(x1) > 0:
-            plt.hist(x1, bins=20, alpha=0.5, label="κ(g_bar)")
         x2 = df_splits["frac_improved_gbar_shear"].to_numpy(dtype=float)
         x2 = x2[np.isfinite(x2)]
+
+        data_dict = {}
+        if len(x1) > 0:
+            data_dict["κ(g_bar)"] = x1
         if len(x2) > 0:
-            plt.hist(x2, bins=20, alpha=0.5, label="κ(g_bar, shear)")
-        plt.xlabel("Fraction of test galaxies improved")
-        plt.ylabel("count")
-        plt.title("Multi-split robustness — fraction improved")
-        plt.grid(True, linestyle=":", alpha=0.6)
-        plt.legend()
-        plt.tight_layout()
-        _save_plot(out_root, "multi_split_fraction_improved.png")
+            data_dict["κ(g_bar, shear)"] = x2
+
+        if data_dict:
+            plot_histogram_comparison(
+                data_dict, "Fraction of test galaxies improved", "count",
+                "Multi-split robustness — fraction improved",
+                out_root, "multi_split_fraction_improved.png", bins=20
+            )
 
         # Median chi2 histogram
-        plt.figure(figsize=(7.2, 4.5), dpi=160)
         xb = df_splits["median_chi2_baryons"].to_numpy(dtype=float)
         xb = xb[np.isfinite(xb)]
         xg = df_splits["median_chi2_gbar"].to_numpy(dtype=float)
@@ -761,78 +868,52 @@ def main() -> None:
         xgs = df_splits["median_chi2_gbar_shear"].to_numpy(dtype=float)
         xgs = xgs[np.isfinite(xgs)]
 
+        data_dict = {}
         if len(xb) > 0:
-            plt.hist(xb, bins=20, alpha=0.4, label="Baryons-only")
+            data_dict["Baryons-only"] = xb
         if len(xg) > 0:
-            plt.hist(xg, bins=20, alpha=0.4, label="κ(g_bar)")
+            data_dict["κ(g_bar)"] = xg
         if len(xgs) > 0:
-            plt.hist(xgs, bins=20, alpha=0.4, label="κ(g_bar, shear)")
+            data_dict["κ(g_bar, shear)"] = xgs
 
-        plt.xlabel("Median χ²_red on test galaxies")
-        plt.ylabel("count")
-        plt.title("Multi-split robustness — median test χ²")
-        plt.grid(True, linestyle=":", alpha=0.6)
-        plt.legend()
-        plt.tight_layout()
-        _save_plot(out_root, "multi_split_median_chi2.png")
+        if data_dict:
+            plot_histogram_comparison(
+                data_dict, "Median χ²_red on test galaxies", "count",
+                "Multi-split robustness — median test χ²",
+                out_root, "multi_split_median_chi2.png", bins=20
+            )
 
     # RAR overlay plots
     if len(all_log_gbar_obs) > 0:
-        plt.figure(figsize=(7, 5), dpi=160)
-        plt.scatter(all_log_gbar_obs, all_log_gobs_obs, s=10, alpha=0.25, label="Observed RAR")
-
+        pred_data = {}
         if len(all_log_gbar_pred) > 0:
-            plt.scatter(all_log_gbar_pred, all_log_gobs_pred, s=10, alpha=0.25, label="κ(g_bar)")
-
+            pred_data["κ(g_bar)"] = (all_log_gbar_pred, all_log_gobs_pred)
         if len(all_log_gbar_pred_shear) > 0:
-            plt.scatter(all_log_gbar_pred_shear, all_log_gobs_pred_shear, s=10, alpha=0.25, label="κ(g_bar, shear)")
+            pred_data["κ(g_bar, shear)"] = (all_log_gbar_pred_shear, all_log_gobs_pred_shear)
 
-        x_min = min(all_log_gbar_obs)
-        x_max = max(all_log_gbar_obs)
-        x_line = np.linspace(x_min, x_max, 300)
-        plt.plot(x_line, x_line, linestyle="--", linewidth=1.5, label="g_obs = g_bar")
-
-        plt.xlabel("log10 g_bar  [m s^-2]")
-        plt.ylabel("log10 g_obs  [m s^-2]")
-        plt.title("RAR — observed vs κ-model predictions")
-        plt.grid(True, linestyle=":", alpha=0.6)
-        plt.legend()
-        plt.tight_layout()
-        _save_plot(out_root, "rar_model_overlay.png")
+        plot_rar_overlay(all_log_gbar_obs, all_log_gobs_obs, pred_data, out_root, "rar_model_overlay.png")
 
     # RAR residuals vs g_bar
     if len(all_rar_resid_gbar) > 0:
-        plt.figure(figsize=(7, 5), dpi=160)
-        plt.scatter(all_log_gbar_pred, all_rar_resid_gbar, s=10, alpha=0.3, label="κ(g_bar)")
-
+        resid_data = {"κ(g_bar)": (all_log_gbar_pred, all_rar_resid_gbar)}
         if len(all_rar_resid_gbar_shear) > 0:
-            plt.scatter(all_log_gbar_pred_shear, all_rar_resid_gbar_shear, s=10, alpha=0.3, label="κ(g_bar, shear)")
+            resid_data["κ(g_bar, shear)"] = (all_log_gbar_pred_shear, all_rar_resid_gbar_shear)
 
-        plt.axhline(0.0, linestyle="--", linewidth=1.5)
-        plt.xlabel("log10 g_bar  [m s^-2]")
-        plt.ylabel("Δ log10 g_obs")
-        plt.title("RAR residuals — κ model minus observed")
-        plt.grid(True, linestyle=":", alpha=0.6)
-        plt.legend()
-        plt.tight_layout()
-        _save_plot(out_root, "rar_residual_vs_gbar.png")
+        plot_residuals(
+            resid_data, "log10 g_bar  [m s^-2]", "Δ log10 g_obs",
+            "RAR residuals — κ model minus observed", out_root, "rar_residual_vs_gbar.png"
+        )
 
     # RAR residuals distribution
     if len(all_rar_resid_gbar) > 0:
-        plt.figure(figsize=(7, 5), dpi=160)
-        plt.hist(all_rar_resid_gbar, bins=30, alpha=0.5, label="κ(g_bar)")
-
+        data_dict = {"κ(g_bar)": all_rar_resid_gbar}
         if len(all_rar_resid_gbar_shear) > 0:
-            plt.hist(all_rar_resid_gbar_shear, bins=30, alpha=0.5, label="κ(g_bar, shear)")
+            data_dict["κ(g_bar, shear)"] = all_rar_resid_gbar_shear
 
-        plt.axvline(0.0, linestyle="--", linewidth=1.5)
-        plt.xlabel("Δ log10 g_obs")
-        plt.ylabel("count")
-        plt.title("RAR residual distribution")
-        plt.grid(True, linestyle=":", alpha=0.6)
-        plt.legend()
-        plt.tight_layout()
-        _save_plot(out_root, "rar_residual_hist.png")
+        plot_histogram_comparison(
+            data_dict, "Δ log10 g_obs", "count", "RAR residual distribution",
+            out_root, "rar_residual_hist.png"
+        )
 
     # Save galaxy lists and print results
     pd.DataFrame({"galaxy": [g["name"] for g in train_galaxies]}).to_csv(
