@@ -41,7 +41,7 @@ from sparc_kappa_plotting import (
 def main() -> None:
     ap = argparse.ArgumentParser(description="SPARC κ-framework analysis pipeline.")
     ap.add_argument("--mass-models", required=True, help="Path to unzipped SPARC mass-model files directory.")
-    ap.add_argument("--out", default="out_sparc_v2", help="Output directory for plots + CSVs.")
+    ap.add_argument("--out", default="output", help="Output directory for plots + CSVs.")
     ap.add_argument("--max-galaxies", type=int, default=0, help="0 = all galaxies; otherwise limit.")
     ap.add_argument("--ups-disk", type=float, default=0.5, help="Disk M/L scaling.")
     ap.add_argument("--ups-bulge", type=float, default=0.7, help="Bulge M/L scaling.")

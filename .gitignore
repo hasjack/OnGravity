@@ -18,3 +18,5 @@ python/rotation-curves/__pycache__
 python/rotation-curves/out_sparc_v2_untrained
 python/rotation-curves/Rotmod_ETG
 python/rotation-curves/Rotmod_LTG
+python/rotation-curves/beta/out_sparc
+python/rotation-curves/output
