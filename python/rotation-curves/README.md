@@ -167,10 +167,8 @@ A second model includes baryonic shear:
 
 $$
 \kappa r/2 =
-a + b,\log_{10}(g_{\text{bar}})
-
-* c,\log_{10}(|dv/dr|)
-  $$
+a + b,\log_{10}(g_{\text{bar}}) * c,\log_{10}(|dv/dr|)
+$$
 
 This model tests whether local dynamical shear contributes to the environmental curvature response.
 
