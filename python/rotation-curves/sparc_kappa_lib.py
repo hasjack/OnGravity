@@ -10,6 +10,14 @@ import numpy as np
 import pandas as pd
 from scipy.signal import savgol_filter
 
+# Plotting constants
+FIGURE_SIZE_DEFAULT = (7, 5)
+FIGURE_SIZE_WIDE = (7.5, 4.8)
+FIGURE_SIZE_TALL = (7.2, 4.5)
+DPI = 160
+ALPHA_TRANSPARENT = 0.35
+ALPHA_SEMI = 0.5
+GRID_STYLE = {"linestyle": ":", "alpha": 0.6}
 
 @dataclass
 class Config:
