@@ -12,3 +12,9 @@ python/nm-prover/NM_Mandelbrot_k0.6235_res96_20251128.obj
 python/nm-prover/nm_ms_512.blend
 python/nm-prover/nm_voxel_64.json
 python/universe/outputs
+python/rotation-curves/out_sparc
+python/rotation-curves/out_sparc_v2
+python/rotation-curves/__pycache__
+python/rotation-curves/out_sparc_v2_untrained
+python/rotation-curves/Rotmod_ETG
+python/rotation-curves/Rotmod_LTG
