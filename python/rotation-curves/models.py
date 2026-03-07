@@ -6,11 +6,11 @@ from typing import NamedTuple
 from pathlib import Path
 import pandas as pd
 
-from sparc_kappa_plotting import (
+from plotting import (
     plot_galaxy,
 )
 
-from sparc_kappa_lib import (
+from lib import (
     Config,
     compute_derived_quantities,
     evaluate_gbar_shear_model,

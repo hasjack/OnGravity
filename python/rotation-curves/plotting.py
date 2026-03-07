@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from sparc_kappa_lib import (
+from lib import (
     Config,
     # Plotting constants
     FIGURE_SIZE_DEFAULT,
@@ -14,8 +14,6 @@ from sparc_kappa_lib import (
     ALPHA_SEMI,
     GRID_STYLE
 )
-
-
 
 def _style_plot(title: str, xlabel: str, ylabel: str, grid=True):
     """Apply consistent styling to a plot."""

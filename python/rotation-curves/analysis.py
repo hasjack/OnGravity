@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from sparc_kappa_lib import (
+from lib import (
     Config,
     evaluate_gbar_shear_model,
     evaluate_linear_gbar_model,
@@ -17,7 +17,7 @@ from sparc_kappa_lib import (
     GRID_STYLE,
 )
 
-from sparc_kappa_models import (
+from models import (
     _split_train_test,
     _collect_training_data,
     _collect_training_data_shear,
@@ -29,7 +29,7 @@ from sparc_kappa_models import (
     build_rar_diagnostics,
 )
 
-from sparc_kappa_plotting import (
+from plotting import (
     plot_scatter_with_line,
     plot_histogram_comparison,
     plot_rar_overlay,
