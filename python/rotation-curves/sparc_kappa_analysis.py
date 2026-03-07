@@ -510,6 +510,146 @@ def run_single_split(
     return result
 
 
+def load_processed_galaxies(
+    galaxy_files: list[Path],
+    cfg: Config,
+    args: argparse.Namespace,
+    out_root: Path,
+    err_path: Path,
+) -> tuple[list[dict], int, int]:
+    """Load and process galaxy files, returning processed galaxies and error counts."""
+    processed_galaxies: list[dict] = []
+    skipped_too_few = 0
+    failed = 0
+
+    for fpath in galaxy_files:
+        try:
+            raw = load_and_prepare_galaxy(fpath, cfg)
+            if raw is None:
+                skipped_too_few += 1
+                continue
+
+            processed = compute_derived_quantities(raw, cfg)
+            processed_galaxies.append(processed)
+
+            if not args.no_per_galaxy_plots:
+                plot_galaxy(processed, out_root / "galaxies", cfg)
+
+        except Exception as e:
+            failed += 1
+            err_path.open("a").write(f"{fpath.stem}\t{fpath}\t{repr(e)}\n")
+            if args.debug:
+                print(f"FAIL {fpath.stem}: {e}")
+
+    return processed_galaxies, skipped_too_few, failed
+
+
+def build_rar_diagnostics(
+    processed_galaxies: list[dict],
+    fit: FitResults,
+    fit_2d: FitResults3D,
+) -> dict[str, list[float]]:
+    """Build RAR diagnostics for observed data and model predictions."""
+
+    all_log_gbar_obs: list[float] = []
+    all_log_gobs_obs: list[float] = []
+
+    all_log_gbar_pred: list[float] = []
+    all_log_gobs_pred: list[float] = []
+    all_rar_resid_gbar: list[float] = []
+
+    all_log_gbar_pred_shear: list[float] = []
+    all_log_gobs_pred_shear: list[float] = []
+    all_rar_resid_gbar_shear: list[float] = []
+
+    for g in processed_galaxies:
+        r_m = g["r_m"]
+        v_obs_mps = g["v_obs_kms"] * 1000.0
+        vN_mps = g["vN_kms"] * 1000.0
+        g_obs = (v_obs_mps ** 2) / r_m
+        g_bar = g["g_bar_m_per_s2"]
+
+        valid_obs = (
+            np.isfinite(r_m) & (r_m > 0) &
+            np.isfinite(g_obs) & (g_obs > 0) &
+            np.isfinite(g_bar) & (g_bar > 0)
+        )
+
+        if np.any(valid_obs):
+            all_log_gbar_obs.extend(np.log10(g_bar[valid_obs]).tolist())
+            all_log_gobs_obs.extend(np.log10(g_obs[valid_obs]).tolist())
+
+        if np.isfinite(fit.a) and np.isfinite(fit.b):
+            log_g_bar = np.log10(np.maximum(g_bar, 1e-10))
+            kappa_r_over2_model = fit.a + fit.b * log_g_bar
+            v_pred_mps = vN_mps * np.exp(kappa_r_over2_model)
+            g_pred = (v_pred_mps ** 2) / r_m
+
+            valid_pred = (
+                np.isfinite(r_m) & (r_m > 0) &
+                np.isfinite(g_pred) & (g_pred > 0) &
+                np.isfinite(g_obs) & (g_obs > 0) &
+                np.isfinite(g_bar) & (g_bar > 0)
+            )
+
+            if np.any(valid_pred):
+                log_gbar = np.log10(g_bar[valid_pred])
+                log_gpred = np.log10(g_pred[valid_pred])
+                log_gobs = np.log10(g_obs[valid_pred])
+
+                all_log_gbar_pred.extend(log_gbar.tolist())
+                all_log_gobs_pred.extend(log_gpred.tolist())
+                all_rar_resid_gbar.extend((log_gpred - log_gobs).tolist())
+
+        if np.isfinite(fit_2d.a) and np.isfinite(fit_2d.b) and np.isfinite(fit_2d.c):
+            abs_dvdr = np.abs(g["dvdr_1_per_s"])
+            kappa_r_over2_model_shear = np.full_like(g_bar, np.nan, dtype=float)
+
+            valid_shear = (
+                np.isfinite(g_bar) & (g_bar > 0) &
+                np.isfinite(abs_dvdr) & (abs_dvdr > 0)
+            )
+
+            if np.any(valid_shear):
+                log_g_bar_shear = np.log10(g_bar[valid_shear])
+                log_dvdr_shear = np.log10(abs_dvdr[valid_shear])
+                kappa_r_over2_model_shear[valid_shear] = (
+                    fit_2d.a
+                    + fit_2d.b * log_g_bar_shear
+                    + fit_2d.c * log_dvdr_shear
+                )
+
+            v_pred_shear_mps = vN_mps * np.exp(kappa_r_over2_model_shear)
+            g_pred_shear = (v_pred_shear_mps ** 2) / r_m
+
+            valid_pred_shear = (
+                np.isfinite(r_m) & (r_m > 0) &
+                np.isfinite(g_pred_shear) & (g_pred_shear > 0) &
+                np.isfinite(g_obs) & (g_obs > 0) &
+                np.isfinite(g_bar) & (g_bar > 0)
+            )
+
+            if np.any(valid_pred_shear):
+                log_gbar = np.log10(g_bar[valid_pred_shear])
+                log_gpred_shear = np.log10(g_pred_shear[valid_pred_shear])
+                log_gobs = np.log10(g_obs[valid_pred_shear])
+
+                all_log_gbar_pred_shear.extend(log_gbar.tolist())
+                all_log_gobs_pred_shear.extend(log_gpred_shear.tolist())
+                all_rar_resid_gbar_shear.extend((log_gpred_shear - log_gobs).tolist())
+
+    return {
+        "all_log_gbar_obs": all_log_gbar_obs,
+        "all_log_gobs_obs": all_log_gobs_obs,
+        "all_log_gbar_pred": all_log_gbar_pred,
+        "all_log_gobs_pred": all_log_gobs_pred,
+        "all_rar_resid_gbar": all_rar_resid_gbar,
+        "all_log_gbar_pred_shear": all_log_gbar_pred_shear,
+        "all_log_gobs_pred_shear": all_log_gobs_pred_shear,
+        "all_rar_resid_gbar_shear": all_rar_resid_gbar_shear,
+    }
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="SPARC κ-framework analysis pipeline.")
     ap.add_argument("--mass-models", required=True, help="Path to unzipped SPARC mass-model files directory.")
@@ -545,28 +685,9 @@ def main() -> None:
     if err_path.exists():
         err_path.unlink()
 
-    processed_galaxies: list[dict] = []
-    skipped_too_few = 0
-    failed = 0
-
-    for fpath in galaxy_files:
-        try:
-            raw = load_and_prepare_galaxy(fpath, cfg)
-            if raw is None:
-                skipped_too_few += 1
-                continue
-
-            processed = compute_derived_quantities(raw, cfg)
-            processed_galaxies.append(processed)
-
-            if not args.no_per_galaxy_plots:
-                plot_galaxy(processed, out_root / "galaxies", cfg)
-
-        except Exception as e:
-            failed += 1
-            err_path.open("a").write(f"{fpath.stem}\t{fpath}\t{repr(e)}\n")
-            if args.debug:
-                print(f"FAIL {fpath.stem}: {e}")
+    processed_galaxies, skipped_too_few, failed = load_processed_galaxies(
+        galaxy_files, cfg, args, out_root, err_path
+    )
 
     if not processed_galaxies:
         print("No galaxies processed.")
@@ -674,67 +795,7 @@ def main() -> None:
         )
 
     # Compute RAR (Radial Acceleration Relation) residuals
-    all_log_gbar_obs = []
-    all_log_gobs_obs = []
-    all_log_gbar_pred = []
-    all_log_gobs_pred = []
-    all_rar_resid_gbar = []
-    all_log_gbar_pred_shear = []
-    all_log_gobs_pred_shear = []
-    all_rar_resid_gbar_shear = []
-
-    for g in processed_galaxies:
-        r_m = g["r_m"]
-        v_obs_mps = g["v_obs_kms"] * 1000.0
-        vN_mps = g["vN_kms"] * 1000.0
-        g_obs = (v_obs_mps ** 2) / r_m
-        g_bar = g["g_bar_m_per_s2"]
-
-        valid_obs = _get_valid_mask(g_bar, g_obs)
-        if np.any(valid_obs):
-            all_log_gbar_obs.extend(np.log10(g_bar[valid_obs]).tolist())
-            all_log_gobs_obs.extend(np.log10(g_obs[valid_obs]).tolist())
-
-        # Predict with linear g_bar model
-        if np.isfinite(fit.a) and np.isfinite(fit.b):
-            log_g_bar = np.log10(np.maximum(g_bar, 1e-10))
-            kappa_r_over2_model = fit.a + fit.b * log_g_bar
-            v_pred_mps = vN_mps * np.exp(kappa_r_over2_model)
-            g_pred = (v_pred_mps ** 2) / r_m
-
-            valid_pred = _get_valid_mask(g_bar, g_pred) & np.isfinite(g_obs) & (g_obs > 0)
-            if np.any(valid_pred):
-                all_log_gbar_pred.extend(np.log10(g_bar[valid_pred]).tolist())
-                all_log_gobs_pred.extend(np.log10(g_pred[valid_pred]).tolist())
-                all_rar_resid_gbar.extend((np.log10(g_pred[valid_pred]) - np.log10(g_obs[valid_pred])).tolist())
-
-        # Predict with 2D g_bar + shear model
-        if np.isfinite(fit_2d.a) and np.isfinite(fit_2d.b) and np.isfinite(fit_2d.c):
-            abs_dvdr = np.abs(g["dvdr_1_per_s"])
-            kappa_r_over2_model_shear = np.full_like(g_bar, np.nan, dtype=float)
-            
-            valid_shear = (
-                np.isfinite(g_bar) & (g_bar > 0) &
-                np.isfinite(abs_dvdr) & (abs_dvdr > 0)
-            )
-            
-            if np.any(valid_shear):
-                log_g_bar_shear = np.log10(g_bar[valid_shear])
-                log_dvdr_shear = np.log10(abs_dvdr[valid_shear])
-                kappa_r_over2_model_shear[valid_shear] = (
-                    fit_2d.a + fit_2d.b * log_g_bar_shear + fit_2d.c * log_dvdr_shear
-                )
-
-            v_pred_shear_mps = vN_mps * np.exp(kappa_r_over2_model_shear)
-            g_pred_shear = (v_pred_shear_mps ** 2) / r_m
-
-            valid_pred_shear = _get_valid_mask(g_bar, g_pred_shear) & np.isfinite(g_obs) & (g_obs > 0)
-            if np.any(valid_pred_shear):
-                all_log_gbar_pred_shear.extend(np.log10(g_bar[valid_pred_shear]).tolist())
-                all_log_gobs_pred_shear.extend(np.log10(g_pred_shear[valid_pred_shear]).tolist())
-                all_rar_resid_gbar_shear.extend(
-                    (np.log10(g_pred_shear[valid_pred_shear]) - np.log10(g_obs[valid_pred_shear])).tolist()
-                )
+    rar_data = build_rar_diagnostics(processed_galaxies, fit, fit_2d)
 
     # Create plots
     plot_scatter_with_line(
@@ -884,20 +945,20 @@ def main() -> None:
             )
 
     # RAR overlay plots
-    if len(all_log_gbar_obs) > 0:
+    if len(rar_data["all_log_gbar_obs"]) > 0:
         pred_data = {}
-        if len(all_log_gbar_pred) > 0:
-            pred_data["κ(g_bar)"] = (all_log_gbar_pred, all_log_gobs_pred)
-        if len(all_log_gbar_pred_shear) > 0:
-            pred_data["κ(g_bar, shear)"] = (all_log_gbar_pred_shear, all_log_gobs_pred_shear)
+        if len(rar_data["all_log_gbar_pred"]) > 0:
+            pred_data["κ(g_bar)"] = (rar_data["all_log_gbar_pred"], rar_data["all_log_gobs_pred"])
+        if len(rar_data["all_log_gbar_pred_shear"]) > 0:
+            pred_data["κ(g_bar, shear)"] = (rar_data["all_log_gbar_pred_shear"], rar_data["all_log_gobs_pred_shear"])
 
-        plot_rar_overlay(all_log_gbar_obs, all_log_gobs_obs, pred_data, out_root, "rar_model_overlay.png")
+        plot_rar_overlay(rar_data["all_log_gbar_obs"], rar_data["all_log_gobs_obs"], pred_data, out_root, "rar_model_overlay.png")
 
     # RAR residuals vs g_bar
-    if len(all_rar_resid_gbar) > 0:
-        resid_data = {"κ(g_bar)": (all_log_gbar_pred, all_rar_resid_gbar)}
-        if len(all_rar_resid_gbar_shear) > 0:
-            resid_data["κ(g_bar, shear)"] = (all_log_gbar_pred_shear, all_rar_resid_gbar_shear)
+    if len(rar_data["all_rar_resid_gbar"]) > 0:
+        resid_data = {"κ(g_bar)": (rar_data["all_log_gbar_pred"], rar_data["all_rar_resid_gbar"])}
+        if len(rar_data["all_rar_resid_gbar_shear"]) > 0:
+            resid_data["κ(g_bar, shear)"] = (rar_data["all_log_gbar_pred_shear"], rar_data["all_rar_resid_gbar_shear"])
 
         plot_residuals(
             resid_data, "log10 g_bar  [m s^-2]", "Δ log10 g_obs",
@@ -905,10 +966,10 @@ def main() -> None:
         )
 
     # RAR residuals distribution
-    if len(all_rar_resid_gbar) > 0:
-        data_dict = {"κ(g_bar)": all_rar_resid_gbar}
-        if len(all_rar_resid_gbar_shear) > 0:
-            data_dict["κ(g_bar, shear)"] = all_rar_resid_gbar_shear
+    if len(rar_data["all_rar_resid_gbar"]) > 0:
+        data_dict = {"κ(g_bar)": rar_data["all_rar_resid_gbar"]}
+        if len(rar_data["all_rar_resid_gbar_shear"]) > 0:
+            data_dict["κ(g_bar, shear)"] = rar_data["all_rar_resid_gbar_shear"]
 
         plot_histogram_comparison(
             data_dict, "Δ log10 g_obs", "count", "RAR residual distribution",
