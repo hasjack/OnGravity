@@ -65,11 +65,31 @@ def main() -> None:
     out_root = Path(args.out).expanduser().resolve()
     out_root.mkdir(parents=True, exist_ok=True)
 
+
+    # Create output subdirectories
+    plots_dir = out_root / "plots"
+    tables_dir = out_root / "tables"
+    models_dir = out_root / "models"
+    diagnostics_dir = out_root / "diagnostics"
+    galaxies_dir = out_root / "galaxies"
+
+    for d in [plots_dir, tables_dir, models_dir, diagnostics_dir, galaxies_dir]:
+        d.mkdir(parents=True, exist_ok=True)
+
+    # Create output sub-subdirectories (/plots/)
+    rar_dir = plots_dir / "rar"
+    chi2_dir = plots_dir / "chi2"
+    robustness_dir = plots_dir / "robustness"
+    params_dir = plots_dir / "parameters"
+
+    for d in [rar_dir, chi2_dir, robustness_dir, params_dir]:
+        d.mkdir(parents=True, exist_ok=True)
+
     galaxy_files = sorted(mass_dir.rglob("*_rotmod.dat"))
     if args.max_galaxies and args.max_galaxies > 0:
         galaxy_files = galaxy_files[: args.max_galaxies]
 
-    err_path = out_root / "_errors.txt"
+    err_path = diagnostics_dir / "_errors.txt"
     if err_path.exists():
         err_path.unlink()
 
@@ -79,12 +99,12 @@ def main() -> None:
 
     if not processed_galaxies:
         print("No galaxies processed.")
-        print(f"Wrote outputs to: {out_root}")
+        print(f"Wrote outputs to: {galaxies_dir}")
         return
     
     if len(processed_galaxies) < 2:
         print("Need at least 2 processed galaxies for a train/test split.")
-        print(f"Wrote outputs to: {out_root}")
+        print(f"Wrote outputs to: {galaxies_dir}")
         return
 
     split_results = []
@@ -99,7 +119,7 @@ def main() -> None:
         split_results.append(split_result)
 
     df_splits = pd.DataFrame(split_results)
-    df_splits.to_csv(out_root / "multi_split_summary.csv", index=False)
+    df_splits.to_csv(tables_dir / "multi_split_summary.csv", index=False)
 
     # Get the first split's train/test sets for main analysis
     train_galaxies, test_galaxies = _split_train_test(
@@ -107,7 +127,7 @@ def main() -> None:
     )
 
     # Write train/test split info
-    with open(out_root / "train_test_split.txt", "w") as f:
+    with open(diagnostics_dir / "train_test_split.txt", "w") as f:
         f.write(f"seed = {args.seed}\n")
         f.write(f"train_fraction = {args.train_fraction}\n")
         f.write(f"n_total = {len(processed_galaxies)}\n")
@@ -142,17 +162,17 @@ def main() -> None:
     ]
 
     df_sum = pd.DataFrame(summary_rows).sort_values(by=["chi2red_baryons"], na_position="last")
-    df_sum.to_csv(out_root / "summary.csv", index=False)
+    df_sum.to_csv(tables_dir / "summary.csv", index=False)
 
     # Save model fits
     if np.isfinite(fit.a) and np.isfinite(fit.b):
-        with open(out_root / "kappa_gbar_fit.txt", "w") as f:
+        with open(models_dir / "kappa_gbar_fit.txt", "w") as f:
             f.write(f"a = {fit.a}\n")
             f.write(f"b = {fit.b}\n")
             f.write("model: kappa_r_over2 = a + b * log10(g_bar)\n")
 
     if np.isfinite(fit_2d.a) and np.isfinite(fit_2d.b) and np.isfinite(fit_2d.c):
-        with open(out_root / "kappa_gbar_shear_fit.txt", "w") as f:
+        with open(models_dir / "kappa_gbar_shear_fit.txt", "w") as f:
             f.write(f"a = {fit_2d.a}\n")
             f.write(f"b = {fit_2d.b}\n")
             f.write(f"c = {fit_2d.c}\n")
@@ -167,7 +187,7 @@ def main() -> None:
                 pred_rows.append(pred)
 
     if pred_rows:
-        pd.DataFrame(pred_rows).to_csv(out_root / "summary_kappa_gbar_model.csv", index=False)
+        pd.DataFrame(pred_rows).to_csv(tables_dir / "summary_kappa_gbar_model.csv", index=False)
 
     pred_rows_gbar_shear = []
     if np.isfinite(fit_2d.a) and np.isfinite(fit_2d.b) and np.isfinite(fit_2d.c):
@@ -178,7 +198,7 @@ def main() -> None:
 
     if pred_rows_gbar_shear:
         pd.DataFrame(pred_rows_gbar_shear).to_csv(
-            out_root / "summary_kappa_gbar_shear_model.csv",
+            tables_dir / "summary_kappa_gbar_shear_model.csv",
             index=False,
         )
 
@@ -189,25 +209,25 @@ def main() -> None:
     plot_scatter_with_line(
         all_data["r"], all_data["kappa_r"],
         "Radius (kpc)", "κ r / 2", "SPARC galaxies — empirical κ structure",
-        out_root, "kappa_stack.png"
+        plots_dir, "kappa_stack.png"
     )
 
     plot_scatter_with_line(
         all_data["r_norm"], all_data["kappa_r"],
         "r / r_last", "κ r / 2", "SPARC galaxies — empirical κ vs normalized radius",
-        out_root, "kappa_vs_rnorm.png"
+        plots_dir, "kappa_vs_rnorm.png"
     )
 
     plot_scatter_with_line(
         all_data["shear_log"], all_data["kappa_r_shear"],
         "log10 |dv/dr|  [s^-1]", "κ r / 2", "SPARC galaxies — empirical κ vs baryonic shear",
-        out_root, "kappa_vs_shear.png"
+        plots_dir, "kappa_vs_shear.png"
     )
 
     plot_scatter_with_line(
         all_data["log_gbar"], all_data["kappa_r_gbar"],
         "log10 g_bar  [m s^-2]", "κ r / 2", "SPARC galaxies — empirical κ vs baryonic acceleration",
-        out_root, "kappa_vs_gbar.png"
+        plots_dir, "kappa_vs_gbar.png"
     )
 
     # Plot fit
@@ -219,7 +239,7 @@ def main() -> None:
             train_log_gbar, train_kappa_r_gbar,
             "log10 g_bar  [m s^-2]", "κ r / 2",
             "SPARC train set — fitted κ model vs baryonic acceleration",
-            out_root, "kappa_vs_gbar_fit.png",
+            plots_dir, "kappa_vs_gbar_fit.png",
             alpha=0.2, s=10,
             line_x=x_line, line_y=y_line,
             line_label=f"fit: y = {fit.a:.3f} + {fit.b:.3f} x"
@@ -240,7 +260,7 @@ def main() -> None:
         plt.grid(**GRID_STYLE)
         plt.legend()
         plt.tight_layout()
-        _save_plot(out_root, "rar_gobs_vs_gbar.png")
+        _save_plot(rar_dir, "rar_gobs_vs_gbar.png")
 
     # Chi2 histograms
     x = df_sum["chi2red_baryons"].to_numpy(dtype=float)
@@ -253,7 +273,7 @@ def main() -> None:
         plt.ylabel("count")
         plt.grid(**GRID_STYLE)
         plt.tight_layout()
-        _save_plot(out_root, "chi2red_baryons_hist.png")
+        _save_plot(chi2_dir, "chi2red_baryons_hist.png")
 
     if pred_rows:
         df_pred = pd.DataFrame(pred_rows)
@@ -267,7 +287,7 @@ def main() -> None:
             plot_histogram_comparison(
                 {"Baryons-only": x_bary, "κ(g_bar) model": x_pred},
                 "χ²_red", "count", "SPARC test set — baryons-only vs κ(g_bar) model",
-                out_root, "chi2red_baryons_vs_kappa_gbar_model.png"
+                chi2_dir, "chi2red_baryons_vs_kappa_gbar_model.png"
             )
 
     if pred_rows and pred_rows_gbar_shear:
@@ -286,7 +306,7 @@ def main() -> None:
             plot_histogram_comparison(
                 {"Baryons-only": x_bary, "κ(g_bar)": x_gbar, "κ(g_bar, shear)": x_gbar_shear},
                 "χ²_red", "count", "SPARC test set — model comparison",
-                out_root, "chi2red_model_comparison.png"
+                chi2_dir, "chi2red_model_comparison.png"
             )
 
     if len(df_splits) > 0:
@@ -306,7 +326,7 @@ def main() -> None:
             plot_histogram_comparison(
                 data_dict, "Fraction of test galaxies improved", "count",
                 "Multi-split robustness — fraction improved",
-                out_root, "multi_split_fraction_improved.png", bins=20
+                robustness_dir, "multi_split_fraction_improved.png", bins=20
             )
 
         # Median chi2 histogram
@@ -329,7 +349,7 @@ def main() -> None:
             plot_histogram_comparison(
                 data_dict, "Median χ²_red on test galaxies", "count",
                 "Multi-split robustness — median test χ²",
-                out_root, "multi_split_median_chi2.png", bins=20
+                robustness_dir, "multi_split_median_chi2.png", bins=20
             )
 
     # RAR overlay plots
@@ -340,7 +360,7 @@ def main() -> None:
         if len(rar_data["all_log_gbar_pred_shear"]) > 0:
             pred_data["κ(g_bar, shear)"] = (rar_data["all_log_gbar_pred_shear"], rar_data["all_log_gobs_pred_shear"])
 
-        plot_rar_overlay(rar_data["all_log_gbar_obs"], rar_data["all_log_gobs_obs"], pred_data, out_root, "rar_model_overlay.png")
+        plot_rar_overlay(rar_data["all_log_gbar_obs"], rar_data["all_log_gobs_obs"], pred_data, rar_dir, "rar_model_overlay.png")
 
     # RAR residuals vs g_bar
     if len(rar_data["all_rar_resid_gbar"]) > 0:
@@ -350,7 +370,7 @@ def main() -> None:
 
         plot_residuals(
             resid_data, "log10 g_bar  [m s^-2]", "Δ log10 g_obs",
-            "RAR residuals — κ model minus observed", out_root, "rar_residual_vs_gbar.png"
+            "RAR residuals — κ model minus observed", rar_dir, "rar_residual_vs_gbar.png"
         )
 
     # RAR residuals distribution
@@ -361,15 +381,15 @@ def main() -> None:
 
         plot_histogram_comparison(
             data_dict, "Δ log10 g_obs", "count", "RAR residual distribution",
-            out_root, "rar_residual_hist.png"
+            rar_dir, "rar_residual_hist.png"
         )
 
     # Save galaxy lists and print results
     pd.DataFrame({"galaxy": [g["name"] for g in train_galaxies]}).to_csv(
-        out_root / "train_galaxies.csv", index=False
+        tables_dir / "train_galaxies.csv", index=False
     )
     pd.DataFrame({"galaxy": [g["name"] for g in test_galaxies]}).to_csv(
-        out_root / "test_galaxies.csv", index=False
+        tables_dir / "test_galaxies.csv", index=False
     )
 
     # Print summary statistics
@@ -379,13 +399,13 @@ def main() -> None:
         print(f"Mean fraction improved, κ(g_bar): {mean_frac_gbar:.3f}")
         print(f"Mean fraction improved, κ(g_bar, shear): {mean_frac_gbar_shear:.3f}")
 
-    print(f"Done. Wrote outputs to: {out_root}")
+    print(f"Done. Wrote outputs to: {out_root}/")
     print(f"Processed galaxies: {len(processed_galaxies)}")
     if args.debug:
         print(f"Total files: {len(galaxy_files)}  failed: {failed}  skipped_too_few: {skipped_too_few}")
 
     # Print fit parameter statistics
-    df = pd.read_csv(out_root / "multi_split_summary.csv")
+    df = pd.read_csv(tables_dir / "multi_split_summary.csv")
 
     print("\nκ(g_bar) fit parameters:")
     print(f"  a: {df['fit_a'].mean():.6f} ± {df['fit_a'].std():.6f}")
@@ -410,7 +430,7 @@ def main() -> None:
         plt.ylabel("count")
         plt.grid(True, linestyle=":", alpha=0.6)
         plt.tight_layout()
-        _save_plot(out_root, f"param_dist_{param}.png")
+        _save_plot(params_dir, f"param_dist_{param}.png")
 
 
 if __name__ == "__main__":
