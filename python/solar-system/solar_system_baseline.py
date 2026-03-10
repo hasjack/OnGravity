@@ -74,9 +74,10 @@ def run_simulation(
     jupiter_index = bodies.index("Jupiter")
 
     if mode in {"framework", "sparc_fit"}:
-        def additional_forces(_s):
+        def additional_forces(reb_sim):
+            sim_ptr = reb_sim.contents
             apply_kappa_additional_forces(
-                sim,
+                sim_ptr,
                 model=mode,
                 a=a,
                 b=b,
@@ -89,6 +90,8 @@ def run_simulation(
                 rho0=rho0,
             )
         sim.additional_forces = additional_forces
+        
+    sim.force_is_velocity_dependent = 0
 
     dt = years * 365.25 / float(steps)
     times = []

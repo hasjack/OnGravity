@@ -187,6 +187,13 @@ def apply_kappa_additional_forces(
                 rho0=rho0,
             )
             multiplier = framework_multiplier_from_kappa(kappa=kappa, r_m=r_m)
+            # if model == "framework" and i == 5:
+            #     print("rho =", rho)
+            #     print("strain_rate =", strain_rate)
+            #     print("kappa =", kappa)
+            #     print("r_m =", r_m)
+            #     print("kr =", kappa * r_m)
+            #     print("multiplier =", multiplier)
 
         else:  # sparc_fit
             g_bar_au_day2 = np.sqrt(ax_sun * ax_sun + ay_sun * ay_sun + az_sun * az_sun)
