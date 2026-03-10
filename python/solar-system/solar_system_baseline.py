@@ -67,7 +67,7 @@ def run_simulation(mode: str,
         sim.additional_forces = additional_forces
 
     dt = years * 365.25 / float(steps)
-    times, energy_error, jx, jy = [], [], [], []
+    times, energy_error, jx, jy, jvx, jvy = [], [], [], [], [], []
     E0 = sim.energy()
 
     for i in range(steps):
@@ -81,6 +81,9 @@ def run_simulation(mode: str,
         p = sim.particles[jupiter_index]
         jx.append(p.x)
         jy.append(p.y)
+
+        jvx.append(p.vx)
+        jvy.append(p.vy)
 
     # Jupiter trajectory
     plt.figure(figsize=(6, 6))
@@ -112,7 +115,7 @@ def run_simulation(mode: str,
     print(f" - {out_path / f'jupiter_trajectory_{mode}.png'}")
     print(f" - {out_path / f'energy_error_{mode}.png'}")
 
-    return jx, jy
+    return jx, jy, jvx, jvy
 
 
 def main():
@@ -137,7 +140,7 @@ def main():
     #                shear=args.shear,
     #                output_dir=args.out)
     
-    jx_base, jy_base = run_simulation(
+    jx_base, jy_base, jvx_base, jvy_base = run_simulation(
         mode="baseline",
         years=args.years,
         steps=args.steps,
@@ -148,7 +151,7 @@ def main():
         output_dir=args.out
     )
 
-    jx_kappa, jy_kappa = run_simulation(
+    jx_kappa, jy_kappa, jvx_kappa, jvy_kappa = run_simulation(
         mode="kappa",
         years=args.years,
         steps=args.steps,
@@ -172,6 +175,20 @@ def main():
     plt.title("Deviation from Newtonian baseline")
     plt.tight_layout()
     plt.savefig("outputs/orbit_difference.png")
+    plt.close()
+
+    delta_v = np.sqrt(
+        (np.array(jvx_kappa) - np.array(jvx_base))**2 +
+        (np.array(jvy_kappa) - np.array(jvy_base))**2
+    )
+
+    plt.figure(figsize=(7,4))
+    plt.plot(delta_v)
+    plt.xlabel("Timestep")
+    plt.ylabel("Velocity deviation [AU/day]")
+    plt.title("Velocity deviation from Newtonian baseline")
+    plt.tight_layout()
+    plt.savefig("outputs/velocity_difference.png")
     plt.close()
 
 
