@@ -2,7 +2,7 @@ version: "3.9"
 services:
   universe:
     build: .
-    container_name: universe
+    container_name: solar-system
     volumes:
       - .:/app
     working_dir: /app

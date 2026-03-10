@@ -20,3 +20,5 @@ python/rotation-curves/Rotmod_ETG
 python/rotation-curves/Rotmod_LTG
 python/rotation-curves/beta/out_sparc
 python/rotation-curves/output
+python/solar-system/__pycache__
+python/solar-system/outputs

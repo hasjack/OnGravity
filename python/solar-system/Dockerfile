@@ -16,7 +16,7 @@ RUN pip install \
     matplotlib \
     mpmath \
     tqdm \
-    rebound \
+    rebound
 
 WORKDIR /app
 CMD ["python"]
