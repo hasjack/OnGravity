@@ -67,7 +67,7 @@ def run_simulation(mode: str,
         sim.additional_forces = additional_forces
 
     dt = years * 365.25 / float(steps)
-    times, energy_error, jx, jy, jvx, jvy = [], [], [], [], [], []
+    times, energy_error, jx, jy, jvx, jvy, jax, jay = [], [], [], [], [], [], [], []
     E0 = sim.energy()
 
     for i in range(steps):
@@ -84,6 +84,9 @@ def run_simulation(mode: str,
 
         jvx.append(p.vx)
         jvy.append(p.vy)
+
+        jax.append(p.ax)
+        jay.append(p.ay)
 
     # Jupiter trajectory
     plt.figure(figsize=(6, 6))
@@ -115,7 +118,7 @@ def run_simulation(mode: str,
     print(f" - {out_path / f'jupiter_trajectory_{mode}.png'}")
     print(f" - {out_path / f'energy_error_{mode}.png'}")
 
-    return jx, jy, jvx, jvy
+    return jx, jy, jvx, jvy, jax, jay
 
 
 def main():
@@ -131,16 +134,8 @@ def main():
     parser.add_argument("--out", default="outputs", help="output directory")
 
     args = parser.parse_args()
-    # run_simulation(mode=args.mode,
-    #                years=args.years,
-    #                steps=args.steps,
-    #                a=args.a,
-    #                b=args.b,
-    #                c=args.c,
-    #                shear=args.shear,
-    #                output_dir=args.out)
     
-    jx_base, jy_base, jvx_base, jvy_base = run_simulation(
+    jx_base, jy_base, jvx_base, jvy_base, jax_base, jay_base = run_simulation(
         mode="baseline",
         years=args.years,
         steps=args.steps,
@@ -151,7 +146,7 @@ def main():
         output_dir=args.out
     )
 
-    jx_kappa, jy_kappa, jvx_kappa, jvy_kappa = run_simulation(
+    jx_kappa, jy_kappa, jvx_kappa, jvy_kappa, jax_kappa, jay_kappa = run_simulation(
         mode="kappa",
         years=args.years,
         steps=args.steps,
@@ -191,6 +186,28 @@ def main():
     plt.savefig("outputs/velocity_difference.png")
     plt.close()
 
+    dax = np.array(jax_kappa) - np.array(jax_base)
+    day = np.array(jay_kappa) - np.array(jay_base)
+
+    r_base_x = np.array(jx_base)
+    r_base_y = np.array(jy_base)
+    r_norm = np.sqrt(r_base_x**2 + r_base_y**2)
+
+    rhat_x = r_base_x / r_norm
+    rhat_y = r_base_y / r_norm
+
+    delta_a_r = dax * rhat_x + day * rhat_y
+
+    time_years = np.linspace(0, args.years, len(delta_a_r))
+
+    plt.figure(figsize=(7,4))
+    plt.plot(time_years, delta_a_r)
+    plt.xlabel("Time [years]")
+    plt.ylabel("Radial acceleration residual [AU/day²]")
+    plt.title("Radial acceleration residual from Newtonian baseline")
+    plt.tight_layout()
+    plt.savefig("outputs/radial_acceleration_difference.png")
+    plt.close()
 
 if __name__ == "__main__":
     main()
