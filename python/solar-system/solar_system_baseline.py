@@ -429,6 +429,32 @@ def plot_comparison_diagnostics(
     plt.savefig(out_path / "lrl_perihelion_drift.png")
     plt.close()
 
+    lrl_mag_base = np.sqrt(jex_base ** 2 + jey_base ** 2)
+    lrl_mag_mod = np.sqrt(jex_mod ** 2 + jey_mod ** 2)
+    delta_lrl_mag = lrl_mag_mod - lrl_mag_base
+
+    # LRL vector magnitude comparison
+    plt.figure(figsize=(7, 4))
+    plt.plot(time_years, lrl_mag_base, label="Baseline")
+    plt.plot(time_years, lrl_mag_mod, label="Framework")
+    plt.xlabel("Time [years]")
+    plt.ylabel("|LRL vector|")
+    plt.title("Jupiter LRL vector magnitude")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(out_path / "lrl_magnitude_comparison.png")
+    plt.close()
+
+    # LRL vector magnitude difference
+    plt.figure(figsize=(7, 4))
+    plt.plot(time_years, delta_lrl_mag)
+    plt.xlabel("Time [years]")
+    plt.ylabel("LRL magnitude difference")
+    plt.title("LRL magnitude difference from Newtonian baseline")
+    plt.tight_layout()
+    plt.savefig(out_path / "lrl_magnitude_difference.png")
+    plt.close()
+
     print("Saved:")
     print(f" - {out_path / 'orbit_difference.png'}")
     print(f" - {out_path / 'velocity_difference.png'}")
@@ -445,6 +471,8 @@ def plot_comparison_diagnostics(
     print(f" - {out_path / 'perihelion_precession.png'}")
     print(f" - {out_path / 'lrl_perihelion_direction_comparison.png'}")
     print(f" - {out_path / 'lrl_perihelion_drift.png'}")
+    print(f" - {out_path / 'lrl_magnitude_comparison.png'}")
+    print(f" - {out_path / 'lrl_magnitude_difference.png'}")
     precession_rate = (delta_omega[-1] - delta_omega[0]) / time_years[-1]
     arcsec_per_century = precession_rate * 206265 * 100
 
