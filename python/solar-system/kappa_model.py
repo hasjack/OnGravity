@@ -221,3 +221,86 @@ def apply_kappa_additional_forces(
         p.ax += delta * ax_sun
         p.ay += delta * ay_sun
         p.az += delta * az_sun
+
+    import numpy as np
+
+
+def strain_rate_for_target_kr(
+    target_kr: float,
+    rho: float,
+    r_m: float,
+    kappa0: float = 2.6e-26,
+    kv: float = 5e-26,
+    rho0: float = 1600.0,
+) -> float:
+    """
+    Solve for the strain rate S needed to reach a target value of kappa * r.
+
+    Parameters
+    ----------
+    target_kr : float
+        Desired dimensionless value of kappa * r.
+    rho : float
+        Environmental density in kg/m^3.
+    r_m : float
+        Orbital radius in meters.
+    kappa0 : float
+        Background kappa in m^-1.
+    kv : float
+        Framework coupling constant in m^-1.
+    rho0 : float
+        Reference density in kg/m^3.
+
+    Returns
+    -------
+    float
+        Required strain rate S in s^-1.
+    """
+    if target_kr <= 0.0:
+        raise ValueError("target_kr must be > 0")
+    if rho <= 0.0:
+        raise ValueError("rho must be > 0")
+    if r_m <= 0.0:
+        raise ValueError("r_m must be > 0")
+    if kv <= 0.0:
+        raise ValueError("kv must be > 0")
+    if rho0 <= 0.0:
+        raise ValueError("rho0 must be > 0")
+
+    kappa_target = target_kr / r_m
+    density_factor = np.sqrt(rho / rho0)
+
+    # Environmental contribution required beyond kappa0
+    kappa_env_needed = kappa_target - kappa0
+
+    if kappa_env_needed <= 0.0:
+        return 0.0
+
+    shear_cubed = kappa_env_needed / (kv * density_factor)
+    return 1e-12 * shear_cubed ** (1.0 / 3.0)
+
+def print_strain_rate_targets(
+    rho: float,
+    r_m: float,
+    kappa0: float = 2.6e-26,
+    kv: float = 5e-26,
+    rho0: float = 1600.0,
+):
+    targets = [1e-8, 1e-6, 1e-3, 1.0]
+
+    print(f"rho = {rho:.3e} kg/m^3")
+    print(f"r   = {r_m:.3e} m")
+    print("Required strain rates:")
+
+    for target_kr in targets:
+        S = strain_rate_for_target_kr(
+            target_kr=target_kr,
+            rho=rho,
+            r_m=r_m,
+            kappa0=kappa0,
+            kv=kv,
+            rho0=rho0,
+        )
+        print(f"  target kappa*r = {target_kr:.1e}  ->  S = {S:.3e} s^-1")
+
+        
