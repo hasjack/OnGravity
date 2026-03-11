@@ -262,9 +262,9 @@ def plot_strain_rate_sweep(
         _,
         _,
         _,
-        _,
-        _,
-        _,
+        omega_base,
+        ex_base,
+        ey_base,
     ) = run_simulation(
         sim_template=sim_template,
         bodies=bodies,
@@ -274,6 +274,8 @@ def plot_strain_rate_sweep(
 
     max_delta_r = []
     final_delta_r = []
+    omega_precession_rates = []
+    lrl_precession_rates = []
     regimes = []
 
     for strain_rate in strain_rates:
@@ -297,9 +299,9 @@ def plot_strain_rate_sweep(
             _,
             _,
             _,
-            _,
-            _,
-            _,
+            omega_mod,
+            ex_mod,
+            ey_mod,
         ) = run_simulation(
             sim_template=sim_template,
             bodies=bodies,
@@ -324,18 +326,39 @@ def plot_strain_rate_sweep(
 
         regimes.append(regime)
 
+        # omega-based precession
+        omega_base_unwrapped = np.unwrap(omega_base)
+        omega_mod_unwrapped = np.unwrap(omega_mod)
+        delta_omega = omega_mod_unwrapped - omega_base_unwrapped
+        omega_rate = (delta_omega[-1] - delta_omega[0]) / time_years[-1]
+        omega_arcsec_per_century = omega_rate * 206265.0 * 100.0
+        omega_precession_rates.append(omega_arcsec_per_century)
+
+        # LRL-based precession
+        peri_dir_base = np.unwrap(np.arctan2(ey_base, ex_base))
+        peri_dir_mod = np.unwrap(np.arctan2(ey_mod, ex_mod))
+        delta_peri_dir = peri_dir_mod - peri_dir_base
+        lrl_rate = (delta_peri_dir[-1] - delta_peri_dir[0]) / time_years[-1]
+        lrl_arcsec_per_century = lrl_rate * 206265.0 * 100.0
+        lrl_precession_rates.append(lrl_arcsec_per_century)
+
         print(
             f"strain_rate={strain_rate:.3e}  "
             f"max_delta_r={max_r:.3e} AU  "
             f"final_delta_r={final_r:.3e} AU  "
+            f"omega_prec={omega_arcsec_per_century:.3e} arcsec/century  "
+            f"lrl_prec={lrl_arcsec_per_century:.3e} arcsec/century  "
             f"regime={regime}"
         )
 
     print("len(strain_rates) =", len(strain_rates))
     print("len(max_delta_r) =", len(max_delta_r))
     print("len(final_delta_r) =", len(final_delta_r))
+    print("len(omega_precession_rates) =", len(omega_precession_rates))
+    print("len(lrl_precession_rates) =", len(lrl_precession_rates))
     print("len(regimes) =", len(regimes))
 
+    # Orbital deviation sweep
     plt.figure(figsize=(7, 4))
     plt.loglog(strain_rates, max_delta_r, marker="o", label="max Δr")
     plt.loglog(strain_rates, final_delta_r, marker="s", label="final Δr")
@@ -350,15 +373,35 @@ def plot_strain_rate_sweep(
 
     plt.xlabel("Strain-rate [s⁻¹]")
     plt.ylabel("Orbital deviation [AU]")
-    plt.title(
-        f"{target_body} framework stability sweep at rho={rho:.1e} kg/m³"
-    )
+    plt.title(f"{target_body} framework stability sweep at rho={rho:.1e} kg/m³")
     plt.legend()
     plt.tight_layout()
     plt.savefig(out_path / f"{target_body.lower()}_strain_rate_sweep.png")
     plt.close()
 
+    # Precession sweep
+    plt.figure(figsize=(7, 4))
+    plt.semilogx(strain_rates, omega_precession_rates, marker="o", label="ω-based")
+    plt.semilogx(strain_rates, lrl_precession_rates, marker="s", label="LRL-based")
+
+    for s, y, regime in zip(strain_rates, omega_precession_rates, regimes):
+        color = (
+            "green" if regime == "safe"
+            else "orange" if regime == "distorted"
+            else "red"
+        )
+        plt.scatter(s, y, color=color, s=40)
+
+    plt.xlabel("Strain-rate [s⁻¹]")
+    plt.ylabel("Precession [arcsec/century]")
+    plt.title(f"{target_body} perihelion precession vs strain-rate at rho={rho:.1e} kg/m³")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(out_path / f"{target_body.lower()}_precession_vs_strain_rate.png")
+    plt.close()
+
     print(f"Saved: {out_path / f'{target_body.lower()}_strain_rate_sweep.png'}")
+    print(f"Saved: {out_path / f'{target_body.lower()}_precession_vs_strain_rate.png'}")
 
 def main():
     parser = argparse.ArgumentParser(
