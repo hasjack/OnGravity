@@ -135,6 +135,7 @@ def run_simulation(
     jx, jy = [], []
     jvx, jvy = [], []
     jax, jay = [], []
+    ja, je = [], []
 
     E0 = sim.energy()
 
@@ -153,6 +154,9 @@ def run_simulation(
         jvy.append(p.vy)
         jax.append(p.ax)
         jay.append(p.ay)
+        orbit = p.orbit(primary=sim.particles[0])
+        ja.append(orbit.a)
+        je.append(orbit.e)
 
     if sim_config.save_plots:
         plot_jupiter_trajectory(jx, jy, sim_config.years, kappa_config.mode, out_path)
@@ -170,6 +174,8 @@ def run_simulation(
         np.array(jvy),
         np.array(jax),
         np.array(jay),
+        np.array(ja),
+        np.array(je),
     )
 
 
@@ -181,12 +187,16 @@ def plot_comparison_diagnostics(
     jvy_base,
     jax_base,
     jay_base,
+    ja_base,
+    je_base,
     jx_mod,
     jy_mod,
     jvx_mod,
     jvy_mod,
     jax_mod,
     jay_mod,
+    ja_mod,
+    je_mod,
     output_dir: str,
 ):
     out_path = Path(output_dir)
@@ -260,12 +270,58 @@ def plot_comparison_diagnostics(
     plt.savefig(out_path / "orbital_radius_difference.png")
     plt.close()
 
+    # Semi-major axis comparison
+    plt.figure(figsize=(7, 4))
+    plt.plot(time_years, ja_base, label="Baseline")
+    plt.plot(time_years, ja_mod, label="Framework")
+    plt.xlabel("Time [years]")
+    plt.ylabel("Semi-major axis [AU]")
+    plt.title("Jupiter semi-major axis")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(out_path / "semi_major_axis_comparison.png")
+    plt.close()
+
+    plt.figure(figsize=(7, 4))
+    plt.plot(time_years, ja_mod - ja_base)
+    plt.xlabel("Time [years]")
+    plt.ylabel("Semi-major axis difference [AU]")
+    plt.title("Semi-major axis difference from Newtonian baseline")
+    plt.tight_layout()
+    plt.savefig(out_path / "semi_major_axis_difference.png")
+    plt.close()
+
+    # Eccentricity comparison
+    plt.figure(figsize=(7, 4))
+    plt.plot(time_years, je_base, label="Baseline")
+    plt.plot(time_years, je_mod, label="Framework")
+    plt.xlabel("Time [years]")
+    plt.ylabel("Eccentricity")
+    plt.title("Jupiter eccentricity")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(out_path / "eccentricity_comparison.png")
+    plt.close()
+
+    plt.figure(figsize=(7, 4))
+    plt.plot(time_years, je_mod - je_base)
+    plt.xlabel("Time [years]")
+    plt.ylabel("Eccentricity difference")
+    plt.title("Eccentricity difference from Newtonian baseline")
+    plt.tight_layout()
+    plt.savefig(out_path / "eccentricity_difference.png")
+    plt.close()
+
     print("Saved:")
     print(f" - {out_path / 'orbit_difference.png'}")
     print(f" - {out_path / 'velocity_difference.png'}")
     print(f" - {out_path / 'radial_acceleration_difference.png'}")
     print(f" - {out_path / 'orbital_radius_comparison.png'}")
     print(f" - {out_path / 'orbital_radius_difference.png'}")
+    print(f" - {out_path / 'semi_major_axis_comparison.png'}")
+    print(f" - {out_path / 'semi_major_axis_difference.png'}")
+    print(f" - {out_path / 'eccentricity_comparison.png'}")
+    print(f" - {out_path / 'eccentricity_difference.png'}")
 
 
 def plot_strain_rate_sweep(
@@ -311,6 +367,8 @@ def plot_strain_rate_sweep(
         jvy_base,
         jax_base,
         jay_base,
+        ja_base,
+        je_base,
     ) = run_simulation(
         sim_template=sim_template,
         bodies=bodies,
@@ -340,6 +398,8 @@ def plot_strain_rate_sweep(
             jvy_mod,
             jax_mod,
             jay_mod,
+            ja_mod,
+            je_mod,
         ) = run_simulation(
             sim_template=sim_template,
             bodies=bodies,
@@ -510,6 +570,8 @@ def main():
         jvy_base,
         jax_base,
         jay_base,
+        ja_base,
+        je_base,
     ) = run_simulation(
         sim_template=sim_template,
         bodies=bodies,
@@ -541,6 +603,8 @@ def main():
         jvy_mod,
         jax_mod,
         jay_mod,
+        ja_mod,
+        je_mod,
     ) = run_simulation(
         sim_template=sim_template,
         bodies=bodies,
@@ -556,12 +620,16 @@ def main():
         jvy_base=jvy_base,
         jax_base=jax_base,
         jay_base=jay_base,
+        ja_base=ja_base,
+        je_base=je_base,
         jx_mod=jx_mod,
         jy_mod=jy_mod,
         jvx_mod=jvx_mod,
         jvy_mod=jvy_mod,
         jax_mod=jax_mod,
         jay_mod=jay_mod,
+        ja_mod=ja_mod,
+        je_mod=je_mod,
         output_dir=args.out,
     )
 
