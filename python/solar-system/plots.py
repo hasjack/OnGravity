@@ -284,3 +284,9 @@ def plot_comparison_diagnostics(
     print(f" - {out_path / 'lrl_perihelion_drift.png'}")
     print(f" - {out_path / 'lrl_magnitude_comparison.png'}")
     print(f" - {out_path / 'lrl_magnitude_difference.png'}")
+
+    precession_rate = (delta_omega[-1] - delta_omega[0]) / time_years[-1]
+    arcsec_per_century = precession_rate * 206265 * 100
+
+    print("Estimated perihelion precession:", arcsec_per_century, "arcsec/century")
+
