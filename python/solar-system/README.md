@@ -129,14 +129,15 @@ Typical behaviour observed:
 
 ## Stability regimes observed (κ-framework)
 
-Example behaviour for `ρ = 1e-12`:
+Example behaviour for `ρ = 1e-12` over 200-year runs:
 
 | strain rate | behaviour |
 |---|---|
 | `1e-7` | stable, minimal drift |
-| `5e-7` | stable but measurable secular phase drift |
-| `~1e-6` | significant orbital deformation |
-| `>2e-6` | unstable orbit divergence |
+| `5.337e-7` | stable but measurable secular drift |
+| `1.233e-6` | significant orbital deformation |
+| `1.874e-6` | strong deformation / near-unstable threshold |
+| `> 2e-6` | unstable orbit divergence |
 
 ## Notes
 - This Solar System baseline acts as a canonical control for experiments involving:
