@@ -118,19 +118,14 @@ def framework_multiplier_from_kappa(
     clamp_min: float = 1e-6,
     clamp_max: float = 1e6,
 ) -> float:
-    """
-    Multiplier for Newtonian acceleration from κ-modified potential.
-
-    If:
-        Φ = -(GM/r) * exp(κr)
-
-    then:
-        a_r = -(GM/r^2) * exp(κr) * (1 - κr)
-
-    so the multiplier relative to Newtonian is:
-        exp(κr) * (1 - κr)
-    """
     kr = kappa * r_m
+
+    # Prevent overflow in exp for extreme runs
+    if kr > 700:
+        return clamp(clamp_max, clamp_min, clamp_max)
+    if kr < -700:
+        return clamp(clamp_min, clamp_min, clamp_max)
+
     multiplier = float(np.exp(kr) * (1.0 - kr))
     return clamp(multiplier, clamp_min, clamp_max)
 
