@@ -137,6 +137,7 @@ def run_simulation(
     jax, jay = [], []
     ja, je = [], []
     jtheta = []
+    jomega = []
 
 
     E0 = sim.energy()
@@ -161,6 +162,7 @@ def run_simulation(
         je.append(orbit.e)
         theta = np.arctan2(p.y, p.x)
         jtheta.append(theta)
+        jomega.append(orbit.omega)
 
     if sim_config.save_plots:
         plot_jupiter_trajectory(jx, jy, sim_config.years, kappa_config.mode, out_path)
@@ -181,6 +183,7 @@ def run_simulation(
         np.array(ja),
         np.array(je),
         np.array(jtheta),
+        np.array(jomega),
     )
 
 
@@ -195,6 +198,7 @@ def plot_comparison_diagnostics(
     ja_base,
     je_base,
     jtheta_base,
+    jomega_base,
     jx_mod,
     jy_mod,
     jvx_mod,
@@ -204,6 +208,7 @@ def plot_comparison_diagnostics(
     ja_mod,
     je_mod,
     jtheta_mod,
+    jomega_mod,
     output_dir: str,
 ):
     out_path = Path(output_dir)
@@ -345,6 +350,32 @@ def plot_comparison_diagnostics(
     plt.savefig(out_path / "orbital_phase_drift.png")
     plt.close()
 
+    omega_base = np.unwrap(jomega_base)
+    omega_mod = np.unwrap(jomega_mod)
+    delta_omega = omega_mod - omega_base
+
+    # Perihelion comparison
+    plt.figure(figsize=(7, 4))
+    plt.plot(time_years, omega_base, label="Baseline")
+    plt.plot(time_years, omega_mod, label="Framework")
+    plt.xlabel("Time [years]")
+    plt.ylabel("Argument of perihelion [rad]")
+    plt.title("Jupiter perihelion argument")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(out_path / "perihelion_argument_comparison.png")
+    plt.close()
+
+    # Perihelion precession relative to baseline
+    plt.figure(figsize=(7, 4))
+    plt.plot(time_years, delta_omega)
+    plt.xlabel("Time [years]")
+    plt.ylabel("Perihelion difference [rad]")
+    plt.title("Perihelion precession from Newtonian baseline")
+    plt.tight_layout()
+    plt.savefig(out_path / "perihelion_precession.png")
+    plt.close()
+
     print("Saved:")
     print(f" - {out_path / 'orbit_difference.png'}")
     print(f" - {out_path / 'velocity_difference.png'}")
@@ -357,6 +388,12 @@ def plot_comparison_diagnostics(
     print(f" - {out_path / 'eccentricity_difference.png'}")
     print(f" - {out_path / 'orbital_phase_comparison.png'}")
     print(f" - {out_path / 'orbital_phase_drift.png'}")
+    print(f" - {out_path / 'perihelion_argument_comparison.png'}")
+    print(f" - {out_path / 'perihelion_precession.png'}")
+    precession_rate = (delta_omega[-1] - delta_omega[0]) / time_years[-1]
+    arcsec_per_century = precession_rate * 206265 * 100
+
+    print("Estimated perihelion precession:", arcsec_per_century, "arcsec/century")
 
 
 def plot_strain_rate_sweep(
@@ -405,6 +442,7 @@ def plot_strain_rate_sweep(
         ja_base,
         je_base,
         jtheta_base,
+        jomega_base,
     ) = run_simulation(
         sim_template=sim_template,
         bodies=bodies,
@@ -437,6 +475,7 @@ def plot_strain_rate_sweep(
             ja_mod,
             je_mod,
             jtheta_mod,
+            jomega_mod,
         ) = run_simulation(
             sim_template=sim_template,
             bodies=bodies,
@@ -610,6 +649,7 @@ def main():
         ja_base,
         je_base,
         jtheta_base,
+        jomega_base,
     ) = run_simulation(
         sim_template=sim_template,
         bodies=bodies,
@@ -644,6 +684,7 @@ def main():
         ja_mod,
         je_mod,
         jtheta_mod,
+        jomega_mod,
     ) = run_simulation(
         sim_template=sim_template,
         bodies=bodies,
@@ -662,6 +703,7 @@ def main():
         ja_base=ja_base,
         je_base=je_base,
         jtheta_base=jtheta_base,
+        jomega_base =jomega_base,
         jx_mod=jx_mod,
         jy_mod=jy_mod,
         jvx_mod=jvx_mod,
@@ -671,6 +713,7 @@ def main():
         ja_mod=ja_mod,
         je_mod=je_mod,
         jtheta_mod=jtheta_mod,
+        jomega_mod=jomega_mod,
         output_dir=args.out,
     )
 
