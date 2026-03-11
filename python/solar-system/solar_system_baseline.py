@@ -20,8 +20,25 @@ from kappa_model import (
     apply_kappa_additional_forces,
     print_strain_rate_targets,
 )
+from plots import (
+    plot_body_trajectory,
+    plot_energy_diagnostic,
+    plot_comparison_diagnostics,
+)
 
-JUPITER_R_M = 5.2 * 1.495978707e11
+AU_IN_M = 1.495978707e11
+
+BODY_SEMI_MAJOR_AU = {
+    "Mercury": 0.387,
+    "Venus": 0.723,
+    "Earth": 1.000,
+    "Mars": 1.524,
+    "Jupiter": 5.2044,
+    "Saturn": 9.5826,
+    "Uranus": 19.2184,
+    "Neptune": 30.1104,
+}
+
 SAFE_LIMIT = 1e-6       # AU  (essentially Newtonian)
 DISTORT_LIMIT = 1e-2    # AU  (orbit noticeably altered)
 
@@ -32,6 +49,8 @@ class SimulationConfig:
     steps: int = 4000
     output_dir: str = "outputs"
     save_plots: bool = True
+    target_body: str = "Jupiter"
+    primary_body: str = "Sun"
 
 
 @dataclass
@@ -72,31 +91,6 @@ def build_simulation():
     return sim, bodies
 
 
-def plot_jupiter_trajectory(jx, jy, years, mode, out_path):
-    plt.figure(figsize=(6, 6))
-    plt.plot(jx, jy, label="Jupiter")
-    plt.scatter(0, 0, s=80, label="Sun")
-    plt.gca().set_aspect("equal")
-    plt.xlabel("x [AU]")
-    plt.ylabel("y [AU]")
-    plt.title(f"Jupiter trajectory ({years} years, mode={mode})")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(out_path / f"jupiter_trajectory_{mode}.png")
-    plt.close()
-
-
-def plot_energy_diagnostic(times, energy_error, mode, out_path):
-    plt.figure(figsize=(7, 4))
-    plt.plot(times, energy_error)
-    plt.xlabel("Time [years]")
-    plt.ylabel("Relative energy error")
-    plt.title(f"Energy diagnostic ({mode})")
-    plt.tight_layout()
-    plt.savefig(out_path / f"energy_error_{mode}.png")
-    plt.close()
-
-
 def run_simulation(
     sim_template,
     bodies,
@@ -107,7 +101,8 @@ def run_simulation(
     out_path.mkdir(parents=True, exist_ok=True)
 
     sim = sim_template.copy()
-    jupiter_index = bodies.index("Jupiter")
+    target_index = bodies.index(sim_config.target_body)
+    primary_index = bodies.index(sim_config.primary_body)
 
     if kappa_config.mode in {"framework", "sparc_fit"}:
         def additional_forces(reb_sim):
@@ -151,20 +146,20 @@ def run_simulation(
         E = sim.energy()
         energy_error.append((E - E0) / abs(E0))
 
-        p = sim.particles[jupiter_index]
+        p = sim.particles[target_index]
         jx.append(p.x)
         jy.append(p.y)
         jvx.append(p.vx)
         jvy.append(p.vy)
         jax.append(p.ax)
         jay.append(p.ay)
-        orbit = p.orbit(primary=sim.particles[0])
+        orbit = p.orbit(primary=sim.particles[primary_index])
         ja.append(orbit.a)
         je.append(orbit.e)
         theta = np.arctan2(p.y, p.x)
         jtheta.append(theta)
         jomega.append(orbit.omega)
-        sun = sim.particles[0]
+        sun = sim.particles[primary_index]
 
         rx = p.x - sun.x
         ry = p.y - sun.y
@@ -188,11 +183,18 @@ def run_simulation(
         jey_vec.append(e_vec[1])
 
     if sim_config.save_plots:
-        plot_jupiter_trajectory(jx, jy, sim_config.years, kappa_config.mode, out_path)
+        plot_body_trajectory(
+            jx,
+            jy,
+            sim_config.years,
+            sim_config.target_body,
+            kappa_config.mode,
+            out_path,
+        )
         plot_energy_diagnostic(times, energy_error, kappa_config.mode, out_path)
 
         print("Saved:")
-        print(f" - {out_path / f'jupiter_trajectory_{kappa_config.mode}.png'}")
+        print(f" - {out_path / f'{sim_config.target_body.lower()}_trajectory_{kappa_config.mode}.png'}")
         print(f" - {out_path / f'energy_error_{kappa_config.mode}.png'}")
 
     return (
@@ -212,273 +214,6 @@ def run_simulation(
     )
 
 
-def plot_comparison_diagnostics(
-    time_years,
-    jx_base,
-    jy_base,
-    jvx_base,
-    jvy_base,
-    jax_base,
-    jay_base,
-    ja_base,
-    je_base,
-    jtheta_base,
-    jomega_base,
-    jex_base,
-    jey_base,
-    jx_mod,
-    jy_mod,
-    jvx_mod,
-    jvy_mod,
-    jax_mod,
-    jay_mod,
-    ja_mod,
-    je_mod,
-    jtheta_mod,
-    jomega_mod,
-    jex_mod,
-    jey_mod,
-    output_dir: str,
-):
-    out_path = Path(output_dir)
-    out_path.mkdir(parents=True, exist_ok=True)
-
-    # Position residual
-    delta_r = np.sqrt((jx_mod - jx_base) ** 2 + (jy_mod - jy_base) ** 2)
-
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, delta_r)
-    plt.xlabel("Time [years]")
-    plt.ylabel("Orbital deviation [AU]")
-    plt.title("Deviation from Newtonian baseline")
-    plt.tight_layout()
-    plt.savefig(out_path / "orbit_difference.png")
-    plt.close()
-
-    # Velocity residual
-    delta_v = np.sqrt((jvx_mod - jvx_base) ** 2 + (jvy_mod - jvy_base) ** 2)
-
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, delta_v)
-    plt.xlabel("Time [years]")
-    plt.ylabel("Velocity deviation [AU/day]")
-    plt.title("Velocity deviation from Newtonian baseline")
-    plt.tight_layout()
-    plt.savefig(out_path / "velocity_difference.png")
-    plt.close()
-
-    # Radial acceleration residual
-    dax = jax_mod - jax_base
-    day = jay_mod - jay_base
-
-    r_norm = np.sqrt(jx_base ** 2 + jy_base ** 2)
-    rhat_x = jx_base / r_norm
-    rhat_y = jy_base / r_norm
-
-    delta_a_r = dax * rhat_x + day * rhat_y
-
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, delta_a_r)
-    plt.xlabel("Time [years]")
-    plt.ylabel("Radial acceleration residual [AU/day²]")
-    plt.title("Radial acceleration residual from Newtonian baseline")
-    plt.tight_layout()
-    plt.savefig(out_path / "radial_acceleration_difference.png")
-    plt.close()
-
-    # Orbital radius time series
-    r_base = np.sqrt(jx_base ** 2 + jy_base ** 2)
-    r_mod = np.sqrt(jx_mod ** 2 + jy_mod ** 2)
-    delta_radius = r_mod - r_base
-
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, r_base, label="Baseline")
-    plt.plot(time_years, r_mod, label="Framework")
-    plt.xlabel("Time [years]")
-    plt.ylabel("Orbital radius [AU]")
-    plt.title("Jupiter orbital radius")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(out_path / "orbital_radius_comparison.png")
-    plt.close()
-
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, delta_radius)
-    plt.xlabel("Time [years]")
-    plt.ylabel("Radius difference [AU]")
-    plt.title("Orbital radius difference from Newtonian baseline")
-    plt.tight_layout()
-    plt.savefig(out_path / "orbital_radius_difference.png")
-    plt.close()
-
-    # Semi-major axis comparison
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, ja_base, label="Baseline")
-    plt.plot(time_years, ja_mod, label="Framework")
-    plt.xlabel("Time [years]")
-    plt.ylabel("Semi-major axis [AU]")
-    plt.title("Jupiter semi-major axis")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(out_path / "semi_major_axis_comparison.png")
-    plt.close()
-
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, ja_mod - ja_base)
-    plt.xlabel("Time [years]")
-    plt.ylabel("Semi-major axis difference [AU]")
-    plt.title("Semi-major axis difference from Newtonian baseline")
-    plt.tight_layout()
-    plt.savefig(out_path / "semi_major_axis_difference.png")
-    plt.close()
-
-    # Eccentricity comparison
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, je_base, label="Baseline")
-    plt.plot(time_years, je_mod, label="Framework")
-    plt.xlabel("Time [years]")
-    plt.ylabel("Eccentricity")
-    plt.title("Jupiter eccentricity")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(out_path / "eccentricity_comparison.png")
-    plt.close()
-
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, je_mod - je_base)
-    plt.xlabel("Time [years]")
-    plt.ylabel("Eccentricity difference")
-    plt.title("Eccentricity difference from Newtonian baseline")
-    plt.tight_layout()
-    plt.savefig(out_path / "eccentricity_difference.png")
-    plt.close()
-
-    theta_base = np.unwrap(jtheta_base)
-    theta_mod = np.unwrap(jtheta_mod)
-    delta_theta = theta_mod - theta_base
-
-    # Phase comparison
-    plt.figure(figsize=(7,4))
-    plt.plot(time_years, theta_base, label="Baseline")
-    plt.plot(time_years, theta_mod, label="Framework")
-    plt.xlabel("Time [years]")
-    plt.ylabel("Orbital phase [rad]")
-    plt.title("Jupiter orbital phase")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(out_path / "orbital_phase_comparison.png")
-    plt.close()
-
-    # Phase drift
-    plt.figure(figsize=(7,4))
-    plt.plot(time_years, delta_theta)
-    plt.xlabel("Time [years]")
-    plt.ylabel("Phase difference [rad]")
-    plt.title("Orbital phase drift from Newtonian baseline")
-    plt.tight_layout()
-    plt.savefig(out_path / "orbital_phase_drift.png")
-    plt.close()
-
-    omega_base = np.unwrap(jomega_base)
-    omega_mod = np.unwrap(jomega_mod)
-    delta_omega = omega_mod - omega_base
-
-    # Perihelion comparison
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, omega_base, label="Baseline")
-    plt.plot(time_years, omega_mod, label="Framework")
-    plt.xlabel("Time [years]")
-    plt.ylabel("Argument of perihelion [rad]")
-    plt.title("Jupiter perihelion argument")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(out_path / "perihelion_argument_comparison.png")
-    plt.close()
-
-    # Perihelion precession relative to baseline
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, delta_omega)
-    plt.xlabel("Time [years]")
-    plt.ylabel("Perihelion difference [rad]")
-    plt.title("Perihelion precession from Newtonian baseline")
-    plt.tight_layout()
-    plt.savefig(out_path / "perihelion_precession.png")
-    plt.close()
-
-    peri_dir_base = np.unwrap(np.arctan2(jey_base, jex_base))
-    peri_dir_mod = np.unwrap(np.arctan2(jey_mod, jex_mod))
-    delta_peri_dir = peri_dir_mod - peri_dir_base
-
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, peri_dir_base, label="Baseline")
-    plt.plot(time_years, peri_dir_mod, label="Framework")
-    plt.xlabel("Time [years]")
-    plt.ylabel("Perihelion direction [rad]")
-    plt.title("LRL perihelion direction")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(out_path / "lrl_perihelion_direction_comparison.png")
-    plt.close()
-
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, delta_peri_dir)
-    plt.xlabel("Time [years]")
-    plt.ylabel("Perihelion direction difference [rad]")
-    plt.title("LRL perihelion drift from Newtonian baseline")
-    plt.tight_layout()
-    plt.savefig(out_path / "lrl_perihelion_drift.png")
-    plt.close()
-
-    lrl_mag_base = np.sqrt(jex_base ** 2 + jey_base ** 2)
-    lrl_mag_mod = np.sqrt(jex_mod ** 2 + jey_mod ** 2)
-    delta_lrl_mag = lrl_mag_mod - lrl_mag_base
-
-    # LRL vector magnitude comparison
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, lrl_mag_base, label="Baseline")
-    plt.plot(time_years, lrl_mag_mod, label="Framework")
-    plt.xlabel("Time [years]")
-    plt.ylabel("|LRL vector|")
-    plt.title("Jupiter LRL vector magnitude")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(out_path / "lrl_magnitude_comparison.png")
-    plt.close()
-
-    # LRL vector magnitude difference
-    plt.figure(figsize=(7, 4))
-    plt.plot(time_years, delta_lrl_mag)
-    plt.xlabel("Time [years]")
-    plt.ylabel("LRL magnitude difference")
-    plt.title("LRL magnitude difference from Newtonian baseline")
-    plt.tight_layout()
-    plt.savefig(out_path / "lrl_magnitude_difference.png")
-    plt.close()
-
-    print("Saved:")
-    print(f" - {out_path / 'orbit_difference.png'}")
-    print(f" - {out_path / 'velocity_difference.png'}")
-    print(f" - {out_path / 'radial_acceleration_difference.png'}")
-    print(f" - {out_path / 'orbital_radius_comparison.png'}")
-    print(f" - {out_path / 'orbital_radius_difference.png'}")
-    print(f" - {out_path / 'semi_major_axis_comparison.png'}")
-    print(f" - {out_path / 'semi_major_axis_difference.png'}")
-    print(f" - {out_path / 'eccentricity_comparison.png'}")
-    print(f" - {out_path / 'eccentricity_difference.png'}")
-    print(f" - {out_path / 'orbital_phase_comparison.png'}")
-    print(f" - {out_path / 'orbital_phase_drift.png'}")
-    print(f" - {out_path / 'perihelion_argument_comparison.png'}")
-    print(f" - {out_path / 'perihelion_precession.png'}")
-    print(f" - {out_path / 'lrl_perihelion_direction_comparison.png'}")
-    print(f" - {out_path / 'lrl_perihelion_drift.png'}")
-    print(f" - {out_path / 'lrl_magnitude_comparison.png'}")
-    print(f" - {out_path / 'lrl_magnitude_difference.png'}")
-    precession_rate = (delta_omega[-1] - delta_omega[0]) / time_years[-1]
-    arcsec_per_century = precession_rate * 206265 * 100
-
-    print("Estimated perihelion precession:", arcsec_per_century, "arcsec/century")
-
-
 def plot_strain_rate_sweep(
     years: float,
     steps: int,
@@ -487,6 +222,7 @@ def plot_strain_rate_sweep(
     kv: float,
     rho0: float,
     output_dir: str,
+    target_body: str,
 ):
     out_path = Path(output_dir)
     out_path.mkdir(parents=True, exist_ok=True)
@@ -503,6 +239,7 @@ def plot_strain_rate_sweep(
         steps=steps,
         output_dir=output_dir,
         save_plots=False,
+        target_body=target_body,
     )
 
     baseline_config = KappaConfig(
@@ -516,16 +253,18 @@ def plot_strain_rate_sweep(
 
     (
         time_years,
-        jx_base,
-        jy_base,
-        jvx_base,
-        jvy_base,
-        jax_base,
-        jay_base,
-        ja_base,
-        je_base,
-        jtheta_base,
-        jomega_base,
+        x_base,
+        y_base,
+        _,
+        _,
+        _,
+        _,
+        _,
+        _,
+        _,
+        _,
+        _,
+        _,
     ) = run_simulation(
         sim_template=sim_template,
         bodies=bodies,
@@ -549,16 +288,18 @@ def plot_strain_rate_sweep(
 
         (
             _,
-            jx_mod,
-            jy_mod,
-            jvx_mod,
-            jvy_mod,
-            jax_mod,
-            jay_mod,
-            ja_mod,
-            je_mod,
-            jtheta_mod,
-            jomega_mod,
+            x_mod,
+            y_mod,
+            _,
+            _,
+            _,
+            _,
+            _,
+            _,
+            _,
+            _,
+            _,
+            _,
         ) = run_simulation(
             sim_template=sim_template,
             bodies=bodies,
@@ -566,7 +307,7 @@ def plot_strain_rate_sweep(
             kappa_config=framework_config,
         )
 
-        delta_r = np.sqrt((jx_mod - jx_base) ** 2 + (jy_mod - jy_base) ** 2)
+        delta_r = np.sqrt((x_mod - x_base) ** 2 + (y_mod - y_base) ** 2)
 
         max_r = np.max(delta_r)
         final_r = delta_r[-1]
@@ -609,14 +350,15 @@ def plot_strain_rate_sweep(
 
     plt.xlabel("Strain-rate [s⁻¹]")
     plt.ylabel("Orbital deviation [AU]")
-    plt.title(f"Framework stability sweep at rho={rho:.1e} kg/m³")
+    plt.title(
+        f"{target_body} framework stability sweep at rho={rho:.1e} kg/m³"
+    )
     plt.legend()
     plt.tight_layout()
-    plt.savefig(out_path / "strain_rate_sweep.png")
+    plt.savefig(out_path / f"{target_body.lower()}_strain_rate_sweep.png")
     plt.close()
 
-    print(f"Saved: {out_path / 'strain_rate_sweep.png'}")
-
+    print(f"Saved: {out_path / f'{target_body.lower()}_strain_rate_sweep.png'}")
 
 def main():
     parser = argparse.ArgumentParser(
@@ -628,6 +370,12 @@ def main():
         default="baseline",
         choices=["baseline", "framework", "sparc_fit"],
         help="Run mode",
+    )
+    parser.add_argument(
+        "--target",
+        default="Jupiter",
+        choices=["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"],
+        help="Target body for diagnostics",
     )
     parser.add_argument(
         "--years",
@@ -695,9 +443,10 @@ def main():
     args = parser.parse_args()
 
     if args.sweep_strain:
+        target_r_m = BODY_SEMI_MAJOR_AU.get(args.target, BODY_SEMI_MAJOR_AU["Jupiter"]) * AU_IN_M
         print_strain_rate_targets(
             rho=args.rho if args.rho > 0 else 1e-12,
-            r_m=JUPITER_R_M,
+            r_m=target_r_m,
         )
         plot_strain_rate_sweep(
             years=args.years,
@@ -707,6 +456,7 @@ def main():
             kv=args.kv,
             rho0=args.rho0,
             output_dir=args.out,
+            target_body=args.target,
         )
         return
 
@@ -717,6 +467,7 @@ def main():
         steps=args.steps,
         output_dir=args.out,
         save_plots=True,
+        target_body=args.target,
     )
 
     baseline_config = KappaConfig(mode="baseline")
@@ -790,7 +541,7 @@ def main():
         ja_base=ja_base,
         je_base=je_base,
         jtheta_base=jtheta_base,
-        jomega_base =jomega_base,
+        jomega_base=jomega_base,
         jex_base=jex_base,
         jey_base=jey_base,
         jx_mod=jx_mod,
@@ -806,6 +557,7 @@ def main():
         jex_mod=jex_mod,
         jey_mod=jey_mod,
         output_dir=args.out,
+        body_name=sim_config.target_body,
     )
 
 
