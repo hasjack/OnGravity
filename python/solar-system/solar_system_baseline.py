@@ -136,6 +136,8 @@ def run_simulation(
     jvx, jvy = [], []
     jax, jay = [], []
     ja, je = [], []
+    jtheta = []
+
 
     E0 = sim.energy()
 
@@ -157,6 +159,8 @@ def run_simulation(
         orbit = p.orbit(primary=sim.particles[0])
         ja.append(orbit.a)
         je.append(orbit.e)
+        theta = np.arctan2(p.y, p.x)
+        jtheta.append(theta)
 
     if sim_config.save_plots:
         plot_jupiter_trajectory(jx, jy, sim_config.years, kappa_config.mode, out_path)
@@ -176,6 +180,7 @@ def run_simulation(
         np.array(jay),
         np.array(ja),
         np.array(je),
+        np.array(jtheta),
     )
 
 
@@ -189,6 +194,7 @@ def plot_comparison_diagnostics(
     jay_base,
     ja_base,
     je_base,
+    jtheta_base,
     jx_mod,
     jy_mod,
     jvx_mod,
@@ -197,6 +203,7 @@ def plot_comparison_diagnostics(
     jay_mod,
     ja_mod,
     je_mod,
+    jtheta_mod,
     output_dir: str,
 ):
     out_path = Path(output_dir)
@@ -312,6 +319,32 @@ def plot_comparison_diagnostics(
     plt.savefig(out_path / "eccentricity_difference.png")
     plt.close()
 
+    theta_base = np.unwrap(jtheta_base)
+    theta_mod = np.unwrap(jtheta_mod)
+    delta_theta = theta_mod - theta_base
+
+    # Phase comparison
+    plt.figure(figsize=(7,4))
+    plt.plot(time_years, theta_base, label="Baseline")
+    plt.plot(time_years, theta_mod, label="Framework")
+    plt.xlabel("Time [years]")
+    plt.ylabel("Orbital phase [rad]")
+    plt.title("Jupiter orbital phase")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(out_path / "orbital_phase_comparison.png")
+    plt.close()
+
+    # Phase drift
+    plt.figure(figsize=(7,4))
+    plt.plot(time_years, delta_theta)
+    plt.xlabel("Time [years]")
+    plt.ylabel("Phase difference [rad]")
+    plt.title("Orbital phase drift from Newtonian baseline")
+    plt.tight_layout()
+    plt.savefig(out_path / "orbital_phase_drift.png")
+    plt.close()
+
     print("Saved:")
     print(f" - {out_path / 'orbit_difference.png'}")
     print(f" - {out_path / 'velocity_difference.png'}")
@@ -322,6 +355,8 @@ def plot_comparison_diagnostics(
     print(f" - {out_path / 'semi_major_axis_difference.png'}")
     print(f" - {out_path / 'eccentricity_comparison.png'}")
     print(f" - {out_path / 'eccentricity_difference.png'}")
+    print(f" - {out_path / 'orbital_phase_comparison.png'}")
+    print(f" - {out_path / 'orbital_phase_drift.png'}")
 
 
 def plot_strain_rate_sweep(
@@ -369,6 +404,7 @@ def plot_strain_rate_sweep(
         jay_base,
         ja_base,
         je_base,
+        jtheta_base,
     ) = run_simulation(
         sim_template=sim_template,
         bodies=bodies,
@@ -400,6 +436,7 @@ def plot_strain_rate_sweep(
             jay_mod,
             ja_mod,
             je_mod,
+            jtheta_mod,
         ) = run_simulation(
             sim_template=sim_template,
             bodies=bodies,
@@ -572,6 +609,7 @@ def main():
         jay_base,
         ja_base,
         je_base,
+        jtheta_base,
     ) = run_simulation(
         sim_template=sim_template,
         bodies=bodies,
@@ -605,6 +643,7 @@ def main():
         jay_mod,
         ja_mod,
         je_mod,
+        jtheta_mod,
     ) = run_simulation(
         sim_template=sim_template,
         bodies=bodies,
@@ -622,6 +661,7 @@ def main():
         jay_base=jay_base,
         ja_base=ja_base,
         je_base=je_base,
+        jtheta_base=jtheta_base,
         jx_mod=jx_mod,
         jy_mod=jy_mod,
         jvx_mod=jvx_mod,
@@ -630,6 +670,7 @@ def main():
         jay_mod=jay_mod,
         ja_mod=ja_mod,
         je_mod=je_mod,
+        jtheta_mod=jtheta_mod,
         output_dir=args.out,
     )
 
