@@ -220,11 +220,37 @@ def plot_comparison_diagnostics(
     plt.savefig(out_path / "radial_acceleration_difference.png")
     plt.close()
 
+    # Orbital radius time series
+    r_base = np.sqrt(jx_base ** 2 + jy_base ** 2)
+    r_mod = np.sqrt(jx_mod ** 2 + jy_mod ** 2)
+    delta_radius = r_mod - r_base
+
+    plt.figure(figsize=(7, 4))
+    plt.plot(time_years, r_base, label="Baseline")
+    plt.plot(time_years, r_mod, label="Framework")
+    plt.xlabel("Time [years]")
+    plt.ylabel("Orbital radius [AU]")
+    plt.title("Jupiter orbital radius")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(out_path / "orbital_radius_comparison.png")
+    plt.close()
+
+    plt.figure(figsize=(7, 4))
+    plt.plot(time_years, delta_radius)
+    plt.xlabel("Time [years]")
+    plt.ylabel("Radius difference [AU]")
+    plt.title("Orbital radius difference from Newtonian baseline")
+    plt.tight_layout()
+    plt.savefig(out_path / "orbital_radius_difference.png")
+    plt.close()
+
     print("Saved:")
     print(f" - {out_path / 'orbit_difference.png'}")
     print(f" - {out_path / 'velocity_difference.png'}")
     print(f" - {out_path / 'radial_acceleration_difference.png'}")
-
+    print(f" - {out_path / 'orbital_radius_comparison.png'}")
+    print(f" - {out_path / 'orbital_radius_difference.png'}")
 
 def plot_strain_rate_sweep(
     years: float,
