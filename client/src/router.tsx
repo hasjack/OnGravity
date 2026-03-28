@@ -12,7 +12,7 @@ import PaperV4 from './pages/PaperV4'
 // import Theory from './pages/Theory'
 // import ToyGalaxy from "./pages/ToyGalaxy"
 
-const router = createBrowserRouter([
+const routes = [
     { 
         path: "/",
         element: <Layout />,
@@ -80,6 +80,8 @@ const router = createBrowserRouter([
     //         { index: true, element: <ToyGalaxy /> },
     //     ]
     // }
-])
+]
+
+const router = createBrowserRouter(routes, { basename: '/' })
 
 export default router
