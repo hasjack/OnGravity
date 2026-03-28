@@ -144,52 +144,46 @@ export function makeLensRows(inputs: LensInput[]): LensRow[] {
 }
 
 /** ---------- super-plain table UI ---------- */
-const tableStyle: React.CSSProperties = {
-    width: '90%',
-    borderCollapse: 'collapse',
-    fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, sans-serif',
-}
-const thtd: React.CSSProperties = { borderBottom: '1px solid #ddd', padding: '8px', textAlign: 'left' }
-const mono: React.CSSProperties = { fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' }
-const small: React.CSSProperties = { fontSize: 12, opacity: 0.85 }
 
 const LensingTable: React.FC = () => {
     const rows = makeLensRows(lensInput)
     return (
-        <table style={tableStyle}>
-            <thead>
-                <tr>
-                    <th style={thtd}>Lens</th>
-                    <th style={thtd}><span style={mono}>M</span> (kg)</th>
-                    <th style={thtd}><span style={mono}>b</span> (m)</th>
-                    <th style={thtd}><span style={mono}>α_GR</span> (arcsec)</th>
-                    <th style={thtd}><span style={mono}>κ</span> (m⁻¹)</th>
-                    <th style={thtd}><span style={mono}>e^(κ b/2)</span></th>
-                    <th style={thtd}><span style={mono}>α_model</span> (arcsec)</th>
-                    <th style={thtd}><span style={mono}>α_obs</span> (arcsec)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {rows.map((r, i) => (
-                    <tr key={i}>
-                        <td style={thtd}>{r.name}</td>
-                        <td style={{ ...thtd, ...mono }}>{r.mass_kg}</td>
-                        <td style={{ ...thtd, ...mono }}>{r.b_m}</td>
-                        <td style={{ ...thtd, ...mono }}>
-                            {r.grMatch ? '✅' : '🛑'} {r.alpha_GR_arcsec}
-                            <div style={{ ...small, ...mono }}>α_GR = 4GM/(c²b) → {Number(r.alpha_GR_rad_num).toFixed(12)} rad</div>
-                        </td>
-                        <td style={{ ...thtd, ...mono }}>{r.kappa_minv}</td>
-                        <td style={{ ...thtd, ...mono }}>{r.boost_e_kb2}</td>
-                        <td style={{ ...thtd, ...mono }}>
-                            {r.match ? '✅' : '🛑'} {r.alpha_model_arcsec}
-                            <div style={{ ...small, ...mono }}>α_model = α_GR · e^(κb/2) → {Number(r.alpha_model_rad_num).toFixed(12)} rad</div>
-                        </td>
-                        <td style={{ ...thtd, ...mono }}>{r.alpha_obs_arcsec || '—'}</td>
+        <div className="w-full overflow-x-auto mb-16">
+            <table className="w-full border-collapse font-system">
+                <thead>
+                    <tr>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold">Lens</th>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold"><span className="font-mono">M</span> (kg)</th>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold"><span className="font-mono">b</span> (m)</th>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold"><span className="font-mono">α_GR</span> (arcsec)</th>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold"><span className="font-mono">κ</span> (m⁻¹)</th>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold"><span className="font-mono">e^(κ b/2)</span></th>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold"><span className="font-mono">α_model</span> (arcsec)</th>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold"><span className="font-mono">α_obs</span> (arcsec)</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {rows.map((r, i) => (
+                        <tr key={i} className="hover:bg-gray-50">
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm">{r.name}</td>
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm font-mono text-xs">{r.mass_kg}</td>
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm font-mono text-xs">{r.b_m}</td>
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm font-mono text-xs">
+                                <div>{r.grMatch ? '✅' : '🛑'} {r.alpha_GR_arcsec}</div>
+                                <div className="text-[12px] opacity-85 font-mono mt-1">α_GR = 4GM/(c²b) → {Number(r.alpha_GR_rad_num).toFixed(12)} rad</div>
+                            </td>
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm font-mono text-xs">{r.kappa_minv}</td>
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm font-mono text-xs">{r.boost_e_kb2}</td>
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm font-mono text-xs">
+                                <div>{r.match ? '✅' : '🛑'} {r.alpha_model_arcsec}</div>
+                                <div className="text-[12px] opacity-85 font-mono mt-1">α_model = α_GR · e^(κb/2) → {Number(r.alpha_model_rad_num).toFixed(12)} rad</div>
+                            </td>
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm font-mono text-xs">{r.alpha_obs_arcsec || '—'}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     )
 }
 

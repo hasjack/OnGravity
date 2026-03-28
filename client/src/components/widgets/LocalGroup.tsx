@@ -134,25 +134,43 @@ function LocalGroup() {
     }, [grid, spanKpc, kappaPerKpc, showContours])
 
     return (
-        <div style={{ display: "flex", gap: 24 }}>
-            <div style={{ width: 420, fontFamily: "ui-monospace, Menlo, monospace", fontSize: "12px", lineHeight: "20px" }}>
+        <div className="flex flex-col-reverse lg:flex-row gap-6 w-full lg:gap-4">
+            <div className="w-full lg:w-[420px] font-mono text-base">
                 <div>grid (px)
-                    <input type="number" value={grid} min={256} max={1024} step={64}
+                    <input
+                        type="number"
+                        value={grid}
+                        min={256}
+                        max={1024}
+                        step={64}
                         onChange={e => setGrid(parseInt(e.target.value || "512"))}
-                        style={{ width: 80, marginLeft: 8 }} />
+                        className="ml-2 w-20 rounded border border-gray-300 bg-white px-2 py-1 text-xs text-gray-800 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                    />
                 </div>
 
-                <div style={{ marginTop: 8 }}>half-span (kpc)
-                    <input type="number" value={spanKpc} min={400} max={2000} step={50}
+                <div className="mt-2">half-span (kpc)
+                    <input
+                        type="number"
+                        value={spanKpc}
+                        min={400}
+                        max={2000}
+                        step={50}
                         onChange={e => setSpanKpc(parseInt(e.target.value || "1100"))}
-                        style={{ width: 100, marginLeft: 8 }} />
+                        className="ml-2 w-24 rounded border border-gray-300 bg-white px-2 py-1 text-xs text-gray-800 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                    />
                 </div>
 
-                <div style={{ marginTop: 8 }}>κ (per kpc)
-                    <input type="number" value={kappaPerKpc} step={0.001} min={0} max={0.05}
+                <div className="mt-2">κ (per kpc)
+                    <input
+                        type="number"
+                        value={kappaPerKpc}
+                        step={0.001}
+                        min={0}
+                        max={0.05}
                         onChange={e => setKappaPerKpc(parseFloat(e.target.value || "0.008"))}
-                        style={{ width: 100, marginLeft: 8 }} />
-                    <div style={{ opacity: 0.7, marginTop: 4 }}>
+                        className="ml-2 w-24 rounded border border-gray-300 bg-white px-2 py-1 text-xs text-gray-800 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                    />
+                    <div className="opacity-70 mt-1 text-[11px]">
                         (≈ {(kappaPerKpc / 3.086e-2).toExponential(2)} m⁻¹)
                     </div>
                 </div>
@@ -168,12 +186,10 @@ function LocalGroup() {
                 </div>
             </div>
 
-            <canvas ref={canvasRef}
-                style={{
-                    width: 580, height: 580, imageRendering: "pixelated",
-                    background: "#0b0f16", borderRadius: 14,
-                    boxShadow: "0 10px 30px rgba(0,0,0,0.35)"
-                }} />
+            <canvas
+                ref={canvasRef}
+                className="w-full max-w-[580px] h-auto image-rendering-[pixelated] bg-[#0b0f16] rounded-[14px] shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
+            />
         </div>
     )
 }

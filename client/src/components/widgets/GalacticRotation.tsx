@@ -145,62 +145,54 @@ export function makeRows(inputs: GalaxyInput[]): GalaxyRow[] {
 
 // ---------- dumb table UI ----------
 
-const tableStyle: React.CSSProperties = {
-    width: '90%',
-    borderCollapse: 'collapse',
-    fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, sans-serif',
-    marginBottom: '64px'
-}
-const thtd: React.CSSProperties = { borderBottom: '1px solid #ddd', padding: '8px', textAlign: 'left' }
-const mono: React.CSSProperties = { fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' }
-const smaller: React.CSSProperties = { fontSize: '10px', display: 'block', lineHeight: 1.25, opacity: 0.8 }
-
 const GalacticRotation: React.FC = () => {
     const rows = makeRows(galaxyInput)
     return (
-        <table style={tableStyle}>
-            <thead>
-                <tr>
-                    <th style={thtd}>Galaxy</th>
-                    <th style={thtd}><span style={mono}>radius</span> (m)</th>
-                    <th style={thtd}><span style={mono}>Mass</span> (kg)</th>
-                    <th style={thtd}><span style={mono}>κ</span> (m⁻¹)</th>
-                    <th style={thtd}><span style={mono}>Newton predicts</span> (m/s)</th>
-                    <th style={thtd}><span style={mono}>v_model</span> (m/s)</th>
-                    <th style={thtd}><span style={mono}>v_obs</span> (m/s)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {rows.map((r, i) => i !== 0 && (
-                    <tr key={i}>
-                        <td style={thtd}>{r.name}</td>
-                        <td style={{ ...thtd, ...mono }}>{r.r_m}</td>
-                        <td style={{ ...thtd, ...mono }}>{r.mass_kg}</td>
-                        <td style={{ ...thtd, ...mono }}>
-                            {r.kappa_minv}
-                            <span style={{ ...smaller, ...mono }}>
-                                {oneLineKappa(r.v_obs_ms_num!, r.vN_ms_num, r.r_m)}
-                            </span>
-                        </td>
-                        <td style={{ ...thtd, ...mono }}>
-                            {r.vN_ms === r.v_obs_ms ? '✅' : '🛑'} {r.vN_ms}
-                            <span style={{ ...smaller, ...mono }}>
-                                {oneLineNewton(r.mass_kg, r.r_m)}
-                            </span>
-                        </td>
-                        <td style={{ ...thtd, ...mono }}>
-                            {r.v_model_ms === r.v_obs_ms ? '✅' : '🛑'} {r.v_model_ms}
-                            {r.v_obs_ms && (
-                                <span style={{ ...smaller, ...mono }}>
-                                    {oneLineModel(r.vN_ms_num, r.kappa_minv_num, r.r_m)}
-                                </span>
-                            )}
-                        </td>
-                        <td style={{ ...thtd, ...mono }}>{r.v_obs_ms ?? '—'}</td>
+        <div className="w-full overflow-x-auto mb-16">
+            <table className="w-full border-collapse font-system">
+                <thead>
+                    <tr>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold">Galaxy</th>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold"><span className="font-mono">radius</span> (m)</th>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold"><span className="font-mono">Mass</span> (kg)</th>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold"><span className="font-mono">κ</span> (m⁻¹)</th>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold"><span className="font-mono">Newton predicts</span> (m/s)</th>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold"><span className="font-mono">v_model</span> (m/s)</th>
+                        <th className="border-b border-gray-300 px-3 py-2 text-left text-sm font-semibold"><span className="font-mono">v_obs</span> (m/s)</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {rows.map((r, i) => i !== 0 && (
+                        <tr key={i} className="hover:bg-gray-50">
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm">{r.name}</td>
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm font-mono text-xs">{r.r_m}</td>
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm font-mono text-xs">{r.mass_kg}</td>
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm font-mono text-xs">
+                                {r.kappa_minv}
+                                <div className="hidden md:block text-[10px] opacity-80 font-mono leading-tight mt-1">
+                                    {oneLineKappa(r.v_obs_ms_num!, r.vN_ms_num, r.r_m)}
+                                </div>
+                            </td>
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm font-mono text-xs">
+                                <div>{r.vN_ms === r.v_obs_ms ? '✅' : '🛑'} {r.vN_ms}</div>
+                                <div className="hidden md:block text-[10px] opacity-80 font-mono leading-tight mt-1">
+                                    {oneLineNewton(r.mass_kg, r.r_m)}
+                                </div>
+                            </td>
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm font-mono text-xs">
+                                <div>{r.v_model_ms === r.v_obs_ms ? '✅' : '🛑'} {r.v_model_ms}</div>
+                                {r.v_obs_ms && (
+                                    <div className="text-[10px] opacity-80 font-mono leading-tight mt-1">
+                                        {oneLineModel(r.vN_ms_num, r.kappa_minv_num, r.r_m)}
+                                    </div>
+                                )}
+                            </td>
+                            <td className="border-b border-gray-200 px-3 py-2 text-sm font-mono text-xs">{r.v_obs_ms ?? '—'}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     )
 }
 

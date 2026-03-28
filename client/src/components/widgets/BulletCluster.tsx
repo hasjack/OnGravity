@@ -58,17 +58,20 @@ function BulletCluster() {
     const kColl = 0.02 * Math.exp(-((t - 0.5) ** 2) / 0.035);
 
     return (
-        <div style={{ display: "flex", gap: "20px" }}>
-            <div style={{ fontFamily: "monospace", width: "420px" }}>
-                <label>collision progress (t)
-                    <input type="range"
+        <div className="flex flex-col-reverse lg:flex-row gap-5 lg:gap-4 w-full">
+            <div className="font-mono w-full lg:w-[420px] text-sm">
+                <label className="text-base block">
+                    collision progress (t)<br />
+                    <input
+                        type="range"
                         min={0} max={1} step={0.01}
                         value={t}
                         onChange={e => setT(parseFloat(e.target.value))}
-                        style={{ width: "200px" }} />
+                        className="w-[200px] mt-2"
+                    />
                 </label>
 
-                <div style={{ marginTop: "16px", fontSize: "12px", lineHeight: "20px" }}>
+                <div className="text-xs">
                     <div>cluster separation: <strong>{(160 * (1 - t)).toFixed(1)} px</strong></div>
                     <div>κ_base = 7e⁻²¹ m⁻¹</div>
                     <div>κ_coll(t) = <strong>{kColl.toExponential(2)}</strong></div>
@@ -78,11 +81,10 @@ function BulletCluster() {
                 </div>
             </div>
 
-            <canvas ref={canvasRef}
-                style={{
-                    borderRadius: "14px", background: "#fff",
-                    boxShadow: "0 4px 18px rgba(0,0,0,0.15)"
-                }} />
+            <canvas
+                ref={canvasRef}
+                className="w-full max-w-[580px] h-auto rounded-[14px] bg-white shadow-[0_4px_18px_rgba(0,0,0,0.15)]"
+            />
         </div>
     );
 }

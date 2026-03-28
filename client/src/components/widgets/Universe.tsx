@@ -344,7 +344,7 @@ const Universe: React.FC = () => {
                 display: "flex",
                 flexDirection: "column",
                 height: "100vh",
-                width: "100%",          // full-screen awesome-ness
+                width: "100%",
                 background: "#050510",
                 color: "#eee",
                 fontFamily: "system-ui, sans-serif",

@@ -227,8 +227,8 @@ function SuperclusterFlow({
     }, [mode, grid, halfSpanMpc, kPerMpc, arrowStep, bg])
 
     return (
-        <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
-            <div style={{ width: 420, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', color: '#e6edf3', fontSize: "12px", lineHeight: "20px" }}>
+        <div className="flex flex-col-reverse gap-5 w-full lg:flex-row lg:items-start lg:gap-6">
+            <div className="w-full lg:w-[420px] font-mono text-[#e6edf3] text-[12px] leading-[20px]">
                 <div style={{ marginBottom: 8 }}>
                     <label>mode: </label>
                     <select value={mode} onChange={e => setMode(e.target.value as Mode)}>
@@ -251,11 +251,7 @@ function SuperclusterFlow({
 
             <canvas
                 ref={canvasRef}
-                style={{
-                    width: 580,
-                    height: 580,
-                    boxShadow: '0 10px 30px rgba(0,0,0,0.35)',
-                }}
+                className="w-full max-w-[580px] h-auto shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
             />
         </div>
     )
