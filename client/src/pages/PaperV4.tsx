@@ -41,7 +41,7 @@ const CurvatureResponseModel = () => {
                 These results suggest that part of the observed discrepancy between baryonic mass and gravitational dynamics arises
                 from modelling gravitational response as a fixed, local function rather than an environment-dependent process. The
                 framework provides a geometric description in which curvature responds to baryonic organisation, rather than being
-                determined solely by local mass: offering a unified description of gravitational behaviour across a range of structured
+                determined solely by local mass - offering a unified description of gravitational behaviour across a range of structured
                 astrophysical systems.
             </P>
 
@@ -496,56 +496,68 @@ const CurvatureResponseModel = () => {
                 />
             </div>
 
-            <P classNames="mb-8 text-sm">
-                <b>Figures 7-10:</b> show representative rotation curves from the SPARC sample, including the baryonic Newtonian
-                prediction, the observed velocities, and the <InlineMath math={String.raw`\kappa`} />-framework reconstruction.
-            </P>
-
-            {/* Figure 11 */}
-            <Img 
-                path={CDN + 'galaxy-rotation-curves/output/plots/kappa_vs_gbar.png'}
-                alt={'Figure 11: reveals a clear correlation between κr/2 and baryonic acceleration across the stacked SPARC sample.'}
-            />
-            <P classNames="mb-8 text-sm">
-                <b>Figure 11:</b> reveals a clear correlation between κr/2 and baryonic acceleration across the stacked SPARC sample.
-            </P>
-
-            <Img 
-                path={CDN + 'galaxy-rotation-curves/output/plots/kappa_stack.png'}
-                alt={'Figure 12: Empirical structure across the SPARC sample.'}    
-            />
-            <P classNames="mb-8 text-sm">
-                <b>Figure 12:</b> Empirical <InlineMath math={String.raw`\kappa`} /> structure across the SPARC sample. Each point represents a 
-                measurement of κr/2 at a radius within a galaxy.
-            </P>
-            {/* Figure 13 */}
-            <Img 
-                path={CDN + 'galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png'}
-                alt={'Figure 13: Linear regression fit describing the empirical relation between κr/2 and baryonic acceleration.'}
-            />
-            <P classNames="mb-8 text-sm">
-                <b>Figure 13:</b> Linear regression fit describing the empirical relation between κr/2 and baryonic acceleration.
-            </P>
-
-            {/* Figures 14-16 */}
-            <Img 
-                path={CDN + 'galaxy-rotation-curves/output/plots/rar/rar_model_overlay.png'} alt={'Figure 14'} />
-            {/* Figures 15 & 16 */}
+            {/* Figures 11 & 12 */}
             <div className="flex flex-wrap gap-y-4 md:gap-x-[4%] w-[90%] mb-4">
                 <img
-                    src={CDN + "galaxy-rotation-curves/output/plots/robustness/multi_split_fraction_improved.png"}
-                    className="w-full md:w-[48%]"
-                    alt={'Figure 15'}
+                    src={CDN + "galaxy-rotation-curves/output/galaxies/DDO154_rotmod_rotation.png"}
+                    className="w-[48%]"
                 />
                 <img
-                    src={CDN + "galaxy-rotation-curves/output/plots/robustness/multi_split_median_chi2.png"}
-                    className="w-full md:w-[48%]"
-                    alt={'Figure 16'}
+                    src={CDN + "galaxy-rotation-curves/output/galaxies/PGC51017_rotmod_rotation.png"}
+                    className="w-[48%]"
                 />
             </div>
 
             <P classNames="mb-8 text-sm">
-                <b>Figures 14-16:</b> Comparison between <InlineMath math={String.raw`\kappa`} />-framework predictions and the observed radial acceleration relation.
+                <b>Figures 7-12:</b> show representative rotation curves from the SPARC sample, including the baryonic Newtonian
+                prediction, the observed velocities, and the <InlineMath math={String.raw`\kappa`} />-framework reconstruction.
+            </P>
+
+            {/* Figure 13 */}
+            <Img 
+                path={CDN + 'galaxy-rotation-curves/output/plots/kappa_vs_gbar.png'}
+                alt={'Figure 13: reveals a clear correlation between κr/2 and baryonic acceleration across the stacked SPARC sample.'}
+            />
+            <P classNames="mb-8 text-sm">
+                <b>Figure 13:</b> reveals a clear correlation between κr/2 and baryonic acceleration across the stacked SPARC sample.
+            </P>
+
+            <Img 
+                path={CDN + 'galaxy-rotation-curves/output/plots/kappa_stack.png'}
+                alt={'Figure 14: Empirical structure across the SPARC sample.'}    
+            />
+            <P classNames="mb-8 text-sm">
+                <b>Figure 14:</b> Empirical <InlineMath math={String.raw`\kappa`} /> structure across the SPARC sample. Each point represents a 
+                measurement of κr/2 at a radius within a galaxy.
+            </P>
+            {/* Figure 15 */}
+            <Img 
+                path={CDN + 'galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png'}
+                alt={'Figure 15: Linear regression fit describing the empirical relation between κr/2 and baryonic acceleration.'}
+            />
+            <P classNames="mb-8 text-sm">
+                <b>Figure 15:</b> Linear regression fit describing the empirical relation between κr/2 and baryonic acceleration.
+            </P>
+
+            {/* Figures 16-18 */}
+            <Img 
+                path={CDN + 'galaxy-rotation-curves/output/plots/rar/rar_model_overlay.png'} alt={'Figure 16'} />
+            {/* Figures 17 & 18 */}
+            <div className="flex flex-wrap gap-y-4 md:gap-x-[4%] w-[90%] mb-4">
+                <img
+                    src={CDN + "galaxy-rotation-curves/output/plots/robustness/multi_split_fraction_improved.png"}
+                    className="w-full md:w-[48%]"
+                    alt={'Figure 17'}
+                />
+                <img
+                    src={CDN + "galaxy-rotation-curves/output/plots/robustness/multi_split_median_chi2.png"}
+                    className="w-full md:w-[48%]"
+                    alt={'Figure 18'}
+                />
+            </div>
+
+            <P classNames="mb-8 text-sm">
+                <b>Figures 16-18:</b> Comparison between <InlineMath math={String.raw`\kappa`} />-framework predictions and the observed radial acceleration relation.
             </P>
             <P>
                 These results demonstrate that a simple environmental parameterisation of <InlineMath math={String.raw`\kappa`} /> captures a substantial
@@ -685,7 +697,7 @@ const CurvatureResponseModel = () => {
 
             <Img 
                 path={CDN + 'figures/figure3.png'}
-                alt={'Figure 17: Toomre stability parameter Q as a function of galacto-centric radius'} 
+                alt={'Figure 19: Toomre stability parameter Q as a function of galacto-centric radius'} 
             />
             <P classNames="mb-8 text-sm">
                 <b>Figure 17:</b> Toomre stability parameter Q as a function of galacto-centric radius for (blue) present-day Milky Way conditions and
@@ -855,7 +867,7 @@ const CurvatureResponseModel = () => {
 
             <Img 
                 path={CDN + 'figures/figure5.png'}
-                alt={'Figure 18: Effective gravitational potential for a simplified cluster collision'}
+                alt={'Figure 20: Effective gravitational potential for a simplified cluster collision'}
             />
             <P classNames="mb-8 text-sm">
                 <b>Figure 18:</b> Effective gravitational potential <InlineMath math={String.raw`Q_eff(x,y)`} /> for a simplified cluster collision in

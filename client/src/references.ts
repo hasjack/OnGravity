@@ -45,6 +45,7 @@ export const references = {
         {
             title: 'The Radial Acceleration Relation in Rotationally Supported Galaxies',
             authors: 'McGaugh, S. S., Lelli, F., & Schombert, J. M.',
+            journal: 'arXiv:1609.05917',
             year: 2016,
             url: 'https://arxiv.org/abs/1609.05917'
         },
@@ -64,14 +65,14 @@ export const references = {
         },
         {
             title: 'An Environmental Curvature Response for Galaxy Rotation Curves: Empirical Tests of the κ-Framework using the SPARC Dataset',
-            journal: 'pre-print',
+            journal: 'Research Hub (pre-print)',
             authors: 'Pickett, J.',
             year: '2026',
             url: 'https://doi.org/10.55277/researchhub.53yst6oa.1'
         },
         {
             title: 'Environmental Curvature Response in Planetary Dynamics: Solar System Diagnostics of the κ-Framework',
-            journal: 'pre-print',
+            journal: 'Research Hub (pre-print)',
             authors: 'Pickett, J.',
             year: 2026,
             url: 'https://doi.org/10.55277/researchhub.05wfwlfo.1'
@@ -122,6 +123,7 @@ export const references = {
         {
             title: 'The Radial Acceleration Relation in Rotationally Supported Galaxies',
             authors: 'McGaugh, S. S., Lelli, F., & Schombert, J. M.',
+            journal: 'arXiv:1609.05917',
             year: 2016,
             url: 'https://arxiv.org/abs/1609.05917'
         },
@@ -208,6 +210,7 @@ export const references = {
         {
             title: 'The Radial Acceleration Relation in Rotationally Supported Galaxies',
             authors: 'McGaugh, S. S., Lelli, F., & Schombert, J. M.',
+            journal: 'arXiv:1609.05917',
             year: 2016,
             url: 'https://arxiv.org/abs/1609.05917'
         },
