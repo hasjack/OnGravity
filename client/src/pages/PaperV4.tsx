@@ -7,7 +7,7 @@ import Latex from '../components/Latex'
 import { references } from '../references'
 
 const { VITE_APP_CDN_URL } = import.meta.env
-const CDN = VITE_APP_CDN_URL
+const CDN = VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/'
 
 const CurvatureResponseModel = () => {
     return (

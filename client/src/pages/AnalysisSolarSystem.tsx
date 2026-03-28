@@ -5,7 +5,9 @@ import { H2, H3, P, Ul, Ol, Li } from '../components/Typography'
 import { references } from '../references'
 
 const { VITE_APP_CDN_URL } = import.meta.env
-const CDN = VITE_APP_CDN_URL + "solar-system/outputs/"
+const CDN = VITE_APP_CDN_URL 
+        ? VITE_APP_CDN_URL + "solar-system/outputs/"
+        : 'https://cdn.halfasecond.com/images/onGravity/' + "solar-system/outputs/"
 
 const AnalysisSolarSystem = () => {
     return (

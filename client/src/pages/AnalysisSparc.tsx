@@ -5,7 +5,9 @@ import { H2, H3, P, Ul, Ol, Li } from '../components/Typography'
 import { references } from '../references'
 
 const { VITE_APP_CDN_URL } = import.meta.env
-const CDN = VITE_APP_CDN_URL + "galaxy-rotation-curves/output/"
+const CDN = VITE_APP_CDN_URL
+    ? VITE_APP_CDN_URL + "galaxy-rotation-curves/output/"
+    : 'https://cdn.halfasecond.com/images/onGravity/' + "galaxy-rotation-curves/output/"
 
 const AnalysisSparc = () => {
     return (
