@@ -41,7 +41,7 @@ const CurvatureResponseModel = () => {
                 These results suggest that part of the observed discrepancy between baryonic mass and gravitational dynamics arises
                 from modelling gravitational response as a fixed, local function rather than an environment-dependent process. The
                 framework provides a geometric description in which curvature responds to baryonic organisation, rather than being
-                determined solely by local mass: offering a unified description of gravitational behaviour across structured
+                determined solely by local mass: offering a unified description of gravitational behaviour across a range of structured
                 astrophysical systems.
             </P>
 
@@ -662,20 +662,6 @@ const CurvatureResponseModel = () => {
             <P>Observed discs with prominent, long-lived arms follow exactly this pattern.</P>
 
             <H4>5.2.3. Toomre stability</H4>
-            <Img 
-                path={CDN + 'figures/figure3.png'}
-                alt={'Figure 17: Toomre stability parameter Q as a function of galacto-centric radius'} 
-            />
-            <P classNames="mb-8 text-sm">
-                <b>Figure 17:</b> Toomre stability parameter Q as a function of galacto-centric radius for (blue) present-day Milky Way conditions and
-                (green) high-redshift z ≈ 15 protogalaxies, computed using the <InlineMath math={String.raw`Q_\kappa`} />-augmented
-                epicyclic frequency <InlineMath math={String.raw`\Omega_{\rm ep}`} />. In the modern Milky Way, <InlineMath math={String.raw`Q_\kappa`} /> ≳ 1
-                across most of the disc, indicating marginal stability with localised star-forming instabilities at ~1-5 kpc. In early, dense
-                protogalaxies, the higher densities and shears increase <InlineMath math={String.raw`\kappa`} />,
-                lowering <InlineMath math={String.raw`Q_\kappa`} /> and naturally producing globally unstable discs. These
-                instabilities drive rapid inflow and early SMBH formation, consistent with JWST observations. Red and yellow markers
-                show representative observational <InlineMath math={String.raw`Q`} /> estimates for present-day and early galaxies.
-            </P>
 
             <P classNames="mb-0">
                 In Newtonian discs, the Toomre parameter is written here with <InlineMath math={String.raw`\Omega_{\rm ep}`} /> denoting the epicyclic
@@ -695,6 +681,21 @@ const CurvatureResponseModel = () => {
             <P>
                 meaning discs remain stable at slightly lower velocity dispersions than Newtonian expectations. This aligns with observed cold,
                 thin discs that avoid fragmentation despite low <InlineMath math={String.raw`\sigma_r`} />.
+            </P>
+
+            <Img 
+                path={CDN + 'figures/figure3.png'}
+                alt={'Figure 17: Toomre stability parameter Q as a function of galacto-centric radius'} 
+            />
+            <P classNames="mb-8 text-sm">
+                <b>Figure 17:</b> Toomre stability parameter Q as a function of galacto-centric radius for (blue) present-day Milky Way conditions and
+                (green) high-redshift z ≈ 15 protogalaxies, computed using the <InlineMath math={String.raw`Q_\kappa`} />-augmented
+                epicyclic frequency <InlineMath math={String.raw`\Omega_{\rm ep}`} />. In the modern Milky Way, <InlineMath math={String.raw`Q_\kappa`} /> ≳ 1
+                across most of the disc, indicating marginal stability with localised star-forming instabilities at ~1-5 kpc. In early, dense
+                protogalaxies, the higher densities and shears increase <InlineMath math={String.raw`\kappa`} />,
+                lowering <InlineMath math={String.raw`Q_\kappa`} /> and naturally producing globally unstable discs. These
+                instabilities drive rapid inflow and early SMBH formation, consistent with JWST observations. Red and yellow markers
+                show representative observational <InlineMath math={String.raw`Q`} /> estimates for present-day and early galaxies.
             </P>
 
             <H4>5.2.4. Outer-disc morphology and warps</H4>
@@ -1474,15 +1475,14 @@ const CurvatureResponseModel = () => {
                         <div className="w-full min-w-0">
                             <p className="font-semibold">{ref.title}</p>
                             <p className="text-xs lg:text-md">
-                                {ref.authors} ({ref.year}) {ref.journal && ` - ${ref.journal}`}
+                                {ref.authors} ({ref.year}) {ref.journal && (
+                                    <Link
+                                        to={ref.url}
+                                        target="_blank"
+                                        className="block w-full underline text-xs lg:text-md"
+                                    >{ref.journal}</Link>
+                                )}
                             </p>
-                            <Link
-                                to={ref.url}
-                                target="_blank"
-                                className="block w-full break-all underline text-xs lg:text-md"
-                            >
-                                {ref.url}
-                            </Link>
                         </div>
                     </Li>
                 ))}
@@ -1494,18 +1494,37 @@ const CurvatureResponseModel = () => {
                 The analysis pipeline used in this study is implemented in Python and all code used to generate the figures and statistical 
                 results presented in this work is available as open-source software:
             </P>
-            <P classNames="text-center mb-4">
-                <Link
+            <Ul classNames="mb-4">
+                <Li>Repo: <Link
                     to="https://github.com/hasjack/OnGravity"
                     target="_blank"
                     className="block w-full break-all underline text-sm lg:text-md"
                 >github.com/hasjack/OnGravity
-                </Link>
-            </P>
+                </Link></Li>
+                <Li>Solar System Analysis<Link
+                    to="https://github.com/hasjack/OnGravity/tree/main/python/solar-system"
+                    target="_blank"
+                    className="block w-full break-all underline text-sm lg:text-md"
+                >github.com/hasjack/OnGravity/tree/main/python/solar-system
+                </Link></Li>
+                <Li>SPARC Analysis<Link
+                    to="https://github.com/hasjack/OnGravity/tree/main/python/rotation-curves"
+                    target="_blank"
+                    className="block w-full break-all underline text-sm lg:text-md"
+                >github.com/hasjack/OnGravity/tree/main/python/rotation-curves
+                </Link></Li>
+            </Ul>
             <P>
                 In line with open-science principles, this repository includes the full analysis pipeline, data ingestion routines, model fitting procedures,
                 and scripts used to generate the figures presented in this paper.
             </P>
+            <P classNames={'hidden print:block mb-12'}>
+                For the latest on the framework 
+                visit <Link to={'https://half-a-second.com'} className="underline">half-a-second.com</Link>.
+            </P>
+
+            <img src={`/cc-long.webp`} className="h-12 hidden print:block" />
+            <P classNames={'hidden print:block'}>Content in this document is licensed under a Creative Commons Attribution 4.0 International License</P>
         </Article>
     )
 }

@@ -37,7 +37,7 @@ export const references = {
         },
         {
             title: 'SPARC: Mass Models for 175 Disk Galaxies with Spitzer Photometry and Accurate Rotation Curves',
-            journal: 'https://ui.adsabs.harvard.edu/abs/2016AJ....152..157L/abstract',
+            journal: 'https://arxiv.org/abs/1606.09251',
             authors: 'Lelli, F., McGaugh, S. S., & Schombert, J. M.',
             year: 2016,
             url: 'https://arxiv.org/abs/1606.09251',
@@ -50,7 +50,7 @@ export const references = {
         },
         {
             title: 'A modification of the Newtonian dynamics as a possible alternative to the hidden mass hypothesis',
-            journal: 'ApJ, 270, 365.',
+            journal: 'ApJ, 270, 365.',
             authors: 'Milgrom, M.',
             year: '1983',
             url: 'https://ui.adsabs.harvard.edu/abs/1983ApJ...270..365M/abstract'
@@ -79,6 +79,7 @@ export const references = {
         {
             title: 'Planck 2018 results. VI. Cosmological parameters',
             authors: 'Planck Collaboration',
+            journal: 'arXiv:1807.06209',
             year: 2020,
             url: 'https://arxiv.org/abs/1807.06209'
         },
@@ -99,6 +100,7 @@ export const references = {
         {
             title: 'Rotation Curves of Spiral Galaxies',
             authors: 'Sofue, Y., & Rubin, V.',
+            journal: 'astro-ph/0010594',
             year: 2001,
             url: 'https://arxiv.org/abs/astro-ph/0010594'
         },

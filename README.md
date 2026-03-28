@@ -34,10 +34,7 @@ Rather than modifying gravity through additional matter components, the κ-frame
 The curvature-response field $\kappa(r)$ depends on both local density and dynamical shear:
 
 $$
-\kappa(r) = \kappa_{0}
-  + k_v
-    \left(\frac{\partial v / \partial r}{10^{-12}\,\mathrm{s}^{-1}}\right)^{3}
-    \left(\frac{\rho}{\rho_0}\right)^{1/2}
+    \kappa(r) = \kappa_{0} + k_v \left(\frac{\partial v / \partial r}{10^{-12}\,\mathrm{s}^{-1}}\right)^{3} \left(\frac{\rho}{\rho_0}\right)^{1/2}
 $$
 
 - **$\kappa_0$** sets the background curvature scale (≈ 10⁻²⁶ m⁻¹)  
