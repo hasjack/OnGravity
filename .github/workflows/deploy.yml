@@ -47,6 +47,7 @@ jobs:
         working-directory: client
         env:
           CI: true
+          VITE_APP_CDN_URL: ${{ vars.VITE_APP_CDN_URL }}
         run: yarn build
 
       #############################################
