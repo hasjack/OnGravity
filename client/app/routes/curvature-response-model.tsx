@@ -15,13 +15,59 @@ export function loader({ request }: Route.LoaderArgs) {
     }
 }
 
-export function meta() {
+export function meta({ request }: Route.MetaArgs) {
     return [
         { title: "Pre-print: A Curvature Response Model for Weak-Field Gravity" },
         {
             name: "description",
             content: "The κ-framework: A Curvature Response Model for Weak-Field Gravity",
         },
+
+        // Open Graph
+        { property: "og:type", content: "website" },
+        {
+            property: "og:title",
+            content: "κ-Framework: A Unified Geometric Model for Weak-Field Gravity",
+        },
+        {
+            property: "og:description",
+            content:
+                "An environment-dependent gravitational response model that resolves galaxy rotation curves and early-universe SMBH formation without dark matter. Validated against the SPARC dataset and Solar System dynamics.",
+        },
+        { property: "og:url", content: request.url },
+        {
+            property: "og:image",
+            content: "https://cdn.halfasecond.com/images/onGravity/k-framework.jpg",
+        },
+
+        // Twitter
+        { name: "twitter:card", content: "summary_large_image" },
+        {
+            name: "twitter:title",
+            content: "κ-Framework: A Unified Geometric Model for Weak-Field Gravity",
+        },
+        {
+            name: "twitter:description",
+            content:
+                "Exploring κ — the density-dependent curvature term unifying galactic and cosmological gravity.",
+        },
+        {
+            name: "twitter:image",
+            content: "https://cdn.halfasecond.com/images/onGravity/k-framework.jpg",
+        },
+
+        // Academic / citation
+        {
+            name: "citation_title",
+            content: "κ-Framework: A Unified Geometric Model for Weak-Field Gravity",
+        },
+        { name: "citation_author", content: "Jack Pickett" },
+        { name: "citation_publication_date", content: "2026/03/28" },
+        {
+            name: "citation_pdf_url",
+            content: "https://doi.org/10.55277/researchhub.zwegi9m9.3",
+        },
+        { name: "citation_language", content: "en" },
     ]
 }
 
@@ -43,9 +89,9 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
             <P>
                 This work develops an alternative interpretation in which the weak-field gravitational response of spacetime depends
                 on the local baryonic environment. Starting from a modified gravitational action, an environment-weighted generalisation
-                of the Poisson equation is derived, introducing a spatially varying response 
-                coefficient <InlineMath math={String.raw`μ(r)`} />. In the weak-field limit, this formulation yields an exponential 
-                gravitational potential, characterised by a curvature-response parameter <InlineMath math={String.raw`\kappa(r)`} /> that 
+                of the Poisson equation is derived, introducing a spatially varying response
+                coefficient <InlineMath math={String.raw`μ(r)`} />. In the weak-field limit, this formulation yields an exponential
+                gravitational potential, characterised by a curvature-response parameter <InlineMath math={String.raw`\kappa(r)`} /> that
                 emerges directly from the field equation.
             </P>
             <P>
@@ -400,7 +446,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
                 Solar System. The simulations remain dynamically stable over the 200-year integration period.
             </P>
             {/* Figures 3 & 4 */}
-            <Img 
+            <Img
                 path={CDN + 'solar-system/outputs/Mercury/lrl_perihelion_direction_comparison.png'}
                 alt={'Figure 3: Mercury perihelion direction comparison'}
             />
@@ -410,7 +456,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
                 curves indicates that the <InlineMath math={String.raw`\kappa`} /> perturbation produces only a very small secular deviation from the Newtonian orbital orientation.
             </P>
 
-            <Img 
+            <Img
                 path={CDN + 'solar-system/outputs/Mercury/lrl_perihelion_drift.png'}
                 alt={'Figure 4: Secular perihelion drift of Mercury'}
             />
@@ -420,7 +466,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
                 orbital ellipse while the overall orbital structure remains essentially unchanged
             </P>
             {/* Figures 5 & 6 */}
-            <Img 
+            <Img
                 path={CDN + 'solar-system/outputs/Mercury/mercury_strain_rate_sweep.png'}
                 alt={'Figure 5: Mercury orbital deviation as a function of environmental strain-rate'}
             />
@@ -432,16 +478,16 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
                 in the present Solar System tests.
             </P>
 
-            <Img 
+            <Img
                 path={CDN + 'solar-system/outputs/Mercury/mercury_precession_vs_strain_rate.png'}
                 alt={'Figure 6: Mercury perihelion precession as a function of environmental strain-rate'}
             />
             <P classNames="mb-8 text-sm">
                 <b>Figure 6:</b> Mercury perihelion precession as a function of environmental strain-rate: Estimated perihelion precession rate for
                 Mercury derived from both the angular momentum (ω-based) method and the Laplace-Runge-Lenz (LRL) vector method as a function
-                of the <InlineMath math={String.raw`\kappa`} />-framework strain-rate parameter for a fixed 
-                density <InlineMath math={String.raw`\rho = 10^{-12}\,\mathrm{kg\,m^{-3}}`} />. In the low-strain regime relevant to Solar System 
-                conditions, the predicted precession remains extremely small and the two independent diagnostics agree closely. Rapid growth in 
+                of the <InlineMath math={String.raw`\kappa`} />-framework strain-rate parameter for a fixed
+                density <InlineMath math={String.raw`\rho = 10^{-12}\,\mathrm{kg\,m^{-3}}`} />. In the low-strain regime relevant to Solar System
+                conditions, the predicted precession remains extremely small and the two independent diagnostics agree closely. Rapid growth in
                 precession occurs only when the strain-rate approaches values where the orbital solution itself becomes dynamically unstable.
             </P>
 
@@ -531,7 +577,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
             </P>
 
             {/* Figure 13 */}
-            <Img 
+            <Img
                 path={CDN + 'galaxy-rotation-curves/output/plots/kappa_vs_gbar.png'}
                 alt={'Figure 13: reveals a clear correlation between κr/2 and baryonic acceleration across the stacked SPARC sample.'}
             />
@@ -539,16 +585,16 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
                 <b>Figure 13:</b> reveals a clear correlation between κr/2 and baryonic acceleration across the stacked SPARC sample.
             </P>
 
-            <Img 
+            <Img
                 path={CDN + 'galaxy-rotation-curves/output/plots/kappa_stack.png'}
-                alt={'Figure 14: Empirical structure across the SPARC sample.'}    
+                alt={'Figure 14: Empirical structure across the SPARC sample.'}
             />
             <P classNames="mb-8 text-sm">
-                <b>Figure 14:</b> Empirical <InlineMath math={String.raw`\kappa`} /> structure across the SPARC sample. Each point represents a 
+                <b>Figure 14:</b> Empirical <InlineMath math={String.raw`\kappa`} /> structure across the SPARC sample. Each point represents a
                 measurement of κr/2 at a radius within a galaxy.
             </P>
             {/* Figure 15 */}
-            <Img 
+            <Img
                 path={CDN + 'galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png'}
                 alt={'Figure 15: Linear regression fit describing the empirical relation between κr/2 and baryonic acceleration.'}
             />
@@ -557,7 +603,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
             </P>
 
             {/* Figures 16-18 */}
-            <Img 
+            <Img
                 path={CDN + 'galaxy-rotation-curves/output/plots/rar/rar_model_overlay.png'} alt={'Figure 16'} />
             {/* Figures 17 & 18 */}
             <div className="flex flex-wrap gap-y-4 md:gap-x-[4%] w-[90%] mb-4">
@@ -712,9 +758,9 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
                 thin discs that avoid fragmentation despite low <InlineMath math={String.raw`\sigma_r`} />.
             </P>
 
-            <Img 
+            <Img
                 path={CDN + 'figures/figure3.png'}
-                alt={'Figure 19: Toomre stability parameter Q as a function of galacto-centric radius'} 
+                alt={'Figure 19: Toomre stability parameter Q as a function of galacto-centric radius'}
             />
             <P classNames="mb-8 text-sm">
                 <b>Figure 17:</b> Toomre stability parameter Q as a function of galacto-centric radius for (blue) present-day Milky Way conditions and
@@ -729,7 +775,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
 
             <H4>5.2.4. Outer-disc morphology and warps</H4>
             <P>
-                The curvature-response coefficient <InlineMath math={String.raw`\kappa`} /> increases gradually toward the 
+                The curvature-response coefficient <InlineMath math={String.raw`\kappa`} /> increases gradually toward the
                 outer disc because shear remains large while density declines smoothly. In such regions:
             </P>
             <Ul>
@@ -882,7 +928,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
             </Ul>
             <P>The model does not introduce collision-less matter; the offset arises from shear-dependent curvature response.</P>
 
-            <Img 
+            <Img
                 path={CDN + 'figures/figure5.png'}
                 alt={'Figure 20: Effective gravitational potential for a simplified cluster collision'}
             />
@@ -1140,8 +1186,8 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
 
             <P>
                 defines the curvature-response parameter <InlineMath math={String.raw`\kappa`} />, which encodes how curvature accumulates
-                across the surrounding environment. This identification corresponds to mapping the curvature-dependent 
-                term <InlineMath math={String.raw`\alpha R(r)`} /> onto  an effective radial 
+                across the surrounding environment. This identification corresponds to mapping the curvature-dependent
+                term <InlineMath math={String.raw`\alpha R(r)`} /> onto  an effective radial
                 response <InlineMath math={String.raw`\kappa(r)\,r`} />.
             </P>
 
@@ -1189,7 +1235,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
             <BlockMath math={String.raw`v_{\rm obs}(r)`} />
 
             <P classNames="mb-0">
-                The ratio between the observed orbital speed <InlineMath math={String.raw`v_{\rm obs}(r)`} />  and the baryonic Newtonian prediction 
+                The ratio between the observed orbital speed <InlineMath math={String.raw`v_{\rm obs}(r)`} />  and the baryonic Newtonian prediction
                 therefore defines the empirical relation at each radius:
             </P>
             <BlockMath math={String.raw`\frac{v_{\rm obs}}{v_N}=e^{\kappa(r) r/2}.`} />
@@ -1520,7 +1566,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
 
             <H2>Code and Reproducibility</H2>
             <P>
-                The analysis pipeline used in this study is implemented in Python and all code used to generate the figures and statistical 
+                The analysis pipeline used in this study is implemented in Python and all code used to generate the figures and statistical
                 results presented in this work is available as open-source software:
             </P>
             <Ul classNames="mb-4">
@@ -1548,7 +1594,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
                 and scripts used to generate the figures presented in this paper.
             </P>
             <P classNames={'hidden print:block mb-12'}>
-                For the latest on the framework 
+                For the latest on the framework
                 visit <Link to={'https://half-a-second.com'} className="underline">half-a-second.com</Link>.
             </P>
 

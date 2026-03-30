@@ -10,11 +10,6 @@ import { InlineMath } from "../components/Katex";
 // import { formatDateTime } from "~/lib/datetime";
 
 export function meta({ }: Route.MetaArgs) {
-    //   const t = i18n.t.bind(i18n);
-    //   return [
-    //     { title: t("common.appName") },
-    //     { name: "description", content: t("common.description") },
-    //   ];
     return [
         { title: "κ-Framework: A Unified Geometric Model for Weak-Field Gravity" },
         {
