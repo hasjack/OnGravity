@@ -79,7 +79,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
             author={"Jack Pickett"}
             dateTime={"28th March 2026"}
             url={"https://doi.org/10.55277/researchhub.zwegi9m9.3"}
-            shareUrl={loaderData.shareUrl}
+            shareUrl={loaderData.shareUrl.replace("http://", "https://")}
         >
             <H2>1. Abstract</H2>
             <P>
