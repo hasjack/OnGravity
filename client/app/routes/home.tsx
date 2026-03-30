@@ -1,10 +1,41 @@
-import { Link } from "react-router"
-import { InlineMath } from "react-katex"
+// import { useTranslation } from "react-i18next";
 
-const { VITE_APP_CDN_URL } = import.meta.env
+// import { database } from "~/database/context";
+// import i18n from "~/i18n";
+import type { Route } from "./+types/home";
+import { Link } from "react-router";
+import { InlineMath } from "../components/Katex";
+// import pkg from 'react-katex';
+// const {InlineMath} = pkg;
+// import { formatDateTime } from "~/lib/datetime";
+
+export function meta({ }: Route.MetaArgs) {
+    //   const t = i18n.t.bind(i18n);
+    //   return [
+    //     { title: t("common.appName") },
+    //     { name: "description", content: t("common.description") },
+    //   ];
+    return [
+        { title: "κ-Framework: A Unified Geometric Model for Weak-Field Gravity" },
+        {
+            name: "description",
+            content: "An environment-dependent gravitational response model that resolves galaxy rotation curves and early-universe SMBH formation without dark matter. Validated against the SPARC dataset and Solar System dynamics."
+        },
+    ];
+}
+
+export async function loader({ context }: Route.LoaderArgs) {
+    // const db = database();
+    // const result = await db.execute<{ now: Date }>("select now()");
+    // return { csrfToken: context.csrfToken, serverTime: result[0].now };
+}
+
+const VITE_APP_CDN_URL = 'https://cdn.halfasecond.com/images/onGravity'
 const RH_LINK = "https://www.researchhub.com/proposal/29607/empirical-test-of-local-density-curvature-response-using-grace-fo-laser-ranging-data"
 
-const Homepage = () => {
+export default function Home({ loaderData }: Route.ComponentProps) {
+    // const { t } = useTranslation();
+
     return (
         <>
             <section className="relative min-h-dvh flex flex-col items-center justify-center text-gray-200 py-12">
@@ -32,20 +63,20 @@ const Homepage = () => {
                     <h3 className="mb-8 text-xl font-bold">Latest:</h3>
                     <nav className="flex items-center justify-center flex-wrap gap-8 tracking-wide text-base mb-24 max-w-3xl">
                         {[
-                            { 
+                            {
                                 itemType: 'Theory Paper (pre-print)',
                                 label: 'A Curvature Response Model for Weak-Field Gravity',
-                                to: '/a-curvature-response-model-for-weak-field-gravity',
+                                to: '/pre-print/a-curvature-response-model-for-weak-field-gravity',
                                 date: '28th March 2026'
                             },
-                            
-                            { 
+
+                            {
                                 itemType: 'Analysis Paper (pre-print)',
                                 label: 'Environmental Curvature Response in Planetary Dynamics: Solar System Diagnostics of the κ-Framework',
                                 to: '/analysis/solar-system',
                                 date: '12th March 2026'
                             },
-                            { 
+                            {
                                 itemType: 'Analysis Paper (pre-print)',
                                 label: 'An Environmental Curvature Response for Galaxy Rotation Curves: Empirical Tests of the κ-Framework using the SPARC Dataset',
                                 to: '/analysis/sparc-galaxy-rotation-curves',
@@ -75,7 +106,7 @@ const Homepage = () => {
                     <p className="max-w-3xl text-sm md:text-base text-center px-4 mb-24">
                         Please consider <Link to={RH_LINK} target="_blank" className="underline">funding this research</Link> on Research Hub
                     </p>
-                    
+
                     <img src={`${VITE_APP_CDN_URL}/cc-long.webp`} className="h-12 md:h-18 mb-6 md:mb-8" />
                     <p className="max-w-3xl text-sm md:text-base text-center px-4 mb-32">Content on this site is licensed under a Creative Commons Attribution 4.0 International License</p>
                 </div>
@@ -83,5 +114,3 @@ const Homepage = () => {
         </>
     )
 }
-
-export default Homepage

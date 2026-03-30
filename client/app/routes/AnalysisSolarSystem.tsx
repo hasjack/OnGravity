@@ -1,21 +1,39 @@
+import { BlockMath } from '../components/Katex'
 import { Link } from 'react-router'
 import Article from '../components/Article'
-import { BlockMath } from '../components/Katex'
 import { H2, H3, P, Ul, Ol, Li } from '../components/Typography'
 import { references } from '../lib/references'
+import { Route } from './+types/AnalysisSparc'
 
 const { VITE_APP_CDN_URL } = import.meta.env
-const CDN = VITE_APP_CDN_URL 
-        ? VITE_APP_CDN_URL + "solar-system/outputs/"
-        : 'https://cdn.halfasecond.com/images/onGravity/' + "solar-system/outputs/"
+const CDN = VITE_APP_CDN_URL
+    ? VITE_APP_CDN_URL + "solar-system/outputs/"
+    : 'https://cdn.halfasecond.com/images/onGravity/' + "solar-system/outputs/"
 
-const AnalysisSolarSystem = () => {
+export function loader({ request }: Route.LoaderArgs) {
+    return {
+        shareUrl: request.url,
+    }
+}
+
+export function meta() {
+    return [
+        { title: "Analysis - Solar System Diagnostics of the κ-Framework" },
+        {
+            name: "description",
+            content: "Environmental Curvature Response in Planetary Dynamics: Solar System Diagnostics of the κ-Framework",
+        },
+    ]
+}
+
+export default function AnalysisSolarSystem({ loaderData }: Route.ComponentProps) {
     return (
         <Article
             title={"Environmental Curvature Response in Planetary Dynamics: Solar System Diagnostics of the κ-Framework"}
             author={"Jack Pickett"}
             dateTime={"12th March 2026"}
             url={"https://doi.org/10.55277/researchhub.05wfwlfo.1"}
+            shareUrl={loaderData.shareUrl}
         >
             <H2>Abstract</H2>
             <P>
@@ -327,5 +345,3 @@ const AnalysisSolarSystem = () => {
         </Article>
     )
 }
-
-export default AnalysisSolarSystem

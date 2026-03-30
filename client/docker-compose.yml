@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  halfasecond:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: halfasecond
+    ports:
+      - "5165:5165"
+    environment:
+      NODE_ENV: production
+      PORT: 5165
+      SECURE_COOKIES: "true"
+      HSTS_ENABLED: "true"
+      DANGEROUSLY_RELAX_CSP: "false"
+      # DATABASE_URL: "postgres://user:password@db:5432/halfasecond"
+    restart: unless-stopped

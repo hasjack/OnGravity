@@ -1,19 +1,28 @@
 import { defineConfig } from 'vite'
-import tailwindcss from '@tailwindcss/vite'
-import react from '@vitejs/plugin-react'
-import path from 'node:path'
+import { reactRouter } from "@react-router/dev/vite";
+import type { Plugin } from "vite";
+import { sharedPlugins, watchOptions } from "./vite.shared";
 
-// https://vite.dev/config/
-export default defineConfig({
-    plugins: [react(), tailwindcss()],
-    base: '/',
-    resolve: {
-        alias: {
-            components: path.resolve(__dirname, "./src/components"),
-            lib: path.resolve(__dirname, "./src/lib"),
-            pages: path.resolve(__dirname, "./src/pages"),
-            store: path.resolve(__dirname, "./src/store"),
-            types: path.resolve(__dirname, "./src/types.ts")
-        }
-    }
-})
+
+// Prevent client-side reloads for server-only files.
+// SSR still picks up changes via ssrLoadModule on each request.
+function serverFilesHmr(): Plugin {
+    return {
+        name: "server-files-hmr",
+        handleHotUpdate({ file }) {
+            if (file.includes("/server/") && !file.includes("/app/")) {
+                return [];
+            }
+        },
+    };
+}
+
+export default defineConfig(({ isSsrBuild }) => ({
+    build: {
+        rollupOptions: isSsrBuild ? { input: "./server/app.ts" } : undefined,
+    },
+    plugins: [serverFilesHmr(), ...sharedPlugins(), reactRouter()],
+    server: {
+        watch: watchOptions,
+    },
+}));

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router"
 
 type NavItem = {
     to: string
@@ -22,25 +22,11 @@ const navSections: NavSection[] = [
     {
         title: "Pre-prints",
         items: [
-            { to: "/a-curvature-response-model-for-weak-field-gravity", label: "A Curvature Response Model for Weak-Field Gravity" },
+            { to: "/preprint/a-curvature-response-model-for-weak-field-gravity", label: "A Curvature Response Model for Weak-Field Gravity" },
             { to: "/analysis/sparc-galaxy-rotation-curves", label: "Analysis - SPARC rotation curves"},
             { to: "/analysis/solar-system", label: "Analysis - Solar System"}
         ]
     },
-    // {
-    //     title: "Exploratory Research",
-    //     items: [
-    //         { to: "/prime-distribution", label: "Prime Distribution" },
-    //         { to: "/electromagnetic-coupling", label: "Electromagnetic Coupling" },
-    //         { to: "/non-trivial-mars-bars", label: "Non-Trivial Mars Bars" }
-    //     ]
-    // },
-    // {
-    //     title: "Simulation",
-    //     items: [
-    //         { to: "/toy-galaxy-simulator", label: "Toy Galaxy" }
-    //     ]
-    // },
 ]
 
 const Menu = () => {
