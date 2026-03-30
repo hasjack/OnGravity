@@ -66,7 +66,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                             {
                                 itemType: 'Theory Paper (pre-print)',
                                 label: 'A Curvature Response Model for Weak-Field Gravity',
-                                to: '/pre-print/a-curvature-response-model-for-weak-field-gravity',
+                                to: '/preprint/a-curvature-response-model-for-weak-field-gravity',
                                 date: '28th March 2026'
                             },
 
