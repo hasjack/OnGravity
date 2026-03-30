@@ -15,7 +15,8 @@ export function loader({ request }: Route.LoaderArgs) {
     }
 }
 
-export function meta({ request }: Route.MetaArgs) {
+export function meta({ location }: Route.MetaArgs) {
+    const url = `https://halfasecond.com${location.pathname}`
     return [
         { title: "Pre-print: A Curvature Response Model for Weak-Field Gravity" },
         {
@@ -34,7 +35,7 @@ export function meta({ request }: Route.MetaArgs) {
             content:
                 "An environment-dependent gravitational response model that resolves galaxy rotation curves and early-universe SMBH formation without dark matter. Validated against the SPARC dataset and Solar System dynamics.",
         },
-        { property: "og:url", content: request.url },
+        { property: "og:url", content: url },
         {
             property: "og:image",
             content: "https://cdn.halfasecond.com/images/onGravity/k-framework.jpg",
