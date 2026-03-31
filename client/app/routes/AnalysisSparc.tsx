@@ -33,7 +33,7 @@ export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {
             author={"Jack Pickett"}
             dateTime={"9th March 2026"}
             url={"https://doi.org/10.55277/researchhub.53yst6oa.1"}
-            shareUrl={loaderData.shareUrl}
+            shareUrl={loaderData.shareUrl.replace("http://", "https://")}
         >
             <H2>Abstract</H2>
             <P classNames="mb-0">

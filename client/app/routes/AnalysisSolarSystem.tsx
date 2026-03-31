@@ -33,7 +33,8 @@ export default function AnalysisSolarSystem({ loaderData }: Route.ComponentProps
             author={"Jack Pickett"}
             dateTime={"12th March 2026"}
             url={"https://doi.org/10.55277/researchhub.05wfwlfo.1"}
-            shareUrl={loaderData.shareUrl}
+            shareUrl={loaderData.shareUrl.replace("http://", "https://")}
+
         >
             <H2>Abstract</H2>
             <P>
