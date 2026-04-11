@@ -23,8 +23,18 @@ const navSections: NavSection[] = [
         title: "Pre-prints",
         items: [
             { to: "/preprint/a-curvature-response-model-for-weak-field-gravity", label: "A Curvature Response Model for Weak-Field Gravity" },
-            { to: "/analysis/sparc-galaxy-rotation-curves", label: "Analysis - SPARC rotation curves"},
-            { to: "/analysis/solar-system", label: "Analysis - Solar System"}
+            { to: "/analysis/sparc-galaxy-rotation-curves", label: "Analysis - SPARC rotation curves" },
+            { to: "/analysis/solar-system", label: "Analysis - Solar System" }
+        ]
+    },
+    {
+        title: "Foundations & Logic",
+        items: [
+            { to: "/non-trivial-mars-bars", label: "Non-trivial Mars bars" },
+            { to: "/preprint/quantum-gravity-phase-resolution", label: "Quantum Gravity Phase Resolution" },
+            // { to: "/preprint/prime-curvature", label: "Prime Curvature Hamiltonian" },
+            // { to: "/foundations/natural-maths-axioms", label: "Natural Maths - Core Axioms" },
+            // { to: "/analysis/mandelbrot-real-analogue", label: "Natural Maths - Mandelbrot Set" }
         ]
     },
 ]
@@ -144,7 +154,7 @@ const Menu = () => {
                         <div className="flex flex-col gap-5 text-base">
                             {navSections.map(section => (
                                 <div key={section.title}>
-                                    <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-600">
+                                    <div className="mb-2 mt-5 text-sm font-semibold uppercase tracking-wide text-gray-600">
                                         {section.title}
                                     </div>
                                     <div className="flex flex-col gap-2">

@@ -15,13 +15,12 @@ type ArticleProps = {
 const Article = ({ title, author, dateTime, url, shareUrl, children }: ArticleProps) => {
     return (
         <>
-            <div className="absolute top-4 right-4 z-10 flex gap-1 print:hidden">
+            <div className="fixed top-4 right-4 z-10 flex gap-1 print:hidden">
                 {shareUrl && (
                     <Share {...{ shareUrl, title }} />
                 )}
             </div>
             <section className="relative flex flex-col items-center text-gray-800 bg-white py-24 print:py-0">
-
                 <div className="relative max-w-5xl flex flex-col items-center px-4">
                     <H1>{title}</H1>
                     <div className="flex mb-8 w-full border-b-2 border-gray-200 pb-4">

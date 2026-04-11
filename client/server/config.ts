@@ -9,7 +9,7 @@ const envBoolean = z
 
 const configSchema = z
     .object({
-        DATABASE_URL: z.string().url().optional(),
+        DATABASE_URL: z.string().optional(),
         PORT: z.coerce.number().int().positive().default(3000),
         SECURE_COOKIES: envBoolean,
         HSTS_ENABLED: envBoolean,

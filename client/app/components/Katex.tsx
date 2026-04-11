@@ -15,10 +15,11 @@ export function InlineMath({ math }: InlineMathProps) {
 }
 
 type BlockMathProps = {
-    math: string
+    math: string,
+    large?: boolean
 }
 
-export function BlockMath({ math }: BlockMathProps) {
+export function BlockMath({ math, large }: BlockMathProps) {
     const html = useMemo(
         () => katex.renderToString(math, {
             throwOnError: false,
@@ -27,5 +28,5 @@ export function BlockMath({ math }: BlockMathProps) {
         [math]
     )
 
-    return <div className="text-xs md:text-base xl:text-xl" dangerouslySetInnerHTML={{ __html: html }} />
+    return <div className={large ? "text-xl md:text-2xl lg:text-3xl" : "text-xs md:text-base xl:text-xl"} dangerouslySetInnerHTML={{ __html: html }} />
 }

@@ -23,12 +23,18 @@ type Pages = {
   "/preprint/a-curvature-response-model-for-weak-field-gravity": {
     params: {};
   };
+  "/non-trivial-mars-bars": {
+    params: {};
+  };
+  "/preprint/quantum-gravity-phase-resolution": {
+    params: {};
+  };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/analysis/sparc-galaxy-rotation-curves" | "/analysis/solar-system" | "/preprint/a-curvature-response-model-for-weak-field-gravity";
+    page: "/" | "/analysis/sparc-galaxy-rotation-curves" | "/analysis/solar-system" | "/preprint/a-curvature-response-model-for-weak-field-gravity" | "/non-trivial-mars-bars" | "/preprint/quantum-gravity-phase-resolution";
   };
   "routes/home.tsx": {
     id: "routes/home";
@@ -46,6 +52,14 @@ type RouteFiles = {
     id: "routes/curvature-response-model";
     page: "/preprint/a-curvature-response-model-for-weak-field-gravity";
   };
+  "routes/NonTrivialMarsBars.tsx": {
+    id: "routes/NonTrivialMarsBars";
+    page: "/non-trivial-mars-bars";
+  };
+  "routes/QuantumGravity.tsx": {
+    id: "routes/QuantumGravity";
+    page: "/preprint/quantum-gravity-phase-resolution";
+  };
 };
 
 type RouteModules = {
@@ -54,4 +68,6 @@ type RouteModules = {
   "routes/AnalysisSparc": typeof import("./app/routes/AnalysisSparc.tsx");
   "routes/AnalysisSolarSystem": typeof import("./app/routes/AnalysisSolarSystem.tsx");
   "routes/curvature-response-model": typeof import("./app/routes/curvature-response-model.tsx");
+  "routes/NonTrivialMarsBars": typeof import("./app/routes/NonTrivialMarsBars.tsx");
+  "routes/QuantumGravity": typeof import("./app/routes/QuantumGravity.tsx");
 };
