@@ -29,12 +29,21 @@ type Pages = {
   "/preprint/quantum-gravity-phase-resolution": {
     params: {};
   };
+  "/analysis/natural-mathematics-bell-toy": {
+    params: {};
+  };
+  "/preprint/natural-mathematics-mandelbrot-diagnostics": {
+    params: {};
+  };
+  "/toy-galaxy": {
+    params: {};
+  };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/analysis/sparc-galaxy-rotation-curves" | "/analysis/solar-system" | "/preprint/a-curvature-response-model-for-weak-field-gravity" | "/non-trivial-mars-bars" | "/preprint/quantum-gravity-phase-resolution";
+    page: "/" | "/analysis/sparc-galaxy-rotation-curves" | "/analysis/solar-system" | "/preprint/a-curvature-response-model-for-weak-field-gravity" | "/non-trivial-mars-bars" | "/preprint/quantum-gravity-phase-resolution" | "/analysis/natural-mathematics-bell-toy" | "/preprint/natural-mathematics-mandelbrot-diagnostics" | "/toy-galaxy";
   };
   "routes/home.tsx": {
     id: "routes/home";
@@ -60,6 +69,18 @@ type RouteFiles = {
     id: "routes/QuantumGravity";
     page: "/preprint/quantum-gravity-phase-resolution";
   };
+  "routes/AnalysisBellToy.tsx": {
+    id: "routes/AnalysisBellToy";
+    page: "/analysis/natural-mathematics-bell-toy";
+  };
+  "routes/MandelbrotDiagnostics.tsx": {
+    id: "routes/MandelbrotDiagnostics";
+    page: "/preprint/natural-mathematics-mandelbrot-diagnostics";
+  };
+  "routes/GalaxyToy.tsx": {
+    id: "routes/GalaxyToy";
+    page: "/toy-galaxy";
+  };
 };
 
 type RouteModules = {
@@ -70,4 +91,7 @@ type RouteModules = {
   "routes/curvature-response-model": typeof import("./app/routes/curvature-response-model.tsx");
   "routes/NonTrivialMarsBars": typeof import("./app/routes/NonTrivialMarsBars.tsx");
   "routes/QuantumGravity": typeof import("./app/routes/QuantumGravity.tsx");
+  "routes/AnalysisBellToy": typeof import("./app/routes/AnalysisBellToy.tsx");
+  "routes/MandelbrotDiagnostics": typeof import("./app/routes/MandelbrotDiagnostics.tsx");
+  "routes/GalaxyToy": typeof import("./app/routes/GalaxyToy.tsx");
 };

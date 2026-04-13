@@ -17,10 +17,10 @@ export function loader({ request }: Route.LoaderArgs) {
 
 export function meta() {
     return [
-        { title: "Analysis - SPARC rotation curves" },
+        { title: "Resolution of the Penrose Quantum-Gravity Phase Catastrophe & connection to the Riemann Spectrum" },
         {
             name: "description",
-            content: "Analysis of SPARC galaxy rotation curves within the κ-framework.",
+            content: "In this paper we show that this catastrophe arises solely because quantum mechanics is written over the complex numbers. In Natural Mathematics (NM), the imaginary unit does not encode rotation in the complex plane, but orientation parity. Quantum amplitudes are real and take only the values ±1.",
         },
     ]
 }

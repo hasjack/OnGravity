@@ -21,7 +21,7 @@ export function meta() {
         { title: "Analysis - SPARC rotation curves" },
         {
             name: "description",
-            content: "Analysis of SPARC galaxy rotation curves within the κ-framework.",
+            content: "The κ-Framework naturally reproduces the Radial Acceleration Relation observed in SPARC galaxies. Including velocity shear tightens the residuals dramatically.",
         },
     ]
 }
