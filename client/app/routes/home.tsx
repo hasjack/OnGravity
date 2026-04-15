@@ -52,8 +52,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                         attributed to dark matter could arise from an environmental response of spacetime itself.
                     </p>
                     <p className="max-w-3xl text-base md:text-lg text-center px-4 mb-12">
-                        This site presents the framework, related mathematics, experimental tests, and ongoing
-                        results as open research.
+                        This site presents <Link to={'/preprint/a-curvature-response-model-for-weak-field-gravity'} className={'underline'}>the framework</Link>, related mathematics, 
+                        experimental tests, and ongoing results as <Link to={'https://github.com/hasjack/OnGravity'} target={'_blank'} className={'underline'}>open research</Link>.
                     </p>
                     <h3 className="mb-8 text-xl font-bold">Latest:</h3>
                     <nav className="flex items-center justify-center flex-wrap gap-8 tracking-wide text-base mb-24 max-w-3xl">

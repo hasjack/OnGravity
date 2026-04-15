@@ -24,3 +24,5 @@ python/solar-system/__pycache__
 python/solar-system/outputs
 client/build
 python/nm-prover/outputs
+python/bell-toy/outputs
+python/bell-toy/archive/outputs

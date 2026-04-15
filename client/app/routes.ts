@@ -9,8 +9,8 @@ export default [
 
     route("/non-trivial-mars-bars", "routes/NonTrivialMarsBars.tsx"),
     route("/preprint/quantum-gravity-phase-resolution", "routes/QuantumGravity.tsx"),
-    route("/analysis/natural-mathematics-bell-toy", "routes/AnalysisBellToy.tsx"),
+    route("/notes/natural-mathematics-bell-toy", "routes/AnalysisBellToy.tsx"),
 
-    route("/preprint/natural-mathematics-mandelbrot-diagnostics", "routes/MandelbrotDiagnostics.tsx"),
+    route("/notes/switching-quadratic-atlas-diagnostics", "routes/SwitchingQuadraticAtlas.tsx"),
     route("/toy-galaxy", "routes/GalaxyToy.tsx")
 ] satisfies RouteConfig;

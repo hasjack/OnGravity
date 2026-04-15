@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import { BlockMath, InlineMath } from '../components/Katex'
 import Article from '../components/Article'
+import BellToyInteractive from '~/components/BellToy'
 import Img from '../components/Img'
 import { H2, H3, H4, P, Ul, Ol, Li } from '../components/Typography'
 import { Route } from './+types/AnalysisBellToy'
@@ -361,6 +362,8 @@ export default function AnalysisBellToy({ loaderData }: Route.ComponentProps) {
                 approximately <InlineMath math={String.raw`1.46`} /> to <InlineMath math={String.raw`1.89`} /> as the local response window widens
                 from <InlineMath math={String.raw`\pi/6`} /> to <InlineMath math={String.raw`\pi/3`} />, while remaining below the classical bound.
             </P>
+
+            <BellToyInteractive />
         </Article>
     )
 }

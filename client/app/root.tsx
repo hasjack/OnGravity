@@ -15,36 +15,28 @@ export const links = () => [
 ]
 
 const navigation = [
+    { title: "Main", items: [{ to: "/", label: "Home" }] },
     {
-        title: "Main",
-        items: [
-            { to: "/", label: "Home" },
-            // { to: "/journal", label: "Latest News" }
+        title: "Pre-prints", items: [
+            { to: "/preprint/a-curvature-response-model-for-weak-field-gravity", label: "Curvature Response Model (Weak-Field Gravity)" },
         ]
     },
     {
-        title: "Pre-prints",
-        items: [
-            { to: "/preprint/a-curvature-response-model-for-weak-field-gravity", label: "A Curvature Response Model for Weak-Field Gravity" },
-            { to: "/analysis/sparc-galaxy-rotation-curves", label: "Analysis - SPARC rotation curves" },
-            { to: "/analysis/solar-system", label: "Analysis - Solar System" }
+        title: "Notes", items: [
+            { to: "/notes/switching-quadratic-atlas-diagnostics", label: "Switching Quadratic Atlas Diagnostics" },
+            { to: "/notes/natural-mathematics-bell-toy", label: "Progress-State Bell Toy" },
         ]
     },
     {
-        title: "Foundations & Logic",
-        items: [
+        title: "Analysis", items: [
+            { to: "/analysis/sparc-galaxy-rotation-curves", label: "SPARC rotation curves" },
+            { to: "/analysis/solar-system", label: "Solar System" },
+        ]
+    },
+    {
+        title: "Exploratory", items: [
             { to: "/non-trivial-mars-bars", label: "Non-trivial Mars bars" },
             { to: "/preprint/quantum-gravity-phase-resolution", label: "Quantum Gravity Phase Resolution" },
-            { to: "/preprint/natural-mathematics-mandelbrot-diagnostics", label: "Natural Maths Mandelbrot Diagnostics" },
-            // { to: "/preprint/prime-curvature", label: "Prime Curvature Hamiltonian" },
-            // { to: "/foundations/natural-maths-axioms", label: "Natural Maths - Core Axioms" },
-            // { to: "/analysis/mandelbrot-real-analogue", label: "Natural Maths - Mandelbrot Set" }
-        ]
-    },
-    {
-        title: "Experiments & Toys",
-        items: [
-            { to: "/analysis/natural-mathematics-bell-toy", label: "Progress-State Bell Toy in Natural Mathematics" },
         ]
     },
 ]
