@@ -138,12 +138,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                             })}
                         </div>
                     </section>
-                    <img src={`${VITE_APP_CDN_URL}/rh-logo.png`} className="h-12 md:h-18 mb-6 md:mb-8" />
+                    <img src={`${CDN}rh-logo.png`} className="h-12 md:h-18 mb-6 md:mb-8" />
                     <p className="max-w-3xl text-sm md:text-base text-center px-4 mb-24">
                         Please consider <Link to={RH_LINK} target="_blank" className="underline">funding this research</Link> on Research Hub
                     </p>
 
-                    <img src={`${VITE_APP_CDN_URL}/cc-long.webp`} className="h-12 md:h-18 mb-6 md:mb-8" />
+                    <img src={`${CDN}/cc-long.webp`} className="h-12 md:h-18 mb-6 md:mb-8" />
                     <p className="max-w-3xl text-sm md:text-base text-center px-4 mb-32">Content on this site is licensed under a Creative Commons Attribution 4.0 International License</p>
                 </div>
             </section>
