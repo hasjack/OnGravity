@@ -71,13 +71,13 @@ const Menu = ({ navigation }: Props) => {
             </button>
 
             {/* Desktop nav */}
-            <nav className="hidden items-center gap-8 text-sm tracking-wide">
+            <nav className="hidden items-center gap-6 text-xs tracking-wide">
                 {navigation.map((section: Navigation) => (
-                    <div key={section.title} className="flex items-center gap-4">
+                    <div key={section.title} className="flex items-center gap-3">
                         <span className="text-xs uppercase tracking-wider text-gray-500">
                             {section.title}
                         </span>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                             {section.items.map(item => {
                                 const active =
                                     location.pathname === item.to ||
@@ -127,7 +127,7 @@ const Menu = ({ navigation }: Props) => {
                             </button>
                         </div>
 
-                        <div className="flex flex-col gap-5 text-base">
+                        <div className="flex flex-col gap-5 text-sm">
                             {navigation.map((section: Navigation) => (
                                 <div key={section.title}>
                                     <div className="mb-2 mt-5 text-sm font-semibold uppercase tracking-wide text-gray-600">

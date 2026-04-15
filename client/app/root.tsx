@@ -15,10 +15,15 @@ export const links = () => [
 ]
 
 const navigation = [
-    { title: "Main", items: [{ to: "/", label: "Home" }] },
+    {   
+        title: "Main", items: [
+            { to: "/", label: "Home" },
+            { to: "/about", label: "About" },
+        ]
+    },
     {
         title: "Pre-prints", items: [
-            { to: "/preprint/a-curvature-response-model-for-weak-field-gravity", label: "Curvature Response Model (Weak-Field Gravity)" },
+            { to: "/preprint/a-curvature-response-model-for-weak-field-gravity", label: "Curvature Response Model" },
         ]
     },
     {

@@ -14,6 +14,9 @@ type Pages = {
   "/": {
     params: {};
   };
+  "/about": {
+    params: {};
+  };
   "/analysis/sparc-galaxy-rotation-curves": {
     params: {};
   };
@@ -43,11 +46,15 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/analysis/sparc-galaxy-rotation-curves" | "/analysis/solar-system" | "/preprint/a-curvature-response-model-for-weak-field-gravity" | "/non-trivial-mars-bars" | "/preprint/quantum-gravity-phase-resolution" | "/notes/natural-mathematics-bell-toy" | "/notes/switching-quadratic-atlas-diagnostics" | "/toy-galaxy";
+    page: "/" | "/about" | "/analysis/sparc-galaxy-rotation-curves" | "/analysis/solar-system" | "/preprint/a-curvature-response-model-for-weak-field-gravity" | "/non-trivial-mars-bars" | "/preprint/quantum-gravity-phase-resolution" | "/notes/natural-mathematics-bell-toy" | "/notes/switching-quadratic-atlas-diagnostics" | "/toy-galaxy";
   };
   "routes/home.tsx": {
     id: "routes/home";
     page: "/";
+  };
+  "routes/about.tsx": {
+    id: "routes/about";
+    page: "/about";
   };
   "routes/AnalysisSparc.tsx": {
     id: "routes/AnalysisSparc";
@@ -86,6 +93,7 @@ type RouteFiles = {
 type RouteModules = {
   "root": typeof import("./app/root.tsx");
   "routes/home": typeof import("./app/routes/home.tsx");
+  "routes/about": typeof import("./app/routes/about.tsx");
   "routes/AnalysisSparc": typeof import("./app/routes/AnalysisSparc.tsx");
   "routes/AnalysisSolarSystem": typeof import("./app/routes/AnalysisSolarSystem.tsx");
   "routes/curvature-response-model": typeof import("./app/routes/curvature-response-model.tsx");

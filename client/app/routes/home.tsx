@@ -1,13 +1,6 @@
-// import { useTranslation } from "react-i18next";
-
-// import { database } from "~/database/context";
-// import i18n from "~/i18n";
 import type { Route } from "./+types/home";
 import { Link } from "react-router";
 import { InlineMath } from "../components/Katex";
-// import pkg from 'react-katex';
-// const {InlineMath} = pkg;
-// import { formatDateTime } from "~/lib/datetime";
 
 const { VITE_APP_CDN_URL } = import.meta.env
 const CDN = VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/'
@@ -39,28 +32,40 @@ const items = [
   },
 ]
 
-export function meta({ }: Route.MetaArgs) {
+export function meta({ location }: Route.MetaArgs) {
+    const title = "κ-Framework | Natural Mathematics & Environmental Curvature";
+    const description = "A unified empirical framework for dynamical systems and weak-field gravity. From iterative quadratic atlases to SPARC galaxy rotation curves, exploring how curvature responds to the local environment.";
+    const url = `https://halfasecond.com${location.pathname}`;
+
     return [
-        { title: "κ-Framework: A Unified Geometric Model for Weak-Field Gravity" },
-        {
-            name: "description",
-            content: "An environment-dependent gravitational response model that resolves galaxy rotation curves and early-universe SMBH formation without dark matter. Validated against the SPARC dataset and Solar System dynamics."
-        },
+        { title },
+        { name: "description", content: description },
+        
+        // OpenGraph / Facebook
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: url },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:image", content: "https://cdn.halfasecond.com/images/onGravity/k-framework.jpg" },
+
+        // Twitter
+        { name: "twitter:card", content: "https://cdn.halfasecond.com/images/onGravity/k-framework.jpg" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+        { name: "keywords", content: "kappa framework, natural mathematics, dynamical systems, galaxy rotation curves, SPARC dataset, N-body simulation, numerical diagnostics, Jack Pickett" }
     ];
 }
 
-export async function loader({ context }: Route.LoaderArgs) {
-    // const db = database();
-    // const result = await db.execute<{ now: Date }>("select now()");
-    // return { csrfToken: context.csrfToken, serverTime: result[0].now };
-}
+// export async function loader({ context }: Route.LoaderArgs) {
+//     // const db = database();
+//     // const result = await db.execute<{ now: Date }>("select now()");
+//     // return { csrfToken: context.csrfToken, serverTime: result[0].now };
+// }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-    // const { t } = useTranslation();
-
     return (
         <>
-            <section className="relative min-h-dvh flex flex-col items-center justify-center text-gray-200 py-12">
+            <section className="relative min-h-dvh flex flex-col items-center justify-center text-gray-200 py-24">
                 <div className="absolute inset-0">
                     <img
                         src={`${CDN}barcode.png`}
@@ -84,7 +89,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                         mathematics</Link>, <Link to={'/analysis/sparc-galaxy-rotation-curves'} className={'underline'}>experimental tests</Link>, and ongoing results as <Link to={'https://github.com/hasjack/OnGravity'} target={'_blank'} className={'underline'}>open research</Link>.
                     </p>
                     <h3 className="mb-8 text-xl font-bold">Latest:</h3>
-                    <section className="w-full max-w-6xl mx-auto px-4 mb-24">
+                    <section className="w-full max-w-6xl mx-auto px-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                             {items.map((item) => {
                                 const isExternal = item.to.startsWith("https://")
@@ -143,8 +148,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                         Please consider <Link to={RH_LINK} target="_blank" className="underline">funding this research</Link> on Research Hub
                     </p>
 
-                    <img src={`${CDN}/cc-long.webp`} className="h-12 md:h-18 mb-6 md:mb-8" />
-                    <p className="max-w-3xl text-sm md:text-base text-center px-4 mb-32">Content on this site is licensed under a Creative Commons Attribution 4.0 International License</p>
+                    <img src={`${CDN}cc-long.webp`} className="h-12 md:h-18 mb-6 md:mb-8" />
+                    <p className="max-w-3xl text-sm md:text-base text-center px-4">Content on this site is licensed under a Creative Commons Attribution 4.0 International License</p>
                 </div>
             </section>
         </>
