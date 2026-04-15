@@ -89,7 +89,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                         mathematics</Link>, <Link to={'/analysis/sparc-galaxy-rotation-curves'} className={'underline'}>experimental tests</Link>, and ongoing results as <Link to={'https://github.com/hasjack/OnGravity'} target={'_blank'} className={'underline'}>open research</Link>.
                     </p>
                     <h3 className="mb-8 text-xl font-bold">Latest:</h3>
-                    <section className="w-full max-w-6xl mx-auto px-4">
+                    <section className="w-full max-w-6xl mx-auto px-4 mb-24">
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                             {items.map((item) => {
                                 const isExternal = item.to.startsWith("https://")
