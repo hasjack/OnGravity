@@ -22,15 +22,15 @@ const navigation = [
         ]
     },
     {
-        title: "Notes", items: [
-            { to: "/notes/switching-quadratic-atlas-diagnostics", label: "Switching Quadratic Atlas Diagnostics" },
-            { to: "/notes/natural-mathematics-bell-toy", label: "Progress-State Bell Toy" },
+        title: "Framework Analysis", items: [
+            { to: "/analysis/sparc-galaxy-rotation-curves", label: "SPARC rotation curves" },
+            { to: "/analysis/solar-system", label: "Solar System" },
         ]
     },
     {
-        title: "Analysis", items: [
-            { to: "/analysis/sparc-galaxy-rotation-curves", label: "SPARC rotation curves" },
-            { to: "/analysis/solar-system", label: "Solar System" },
+        title: "Notes", items: [
+            { to: "/notes/switching-quadratic-atlas-diagnostics", label: "Switching Quadratic Atlas Diagnostics" },
+            { to: "/notes/natural-mathematics-bell-toy", label: "Progress-State Bell Toy" },
         ]
     },
     {
