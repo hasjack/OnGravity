@@ -63,7 +63,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             <section className="relative min-h-dvh flex flex-col items-center justify-center text-gray-200 py-12">
                 <div className="absolute inset-0">
                     <img
-                        src={`${VITE_APP_CDN_URL}/barcode.png`}
+                        src={`${CDN}barcode.png`}
                         alt=""
                         className="w-full h-full object-cover"
                     />
@@ -73,7 +73,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                 <div className="absolute inset-0 bg-black/80"></div>
 
                 <div className="relative flex flex-col items-center justify-center">
-                    <img src={`${VITE_APP_CDN_URL}/logo_transparent.png`} className="h-48 md:h-64 mb-12 md:mb-24" />
+                    <img src={`${CDN}logo_transparent.png`} className="h-48 md:h-64 mb-12 md:mb-24" />
                     <p className="max-w-3xl text-base md:text-lg text-center px-4 mb-8">
                         The <InlineMath math={String.raw`\kappa`} />-framework is an open research project exploring whether the gravitational phenomena
                         attributed to dark matter could arise from an environmental response of spacetime itself.
