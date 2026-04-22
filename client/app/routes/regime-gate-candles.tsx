@@ -8,7 +8,7 @@ import { Route } from './+types/regime-gate-candles'
 
 
 const { VITE_APP_CDN_URL } = import.meta.env
-const CDN = VITE_APP_CDN_URL
+const CDN = VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/'
 
 export function loader({ request }: Route.LoaderArgs) {
     return {
