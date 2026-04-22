@@ -598,7 +598,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
             </P>
             {/* Figure 15 */}
             <Img
-                path={CDN + 'solar-system-analysis.jpg'}
+                path={CDN + 'galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png'}
                 alt={'Figure 15: Linear regression fit describing the empirical relation between κr/2 and baryonic acceleration.'}
             />
             <P classNames="mb-8 text-sm">
