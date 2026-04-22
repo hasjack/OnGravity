@@ -378,11 +378,11 @@ export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {
             {/* Figures 9 & 10 */}
             <div className="flex flex-wrap gap-y-4 md:gap-x-[4%] w-[90%] mb-4">
                 <img
-                    src={CDN + "plots/robustness/multi_split_fraction_improved.png"}
+                    src={CDN + "galaxy-rotation-curves/output/plots/robustness/multi_split_fraction_improved.png"}
                     className="w-full md:w-[48%]"
                 />
                 <img
-                    src={CDN + "plots/robustness/multi_split_median_chi2.png"}
+                    src={CDN + "galaxy-rotation-curves/output/plots/robustness/multi_split_median_chi2.png"}
                     className="w-full md:w-[48%]"
                 />
             </div>
