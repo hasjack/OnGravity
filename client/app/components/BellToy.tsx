@@ -118,7 +118,7 @@ export default function BellToyInteractive() {
     }, [w, deltaHigh, deltaLow, nSamples, settings])
 
     return (
-        <div className="my-12 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 bg-white w-full">
+        <div className="border border-gray-200 dark:border-gray-700 rounded-2xl p-6 bg-white w-full">
             <div className="space-y-8">
                 {/* Core slider: w */}
                 <div>

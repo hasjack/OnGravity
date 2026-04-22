@@ -1,6 +1,7 @@
 import { BlockMath } from '../components/Katex'
 import { Link } from 'react-router'
 import Article from '../components/Article'
+import License from '~/components/License'
 import { H2, H3, P, Ul, Ol, Li } from '../components/Typography'
 import { references } from '../lib/references'
 import { Route } from './+types/AnalysisSparc'
@@ -339,10 +340,11 @@ export default function AnalysisSolarSystem({ loaderData }: Route.ComponentProps
                 >github.com/hasjack/OnGravity/tree/feature/solar-system-model/python/solar-system
                 </Link>
             </P>
-            <P>
+            <P classNames="mb-24">
                 This repository includes the full analysis pipeline, data ingestion routines, model fitting procedures, and scripts used to
                 generate the figures presented in this paper.
             </P>
+            <License />
         </Article>
     )
 }

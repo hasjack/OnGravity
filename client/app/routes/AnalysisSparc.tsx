@@ -1,14 +1,14 @@
 import { Link } from 'react-router'
 import { BlockMath, InlineMath } from '../components/Katex'
 import Article from '../components/Article'
+import FurtherReading from '~/components/FurtherReading'
+import License from '~/components/License'
 import { H2, H3, P, Ul, Ol, Li } from '../components/Typography'
 import { references } from '../lib/references'
 import { Route } from './+types/AnalysisSparc'
 
 const { VITE_APP_CDN_URL } = import.meta.env
-const CDN = VITE_APP_CDN_URL
-    ? VITE_APP_CDN_URL + "galaxy-rotation-curves/output/"
-    : 'https://cdn.halfasecond.com/images/onGravity/' + "galaxy-rotation-curves/output/"
+const CDN = VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/'
 
 export function loader({ request }: Route.LoaderArgs) {
     return {
@@ -167,22 +167,22 @@ export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {
             {/* Figures 1 & 2 */}
             <div className="flex flex-wrap gap-y-4 md:gap-x-[4%] w-[90%] mb-4">
                 <img
-                    src={CDN + "galaxies/UGCA444_rotmod_rotation.png"}
+                    src={CDN + "galaxy-rotation-curves/output/galaxies/UGCA444_rotmod_rotation.png"}
                     className="w-full md:w-[48%]"
                 />
                 <img
-                    src={CDN + "galaxies/NGC5985_rotmod_rotation.png"}
+                    src={CDN + "galaxy-rotation-curves/output/galaxies/NGC5985_rotmod_rotation.png"}
                     className="w-full md:w-[48%]"
                 />
             </div>
             {/* Figures 3 & 4 */}
             <div className="flex flex-wrap gap-y-4 md:gap-x-[4%] w-[90%] mb-4">
                 <img
-                    src={CDN + "galaxies/F563-1_rotmod_rotation.png"}
+                    src={CDN + "galaxy-rotation-curves/output/galaxies/F563-1_rotmod_rotation.png"}
                     className="w-full md:w-[48%]"
                 />
                 <img
-                    src={CDN + "galaxies/CamB_rotmod_rotation.png"}
+                    src={CDN + "galaxy-rotation-curves/output/galaxies/CamB_rotmod_rotation.png"}
                     className="w-full md:w-[48%]"
                 />
             </div>
@@ -272,7 +272,7 @@ export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {
             <P>Scatter plots of these relations allow visual identification of potential environmental dependencies.</P>
 
             {/* Figure 5 */}
-            <img src={CDN + 'plots/kappa_stack.png'} className="w-auto mb-2 lg:max-w-3xl lg:max-w-3xl" />
+            <img src={CDN + 'galaxy-rotation-curves/output/plots/kappa_stack.png'} className="w-auto mb-2 lg:max-w-3xl lg:max-w-3xl" />
 
             <P classNames="mb-8 text-sm">
                 <b>Figure 5:</b> Empirical κ structure across the SPARC sample. Each point represents a measurement of κr/2
@@ -311,7 +311,7 @@ export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {
 
 
             {/* Figure 6 */}
-            <img src={CDN + 'plots/kappa_vs_gbar.png'} className="w-auto mb-2 lg:max-w-3xl" />
+            <img src={CDN + 'galaxy-rotation-curves/output/plots/kappa_vs_gbar.png'} className="w-auto mb-2 lg:max-w-3xl" />
             <P classNames="mb-8 text-sm">
                 <b>Figure 6:</b> reveals a clear correlation between κr/2 and baryonic acceleration across the stacked SPARC sample.
             </P>
@@ -343,7 +343,7 @@ export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {
             </P>
 
             {/* Figure 7 */}
-            <img src={CDN + 'plots/kappa_vs_gbar_fit.png'} className="w-auto mb-2 lg:max-w-3xl" />
+            <img src={CDN + 'galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png'} className="w-auto mb-2 lg:max-w-3xl" />
             <P classNames="mb-8 text-sm">
                 <b>Figure 7:</b> Linear regression fit describing the empirical relation between κr/2 and baryonic acceleration.
             </P>
@@ -374,7 +374,7 @@ export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {
             </P>
 
             {/* Figures 8 */}
-            <img src={CDN + 'plots/rar/rar_model_overlay.png'} className="w-auto mb-2 lg:max-w-3xl" />
+            <img src={CDN + 'galaxy-rotation-curves/output/plots/rar/rar_model_overlay.png'} className="w-auto mb-2 lg:max-w-3xl" />
             {/* Figures 9 & 10 */}
             <div className="flex flex-wrap gap-y-4 md:gap-x-[4%] w-[90%] mb-4">
                 <img
@@ -393,7 +393,7 @@ export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {
 
 
             {/* Figures 11 */}
-            <img src={CDN + 'plots/rar/rar_residual_vs_gbar.png'} className="w-auto mb-2 lg:max-w-3xl" />
+            <img src={CDN + 'galaxy-rotation-curves/output/plots/rar/rar_residual_vs_gbar.png'} className="w-auto mb-2 lg:max-w-3xl" />
             <P classNames="mb-8 text-sm">
                 <b>Figure 11:</b> The vertical axis shows the difference between predicted and observed accelerations
                 , <InlineMath math={String.raw`\Delta \log_{10} g_{\text{obs}} = \log_{10}(g_{\text{pred}}) - \log_{10}(g_{\text{obs}})`} /> plotted
@@ -405,7 +405,7 @@ export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {
                 residual structure in parts of the low-acceleration regime.
             </P>
             {/* Figures 12 */}
-            <img src={CDN + 'plots/rar/rar_residual_hist.png'} className="w-auto mb-2 lg:max-w-3xl" />
+            <img src={CDN + 'galaxy-rotation-curves/output/plots/rar/rar_residual_hist.png'} className="w-auto mb-2 lg:max-w-3xl" />
             <P classNames="mb-8 text-sm">
                 <b>Figure 12:</b> Residuals are concentrated near zero, indicating that the κ-based predictions
                 reproduce the observed radial acceleration relation with relatively small scatter. The
@@ -524,6 +524,33 @@ export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {
                 ))}
             </Ol>
 
+            <H2>Further Reading</H2>
+            <div className="mb-12 mt-2 mx-2">
+                <FurtherReading items={[
+                    {
+                        itemType: "Analysis (pre-print)",
+                        label:
+                            "Environmental Curvature Response in Planetary Dynamics: Solar System Diagnostics of the κ-Framework",
+                        to: "/analysis/solar-system",
+                        date: "12th March 2026",
+                        image: `${CDN}solar-system/outputs/Mercury/lrl_perihelion_direction_comparison.png`,
+                    },
+                    {
+                        itemType: "Theory (pre-print)",
+                        label: "A Curvature Response Model for Weak-Field Gravity",
+                        to: "/preprint/a-curvature-response-model-for-weak-field-gravity",
+                        date: "28th March 2026",
+                        image: `${CDN}k-framework.jpg`,
+                    },
+                    {
+                        itemType: "Simulation",
+                        label: "Toy Galaxy - k-Framework comparison with Newtonian physics",
+                        to: "/toy-galaxy",
+                        date: "12th November 2025",
+                        image: `${CDN}toy-galaxy-16-10.jpg`,
+                    }]} />
+            </div>
+
 
             <H2>Code and Reproducibility</H2>
             <P>
@@ -539,10 +566,11 @@ export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {
                 >github.com/hasjack/OnGravity/tree/feature/rotation-curve-analysis/python/rotation-curves
                 </Link>
             </P>
-            <P>
+            <P classNames="mb-24">
                 This repository includes the full analysis pipeline, data ingestion routines, model fitting procedures,
                 and scripts used to generate the figures presented in this paper.
             </P>
+            <License />
         </Article>
     )
 }

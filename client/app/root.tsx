@@ -34,14 +34,17 @@ const navigation = [
     },
     {
         title: "Notes", items: [
-            { to: "/notes/switching-quadratic-atlas-diagnostics", label: "Switching Quadratic Atlas Diagnostics" },
             { to: "/notes/natural-mathematics-bell-toy", label: "Progress-State Bell Toy" },
+            { to: "/notes/evaluation-protocol-for-progress-state-regime", label: "Progress-State Evaluation Protocol" },
+            // { to: "/notes/regime-gate", label: 'Executive Summary: Regime Gate' },
+            { to: "/notes/switching-quadratic-atlas-diagnostics", label: "Switching Quadratic Atlas Diagnostics" },
+            { to: "/notes/quantum-gravity-phase-resolution", label: "Penrose QG Phase Resolution" },
         ]
     },
     {
         title: "Exploratory", items: [
             { to: "/non-trivial-mars-bars", label: "Non-trivial Mars bars" },
-            { to: "/preprint/quantum-gravity-phase-resolution", label: "Quantum Gravity Phase Resolution" },
+            { to: "/toy-galaxy", label: "Simulation: Galaxy Toy" }
         ]
     },
 ]

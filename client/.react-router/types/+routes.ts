@@ -29,10 +29,16 @@ type Pages = {
   "/non-trivial-mars-bars": {
     params: {};
   };
-  "/preprint/quantum-gravity-phase-resolution": {
+  "/notes/quantum-gravity-phase-resolution": {
     params: {};
   };
   "/notes/natural-mathematics-bell-toy": {
+    params: {};
+  };
+  "/notes/regime-gate": {
+    params: {};
+  };
+  "/notes/evaluation-protocol-for-progress-state-regime": {
     params: {};
   };
   "/notes/switching-quadratic-atlas-diagnostics": {
@@ -41,12 +47,18 @@ type Pages = {
   "/toy-galaxy": {
     params: {};
   };
+  "/gate": {
+    params: {};
+  };
+  "/rh": {
+    params: {};
+  };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/about" | "/analysis/sparc-galaxy-rotation-curves" | "/analysis/solar-system" | "/preprint/a-curvature-response-model-for-weak-field-gravity" | "/non-trivial-mars-bars" | "/preprint/quantum-gravity-phase-resolution" | "/notes/natural-mathematics-bell-toy" | "/notes/switching-quadratic-atlas-diagnostics" | "/toy-galaxy";
+    page: "/" | "/about" | "/analysis/sparc-galaxy-rotation-curves" | "/analysis/solar-system" | "/preprint/a-curvature-response-model-for-weak-field-gravity" | "/non-trivial-mars-bars" | "/notes/quantum-gravity-phase-resolution" | "/notes/natural-mathematics-bell-toy" | "/notes/regime-gate" | "/notes/evaluation-protocol-for-progress-state-regime" | "/notes/switching-quadratic-atlas-diagnostics" | "/toy-galaxy" | "/gate" | "/rh";
   };
   "routes/home.tsx": {
     id: "routes/home";
@@ -74,11 +86,19 @@ type RouteFiles = {
   };
   "routes/QuantumGravity.tsx": {
     id: "routes/QuantumGravity";
-    page: "/preprint/quantum-gravity-phase-resolution";
+    page: "/notes/quantum-gravity-phase-resolution";
   };
   "routes/AnalysisBellToy.tsx": {
     id: "routes/AnalysisBellToy";
     page: "/notes/natural-mathematics-bell-toy";
+  };
+  "routes/regime-gate.tsx": {
+    id: "routes/regime-gate";
+    page: "/notes/regime-gate";
+  };
+  "routes/regime-gate-candles.tsx": {
+    id: "routes/regime-gate-candles";
+    page: "/notes/evaluation-protocol-for-progress-state-regime";
   };
   "routes/SwitchingQuadraticAtlas.tsx": {
     id: "routes/SwitchingQuadraticAtlas";
@@ -87,6 +107,14 @@ type RouteFiles = {
   "routes/GalaxyToy.tsx": {
     id: "routes/GalaxyToy";
     page: "/toy-galaxy";
+  };
+  "routes/UpdateGate.tsx": {
+    id: "routes/UpdateGate";
+    page: "/gate";
+  };
+  "routes/riemann.tsx": {
+    id: "routes/riemann";
+    page: "/rh";
   };
 };
 
@@ -100,6 +128,10 @@ type RouteModules = {
   "routes/NonTrivialMarsBars": typeof import("./app/routes/NonTrivialMarsBars.tsx");
   "routes/QuantumGravity": typeof import("./app/routes/QuantumGravity.tsx");
   "routes/AnalysisBellToy": typeof import("./app/routes/AnalysisBellToy.tsx");
+  "routes/regime-gate": typeof import("./app/routes/regime-gate.tsx");
+  "routes/regime-gate-candles": typeof import("./app/routes/regime-gate-candles.tsx");
   "routes/SwitchingQuadraticAtlas": typeof import("./app/routes/SwitchingQuadraticAtlas.tsx");
   "routes/GalaxyToy": typeof import("./app/routes/GalaxyToy.tsx");
+  "routes/UpdateGate": typeof import("./app/routes/UpdateGate.tsx");
+  "routes/riemann": typeof import("./app/routes/riemann.tsx");
 };

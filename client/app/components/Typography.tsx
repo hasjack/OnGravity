@@ -1,11 +1,11 @@
 const H1 = ({ children, style }: { children: React.ReactNode, style?: React.CSSProperties }) => 
     <h1 className="w-full text-xl md:text-2xl lg:text-3xl mb-6 font-semibold" style={style}>{children}</h1>
 
-const H2 = ({ children, style }: { children: React.ReactNode, style?: React.CSSProperties }) => 
-    <h2 className="w-full text-lg lg:text-xl mb-2 font-semibold" style={style}>{children}</h2>
+const H2 = ({ children, classNames = "mb-2", style }: { children: React.ReactNode, classNames?: string, style?: React.CSSProperties }) => 
+    <h2 className={"w-full text-lg lg:text-xl font-semibold" + " " + classNames} style={style}>{children}</h2>
 
-const H2Alt = ({ children, style }: { children: React.ReactNode, style?: React.CSSProperties }) => 
-    <h2 className="w-full text-xl md:text-2xl lg:text-3xl mb-6 font-semibold" style={style}>{children}</h2>
+const H2Alt = ({ children, classNames = "mb-6", style }: { children: React.ReactNode, classNames?: string, style?: React.CSSProperties }) => 
+    <h2 className={"w-full text-xl md:text-2xl lg:text-3xl font-semibold" + " " + classNames} style={style}>{children}</h2>
 
 const H3 = ({ children, style }: { children: React.ReactNode, style?: React.CSSProperties }) => 
     <h3 className="w-full text-base md:px-1 mb-2 font-semibold" style={style}>{children}</h3>

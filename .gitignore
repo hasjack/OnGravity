@@ -26,3 +26,6 @@ client/build
 python/nm-prover/outputs
 python/bell-toy/outputs
 python/bell-toy/archive/outputs
+python/quant/output
+python/quant/data
+python/quant/__pycache__

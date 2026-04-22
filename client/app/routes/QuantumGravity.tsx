@@ -1,8 +1,7 @@
-import { Link } from 'react-router'
 import { BlockMath, InlineMath } from '../components/Katex'
 import Article from '../components/Article'
+import License from '~/components/License'
 import { H2, H3, P, Ul, Ol, Li } from '../components/Typography'
-import { references } from '../lib/references'
 import { Route } from './+types/QuantumGravity'
 
 
@@ -299,10 +298,11 @@ export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {
                     emerging from curvature dynamics rather than analytic continuation.
                 </Li>
             </Ol>
-            <P>
+            <P classNames="mb-24">
                 The framework is mathematically minimal, physically self-consistent, and numerically validated in its semiclassical 
                 domain. Further refinement of the curvature potential may yield an operator whose spectrum matches the Riemann zeros exactly.
             </P>
+            <License />
         </Article>
     )
 }

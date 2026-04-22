@@ -2,7 +2,9 @@ import { Link } from 'react-router'
 import { BlockMath, InlineMath } from '../components/Katex'
 import Article from '../components/Article'
 import BellToyInteractive from '~/components/BellToy'
+import FurtherReading from '~/components/FurtherReading'
 import Img from '../components/Img'
+import License from '~/components/License'
 import { H2, H3, H4, P, Ul, Ol, Li } from '../components/Typography'
 import { Route } from './+types/AnalysisBellToy'
 
@@ -54,7 +56,7 @@ export default function AnalysisBellToy({ loaderData }: Route.ComponentProps) {
             <P>
                 where <InlineMath math={String.raw`\sigma \in \{+1,-1\}`} /> denotes the current orientation sector
                 and <InlineMath math={String.raw`p \in [0,1)`} /> denotes progress through that sector. The construction
-                treats binary state and state progress as the fundamental variables. The sector label <InlineMath math={String.raw`\sigma`} /> supplies 
+                treats binary state and state progress as the fundamental variables. The sector label <InlineMath math={String.raw`\sigma`} /> supplies
                 the observable state, while <InlineMath math={String.raw`p`} /> tracks advance toward the next flip.
             </P>
 
@@ -128,7 +130,7 @@ export default function AnalysisBellToy({ loaderData }: Route.ComponentProps) {
 
             <P>
                 A shared source emits pairs with common hidden variables: an initial sector <InlineMath math={String.raw`\sigma_0`} />,
-                an initial progress <InlineMath math={String.raw`p_0`} />, and a shared latent parameter <InlineMath math={String.raw`\lambda`} />. 
+                an initial progress <InlineMath math={String.raw`p_0`} />, and a shared latent parameter <InlineMath math={String.raw`\lambda`} />.
                 Each wing then evolves locally according to its own setting.
             </P>
 
@@ -168,7 +170,7 @@ export default function AnalysisBellToy({ loaderData }: Route.ComponentProps) {
             <BlockMath math={String.raw`d = |\mathrm{wrap}(\mathrm{setting} - \lambda)|`} />
 
             <P classNames="mb-0">
-                where <InlineMath math={String.raw`\mathrm{wrap}`} /> returns angular separation on <InlineMath math={String.raw`[-\pi,\pi)`} />. 
+                where <InlineMath math={String.raw`\mathrm{wrap}`} /> returns angular separation on <InlineMath math={String.raw`[-\pi,\pi)`} />.
                 The local progress increment is taken to be
             </P>
 
@@ -211,12 +213,12 @@ export default function AnalysisBellToy({ loaderData }: Route.ComponentProps) {
             <H4>Proof</H4>
 
             <P>
-                For fixed <InlineMath math={String.raw`\lambda`} />, each floor 
-                term <InlineMath math={String.raw`\lfloor p_0 + \delta(\cdot,\lambda)\rfloor`} /> is either <InlineMath math={String.raw`0`} /> or <InlineMath math={String.raw`1`} />. 
+                For fixed <InlineMath math={String.raw`\lambda`} />, each floor
+                term <InlineMath math={String.raw`\lfloor p_0 + \delta(\cdot,\lambda)\rfloor`} /> is either <InlineMath math={String.raw`0`} /> or <InlineMath math={String.raw`1`} />.
                 A parity mismatch occurs exactly when one of the two quantities crosses the overflow threshold
                 and the other does not. Since <InlineMath math={String.raw`p_0`} /> is uniform on <InlineMath math={String.raw`[0,1)`} />, the set
                 of mismatch values has measure <InlineMath math={String.raw`|\delta(x,\lambda)-\delta(y,\lambda)|`} />. Therefore
-                the product <InlineMath math={String.raw`A_x B_y`} /> equals <InlineMath math={String.raw`-1`} /> on a set of that measure 
+                the product <InlineMath math={String.raw`A_x B_y`} /> equals <InlineMath math={String.raw`-1`} /> on a set of that measure
                 and <InlineMath math={String.raw`+1`} /> elsewhere, giving the stated conditional expectation.
             </P>
 
@@ -247,14 +249,14 @@ export default function AnalysisBellToy({ loaderData }: Route.ComponentProps) {
 
             <P classNames="mb-8 text-sm">
                 <b>Figure 1:</b> Representative progress-state Bell toy result for a fixed local response window. Top: the four Bell-setting
-                correlations. Bottom: the corresponding CHSH score. Numerical values shown here and below are estimated by Monte Carlo sampling 
+                correlations. Bottom: the corresponding CHSH score. Numerical values shown here and below are estimated by Monte Carlo sampling
                 of <InlineMath math={String.raw`\Omega`} /> under the stated uniform source distribution.
             </P>
 
             <H3>Classicality</H3>
 
             <P classNames="mb-0">
-                For each hidden state <InlineMath math={String.raw`\omega \in \Omega`} />, the toy assigns deterministic local binary 
+                For each hidden state <InlineMath math={String.raw`\omega \in \Omega`} />, the toy assigns deterministic local binary
                 outcomes <InlineMath math={String.raw`A_x(\omega), B_y(\omega) \in \{\pm 1\}`} />. The construction therefore lies within the standard local
                 hidden-variable class, and the CHSH bound
             </P>
@@ -292,17 +294,17 @@ export default function AnalysisBellToy({ loaderData }: Route.ComponentProps) {
 
             <P classNames="mb-8 text-sm">
                 <b>Figure 2:</b> CHSH score as a function of response-window width <InlineMath math={String.raw`w`} /> for the progress-state Bell toy.
-                Top: CHSH score across the width sweep. Bottom: the four setting-pair correlations across the same sweep. The score rises from <InlineMath math={String.raw`S \approx 1.46`} /> 
-                at <InlineMath math={String.raw`w=\pi/6`} /> to <InlineMath math={String.raw`S \approx 1.89`} /> at <InlineMath math={String.raw`w=\pi/3`} />, 
+                Top: CHSH score across the width sweep. Bottom: the four setting-pair correlations across the same sweep. The score rises from <InlineMath math={String.raw`S \approx 1.46`} />
+                at <InlineMath math={String.raw`w=\pi/6`} /> to <InlineMath math={String.raw`S \approx 1.89`} /> at <InlineMath math={String.raw`w=\pi/3`} />,
                 approaching but not exceeding the classical bound.
             </P>
 
             <H3>Correlation Pattern</H3>
 
             <P>
-                The increase in <InlineMath math={String.raw`S`} /> does not arise from all four correlations growing together. The three 
-                channels <InlineMath math={String.raw`E(a,b)`} />, <InlineMath math={String.raw`E(a,b')`} />, and <InlineMath math={String.raw`E(a',b)`} /> remain 
-                clustered near <InlineMath math={String.raw`0.67`} /> across the sweep. The main change occurs in 
+                The increase in <InlineMath math={String.raw`S`} /> does not arise from all four correlations growing together. The three
+                channels <InlineMath math={String.raw`E(a,b)`} />, <InlineMath math={String.raw`E(a,b')`} />, and <InlineMath math={String.raw`E(a',b)`} /> remain
+                clustered near <InlineMath math={String.raw`0.67`} /> across the sweep. The main change occurs in
                 the <InlineMath math={String.raw`E(a',b')`} /> channel, which falls steadily:
             </P>
 
@@ -327,10 +329,10 @@ export default function AnalysisBellToy({ loaderData }: Route.ComponentProps) {
                 sector agreement more strongly than the overall level of activity.
             </P>
 
-            <H3>Interpretation</H3>
+            <H2>Interpretation</H2>
 
             <P>
-                The progress-state Bell toy shows that a minimal sector-progress algebra, written in Natural Mathematics language 
+                The progress-state Bell toy shows that a minimal sector-progress algebra, written in Natural Mathematics language
                 as <InlineMath math={String.raw`(\sigma,p)`} />, supports a local Bell-style model with binary measurements and non-trivial
                 setting-dependent correlations.
             </P>
@@ -354,7 +356,7 @@ export default function AnalysisBellToy({ loaderData }: Route.ComponentProps) {
                 sector-progress dynamics are sufficient to generate a structured and tunable Bell-type landscape.
             </P>
 
-            <H3>Summary</H3>
+            <H2>Summary</H2>
 
             <P classNames="mb-8">
                 The progress-state Bell toy provides a clean checkpoint for the toy phase. A primitive state space built from sector and progress,
@@ -363,7 +365,49 @@ export default function AnalysisBellToy({ loaderData }: Route.ComponentProps) {
                 from <InlineMath math={String.raw`\pi/6`} /> to <InlineMath math={String.raw`\pi/3`} />, while remaining below the classical bound.
             </P>
 
-            <BellToyInteractive />
+            <H2>Interactive Bell Toy</H2>
+            <div className="mb-12 mt-2 mx-2 w-full">
+                <BellToyInteractive />
+            </div>
+
+            <H2>Further Reading</H2>
+            <div className="mb-12 mt-2 mx-2">
+                <FurtherReading items={[
+                    {
+                        itemType: "Note",
+                        label: "Methods and Evaluation Protocol for the Progress-State Regime Gate",
+                        to: "/notes/evaluation-protocol-for-progress-state-regime",
+                        date: "21st April 2026",
+                        image: `${CDN}bell-toy-candles-16-10.jpg`,
+                    },
+                    {
+                        itemType: "Note",
+                        label: "Switching Quadratic Atlas Diagnostics",
+                        to: "/notes/switching-quadratic-atlas-diagnostics",
+                        date: "15th April 2026",
+                        image: `${CDN}quadratic-atlas-16-10.jpg`,
+                    },
+                ]} />
+            </div>
+
+            <H2>Code and Reproducibility</H2>
+            <P>
+                The analysis pipeline used in this study is implemented in Python. All code used to generate the figures and statistical results
+                presented in this work is available as open-source software:
+            </P>
+            <P classNames="text-center mb-4">
+                <Link
+                    to="https://github.com/hasjack/OnGravity/tree/main/python/bell-toy"
+                    target="_blank"
+                    className="block w-full break-all underline text-sm lg:text-md"
+                >github.com/hasjack/OnGravity/tree/main/python/bell-toy
+                </Link>
+            </P>
+            <P>
+                This repository includes the full analysis pipeline, data ingestion routines, model fitting procedures,
+                and scripts used to generate the figures presented in this paper.
+            </P>
+            <License />
         </Article>
     )
 }

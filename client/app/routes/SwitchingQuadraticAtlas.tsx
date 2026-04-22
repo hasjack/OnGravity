@@ -1,11 +1,14 @@
+import { Link } from 'react-router'
 import { BlockMath, InlineMath } from '../components/Katex'
 import Article from '../components/Article'
+import FurtherReading from '~/components/FurtherReading'
+import License from '~/components/License'
 import SwitchingAtlasExplorer from '../components/SwitchingAtlasExplorer'
 import { H2, H3, P, Ul, Ol, Li } from '../components/Typography'
 import { Route } from './+types/SwitchingQuadraticAtlas'
 
 const { VITE_APP_CDN_URL } = import.meta.env
-const CDN = (VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/') + 'outputs/'
+const CDN = (VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/')
 
 export function loader({ request }: Route.LoaderArgs) {
     return { shareUrl: request.url }
@@ -160,14 +163,14 @@ export default function SwitchingQuadraticAtlasDiagnostics({ loaderData }: Route
                 switching rather than by a static sign choice.
             </P>
 
-            <img src={`${CDN}nm_atlas_orientation_ladder_kappa_0_0.png`} alt={''} className="print:w-[80%]" />
+            <img src={`${CDN}quadratic-atlas/outputs/nm_atlas_orientation_ladder_kappa_0_0.png`} alt={''} className="print:w-[80%]" />
             <P classNames="text-sm">
                 <b>Figure 1:</b> Comparison ladder at <InlineMath math={String.raw`\kappa = 0`} />. Left: preserving sign{' '}
                 <InlineMath math={String.raw`x_{n+1}=+x_n^2+c`} />. Centre: reversing sign{' '}
                 <InlineMath math={String.raw`x_{n+1}=-x_n^2+c`} />. Right: threshold-switching atlas.
             </P>
 
-            <img src={`${CDN}nm_atlas_orientation_ladder_kappa_0_6235.png`} alt={''} className="print:w-[80%]" />
+            <img src={`${CDN}quadratic-atlas/outputs/nm_atlas_orientation_ladder_kappa_0_6235.png`} alt={''} className="print:w-[80%]" />
             <P classNames="mb-8 text-sm">
                 <b>Figure 2:</b> Comparison ladder at <InlineMath math={String.raw`\kappa = 0.6235`} />. The threshold-switching atlas develops a
                 left-hand wedge and structured right-hand banding under deformation.
@@ -180,13 +183,13 @@ export default function SwitchingQuadraticAtlasDiagnostics({ loaderData }: Route
                 the orbit lands in orientation space.
             </P>
 
-            <img src={`${CDN}nm_parity_atlas_kappa_0_0.png`} alt={''} className="print:w-[80%]" />
+            <img src={`${CDN}quadratic-atlas/outputs/nm_parity_atlas_kappa_0_0.png`} alt={''} className="print:w-[80%]" />
             <P classNames="text-sm">
                 <b>Figure 3:</b> Flip diagnostics at <InlineMath math={String.raw`\kappa = 0`} />: flip count, parity, final orientation, and first flip
                 iteration.
             </P>
 
-            <img src={`${CDN}nm_parity_atlas_kappa_0_6235.png`} alt={''} className="print:w-[80%]" />
+            <img src={`${CDN}quadratic-atlas/outputs/nm_parity_atlas_kappa_0_6235.png`} alt={''} className="print:w-[80%]" />
             <P classNames="mb-8 text-sm">
                 <b>Figure 4:</b> Flip diagnostics at <InlineMath math={String.raw`\kappa = 0.6235`} />. The wedge, right-hand switching domains, and
                 delayed first-flip contours become sharply expressed.
@@ -207,12 +210,12 @@ export default function SwitchingQuadraticAtlasDiagnostics({ loaderData }: Route
                 very different proportions of time in each orientation sector.
             </P>
 
-            <img src={`${CDN}nm_flip_diagnostics_kappa_0_0.png`} alt={''} className="print:w-[80%]" />
+            <img src={`${CDN}quadratic-atlas/outputs/nm_flip_diagnostics_kappa_0_0.png`} alt={''} className="print:w-[80%]" />
             <P classNames="text-sm">
                 <b>Figure 5:</b> Escape-time and occupancy diagnostics at <InlineMath math={String.raw`\kappa = 0`} />.
             </P>
 
-            <img src={`${CDN}nm_flip_diagnostics_kappa_0_6235.png`} alt={''} className="print:w-[80%]" />
+            <img src={`${CDN}quadratic-atlas/outputs/nm_flip_diagnostics_kappa_0_6235.png`} alt={''} className="print:w-[80%]" />
             <P classNames="mb-8 text-sm">
                 <b>Figure 6:</b> Escape-time and occupancy diagnostics at <InlineMath math={String.raw`\kappa = 0.6235`} />. Sector asymmetry becomes
                 pronounced near the wedge and right-hand switching bands.
@@ -291,12 +294,50 @@ export default function SwitchingQuadraticAtlasDiagnostics({ loaderData }: Route
 
             <H2>12. Interactive Explorer</H2>
 
-            <P classNames="mb-6">
+            <P>
                 The explorer renders the same diagnostics over the same <InlineMath math={String.raw`(c,b)`} /> plane. The default switching rule is
                 the threshold flip rule used for the figures below. A sign-sin rule is available via the dropdown as a comparison.
             </P>
 
             <SwitchingAtlasExplorer />
+
+            <H2>Further Reading</H2>
+            <div className="mb-12 mt-2 mx-2">
+                <FurtherReading items={[
+                    {
+                        itemType: "Note",
+                        label: "Progress-State Bell Toy in Natural Mathematics",
+                        to: "/notes/natural-mathematics-bell-toy",
+                        date: "12th April 2026",
+                        image: `${CDN}bell-toy-16-10.jpg`,
+                    },
+                    {
+                        itemType: "Note",
+                        label: "Methods and Evaluation Protocol for the Progress-State Regime Gate",
+                        to: "/notes/evaluation-protocol-for-progress-state-regime",
+                        date: "19th April 2026",
+                        image: `${CDN}bell-toy-candles-16-10.jpg`,
+                }]} />
+            </div>
+
+            <H2>Code and Reproducibility</H2>
+            <P>
+                The analysis pipeline used in this study is implemented in Python. All code used to generate the figures and statistical results 
+                presented in this work is available as open-source software:
+            </P>
+            <P classNames="text-center mb-4">
+                <Link
+                    to="https://github.com/hasjack/OnGravity/tree/main/python/quadratic-atlas"
+                    target="_blank"
+                    className="block w-full break-all underline text-sm lg:text-md"
+                >github.com/hasjack/OnGravity/tree/main/python/quadratic-atlas
+                </Link>
+            </P>
+            <P>
+                This repository includes the full analysis pipeline, data ingestion routines, model fitting procedures,
+                and scripts used to generate the figures presented in this paper.
+            </P>
+            <License />
         </Article>
     )
 }

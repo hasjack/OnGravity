@@ -2,6 +2,8 @@ import { Link } from 'react-router'
 import { BlockMath, InlineMath } from '../components/Katex'
 import Article from '../components/Article'
 import { H2, H3, H4, P, Ul, Ol, Li } from '../components/Typography'
+import FurtherReading from '~/components/FurtherReading'
+import License from '~/components/License'
 import Img from '../components/Img'
 import { references } from '../lib/references'
 import { Route } from './+types/AnalysisSparc'
@@ -1564,6 +1566,41 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
                 ))}
             </Ol>
 
+            <H2>Further Reading</H2>
+            <div className="mb-12 mt-2 mx-2">
+                <FurtherReading items={[
+                    {
+                        itemType: "Analysis (pre-print)",
+                        label:
+                            "Environmental Curvature Response in Planetary Dynamics: Solar System Diagnostics of the κ-Framework",
+                        to: "/analysis/solar-system",
+                        date: "12th March 2026",
+                        image: `${CDN}solar-system/outputs/Mercury/lrl_perihelion_direction_comparison.png`,
+                    },
+                    // {
+                    //     itemType: "Theory (pre-print)",
+                    //     label: "A Curvature Response Model for Weak-Field Gravity",
+                    //     to: "/preprint/a-curvature-response-model-for-weak-field-gravity",
+                    //     date: "28th March 2026",
+                    //     image: `${CDN}k-framework.jpg`,
+                    // },
+                    {
+                        itemType: "Analysis (pre-print)",
+                        label:
+                            "Empirical Tests of the κ-Framework using SPARC Dataset",
+                        to: "/analysis/sparc-galaxy-rotation-curves",
+                        date: "9th March 2026",
+                        image: `${CDN}galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png`,
+                    },
+                    {
+                        itemType: "Simulation",
+                        label: "Toy Galaxy - k-Framework comparison with Newtonian physics",
+                        to: "/toy-galaxy",
+                        date: "12th November 2025",
+                        image: `${CDN}toy-galaxy-16-10.jpg`,
+                    }]} />
+            </div>
+
 
             <H2>Code and Reproducibility</H2>
             <P>
@@ -1590,17 +1627,11 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
                 >github.com/hasjack/OnGravity/tree/main/python/rotation-curves
                 </Link></Li>
             </Ul>
-            <P>
+            <P classNames="mb-24">
                 In line with open-science principles, this repository includes the full analysis pipeline, data ingestion routines, model fitting procedures,
                 and scripts used to generate the figures presented in this paper.
             </P>
-            <P classNames={'hidden print:block mb-12'}>
-                For the latest on the framework
-                visit <Link to={'https://half-a-second.com'} className="underline">half-a-second.com</Link>.
-            </P>
-
-            <img src={`/cc-long.webp`} className="h-12 hidden print:block" />
-            <P classNames={'hidden print:block'}>Content in this document is licensed under a Creative Commons Attribution 4.0 International License</P>
+            <License />
         </Article>
     )
 }

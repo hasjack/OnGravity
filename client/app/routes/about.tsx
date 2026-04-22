@@ -1,11 +1,11 @@
 import type { Route } from "./+types/about";
+import License from "~/components/License";
 import { Link } from "react-router";
 import { InlineMath } from "~/components/Katex";
 import { H2, H3, P, Ol, Li } from '~/components/Typography'
 
 const { VITE_APP_CDN_URL } = import.meta.env
 const CDN = VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/'
-const RH_LINK = "https://www.researchhub.com/proposal/29607/empirical-test-of-local-density-curvature-response-using-grace-fo-laser-ranging-data"
 
 export function meta({ location }: Route.MetaArgs) {
     const title = "κ-Framework | Natural Mathematics & Environmental Curvature";
@@ -143,7 +143,8 @@ export default function About({ loaderData }: Route.ComponentProps) {
                     <Ol classNames="mb-4">
                         <Li>Correctness: Grounded in high-precision numerical simulation.</Li>
                         <Li>Clarity: Visualized through interactive diagnostics that expose internal state.</Li>
-                        <Li>Reproducibility: Supported by peer-reviewed research and open-source implementation.</Li>
+                        <Li>Reproducibility: Supported by <Link to="https://www.researchhub.com/paper/10769512/on-gravity/reviews" target="_blank" className="underline">peer-reviewed 
+                        research</Link> and <Link to="https://github.com/hasjack/onGravity" target="_blank" className="underline">open-source implementation</Link>.</Li>
                     </Ol>
 
                     <H2>About the author</H2>
@@ -166,14 +167,7 @@ export default function About({ loaderData }: Route.ComponentProps) {
                         </Link>
                     </P>
                     <P classNames="mb-24">This repository includes the full analysis pipeline, data ingestion routines, model fitting procedures, and scripts used to generate the figures presented within the project.</P>
-
-                    <img src={`${CDN}rh-logo2.png`} className="h-12 md:h-18 mb-6 md:mb-8" />
-                    <p className="max-w-3xl text-sm md:text-base text-center px-4 mb-24">
-                        Please consider <Link to={RH_LINK} target="_blank" className="underline">funding this research</Link> on Research Hub
-                    </p>
-
-                    <img src={`${CDN}cc-long.webp`} className="h-12 md:h-18 mb-6 md:mb-8" />
-                    <p className="max-w-3xl text-sm md:text-base text-center px-4 mb-32">Content on this site is licensed under a Creative Commons Attribution 4.0 International License</p>
+                    <License />
                 </div>
             </section>
         </>

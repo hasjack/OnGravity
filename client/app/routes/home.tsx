@@ -1,35 +1,55 @@
 import type { Route } from "./+types/home";
 import { Link } from "react-router";
+import License from "~/components/License";
 import { InlineMath } from "../components/Katex";
 
 const { VITE_APP_CDN_URL } = import.meta.env
 const CDN = VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/'
-const RH_LINK = "https://www.researchhub.com/proposal/29607/empirical-test-of-local-density-curvature-response-using-grace-fo-laser-ranging-data"
 
 const items = [
-  {
-    itemType: "Theory (pre-print)",
-    label: "A Curvature Response Model for Weak-Field Gravity",
-    to: "/preprint/a-curvature-response-model-for-weak-field-gravity",
-    date: "28th March 2026",
-    image: `${CDN}k-framework.jpg`,
-  },
-  {
-    itemType: "Analysis (pre-print)",
-    label:
-      "Environmental Curvature Response in Planetary Dynamics: Solar System Diagnostics of the κ-Framework",
-    to: "/analysis/solar-system",
-    date: "12th March 2026",
-    image: `${CDN}solar-system/outputs/Mercury/lrl_perihelion_direction_comparison.png`,
-  },
-  {
-    itemType: "Analysis (pre-print)",
-    label:
-      "An Environmental Curvature Response for Galaxy Rotation Curves: Empirical Tests of the κ-Framework using the SPARC Dataset",
-    to: "/analysis/sparc-galaxy-rotation-curves",
-    date: "9th March 2026",
-    image: `${CDN}galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png`,
-  },
+    {
+        itemType: "Note",
+        label: "Methods and Evaluation Protocol for the Progress-State Regime Gate",
+        to: "/notes/evaluation-protocol-for-progress-state-regime",
+        date: "21st April 2026",
+        image: `${CDN}bell-toy-candles-16-10.jpg`,
+    },
+    {
+        itemType: "Note",
+        label: "Switching Quadratic Atlas Diagnostics",
+        to: "/notes/switching-quadratic-atlas-diagnostics",
+        date: "15th April 2026",
+        image: `${CDN}quadratic-atlas-16-10.jpg`,
+    },
+    {
+        itemType: "Note",
+        label: "Progress-State Bell Toy in Natural Mathematics",
+        to: "/notes/natural-mathematics-bell-toy",
+        date: "12th April 2026",
+        image: `${CDN}bell-toy-16-10.jpg`,
+    },
+    {
+        itemType: "Theory (pre-print)",
+        label: "A Curvature Response Model for Weak-Field Gravity",
+        to: "/preprint/a-curvature-response-model-for-weak-field-gravity",
+        date: "28th March 2026",
+        image: `${CDN}k-framework.jpg`,
+    },
+    {
+        itemType: "Analysis (pre-print)",
+        label:
+            "Empirical Tests of the κ-Framework using SPARC Dataset",
+        to: "/analysis/sparc-galaxy-rotation-curves",
+        date: "9th March 2026",
+        image: `${CDN}galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png`,
+    },
+    {
+        itemType: "Simulation",
+        label: "Toy Galaxy - k-Framework comparison with Newtonian physics",
+        to: "/toy-galaxy",
+        date: "12th November 2025",
+        image: `${CDN}toy-galaxy-16-10.jpg`,
+    },
 ]
 
 export function meta({ location }: Route.MetaArgs) {
@@ -40,7 +60,7 @@ export function meta({ location }: Route.MetaArgs) {
     return [
         { title },
         { name: "description", content: description },
-        
+
         // OpenGraph / Facebook
         { property: "og:type", content: "website" },
         { property: "og:url", content: url },
@@ -84,12 +104,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                         attributed to dark matter could arise from an environmental response of spacetime itself.
                     </p>
                     <p className="max-w-3xl text-base md:text-lg text-center px-4 mb-12">
-                        This site presents <Link to={'/preprint/a-curvature-response-model-for-weak-field-gravity'} className={'underline'}>the 
-                        framework</Link>,  <Link to={'/notes/switching-quadratic-atlas-diagnostics'} className={'underline'}>related 
-                        mathematics</Link>, <Link to={'/analysis/sparc-galaxy-rotation-curves'} className={'underline'}>experimental tests</Link>, and ongoing results as <Link to={'https://github.com/hasjack/OnGravity'} target={'_blank'} className={'underline'}>open research</Link>.
+                        This site presents <Link to={'/preprint/a-curvature-response-model-for-weak-field-gravity'} className={'underline'}>the
+                            framework</Link>,  <Link to={'/notes/switching-quadratic-atlas-diagnostics'} className={'underline'}>related
+                                mathematics</Link>, <Link to={'/analysis/sparc-galaxy-rotation-curves'} className={'underline'}>experimental tests</Link>, and ongoing results as <Link to={'https://github.com/hasjack/OnGravity'} target={'_blank'} className={'underline'}>open research</Link>.
                     </p>
-                    <h3 className="mb-8 text-xl font-bold">Latest:</h3>
-                    <section className="w-full max-w-6xl mx-auto px-4 mb-24">
+                    <h3 className="mb-8 text-xl font-bold">Recent Articles:</h3>
+                    <section className="w-full max-w-6xl mx-auto px-8 md:px-4 mb-24">
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                             {items.map((item) => {
                                 const isExternal = item.to.startsWith("https://")
@@ -143,14 +163,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                             })}
                         </div>
                     </section>
-                    <img src={`${CDN}rh-logo.png`} className="h-12 md:h-18 mb-6 md:mb-8" />
-                    <p className="max-w-3xl text-sm md:text-base text-center px-4 mb-24">
-                        Please consider <Link to={RH_LINK} target="_blank" className="underline">funding this research</Link> on Research Hub
-                    </p>
-
-                    <img src={`${CDN}cc-long.webp`} className="h-12 md:h-18 mb-6 md:mb-8" />
-                    <p className="max-w-3xl text-sm md:text-base text-center px-4">Content on this site is licensed under a Creative Commons Attribution 4.0 International License</p>
+                     <License colorScheme="light" />
                 </div>
+               
             </section>
         </>
     )
