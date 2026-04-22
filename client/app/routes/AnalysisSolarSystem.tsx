@@ -333,7 +333,7 @@ export default function AnalysisSolarSystem({ loaderData }: Route.ComponentProps
                             "Empirical Tests of the κ-Framework using SPARC Dataset",
                         to: "/analysis/sparc-galaxy-rotation-curves",
                         date: "9th March 2026",
-                        image: `${CDN}solar-system-analysis.jpg`,
+                        image: `${CDN}galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png`,
                     },
                     {
                         itemType: "Theory (pre-print)",
