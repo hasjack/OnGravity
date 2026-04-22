@@ -533,7 +533,7 @@ export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {
                             "Environmental Curvature Response in Planetary Dynamics: Solar System Diagnostics of the κ-Framework",
                         to: "/analysis/solar-system",
                         date: "12th March 2026",
-                        image: `${CDN}solar-system/outputs/Mercury/lrl_perihelion_direction_comparison.png`,
+                        image: `${CDN}solar-system-analysis.jpg`,
                     },
                     {
                         itemType: "Theory (pre-print)",

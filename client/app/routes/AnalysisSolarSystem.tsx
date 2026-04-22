@@ -1,15 +1,14 @@
 import { BlockMath } from '../components/Katex'
 import { Link } from 'react-router'
 import Article from '../components/Article'
+import FurtherReading from '~/components/FurtherReading'
 import License from '~/components/License'
 import { H2, H3, P, Ul, Ol, Li } from '../components/Typography'
 import { references } from '../lib/references'
 import { Route } from './+types/AnalysisSparc'
 
 const { VITE_APP_CDN_URL } = import.meta.env
-const CDN = VITE_APP_CDN_URL
-    ? VITE_APP_CDN_URL + "solar-system/outputs/"
-    : 'https://cdn.halfasecond.com/images/onGravity/' + "solar-system/outputs/"
+const CDN = VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/'
 
 export function loader({ request }: Route.LoaderArgs) {
     return {
@@ -103,11 +102,11 @@ export default function AnalysisSolarSystem({ loaderData }: Route.ComponentProps
             {/* Figures 1 & 2 */}
             <div className="flex flex-wrap gap-y-4 md:gap-x-[4%] w-[90%] mb-4">
                 <img
-                    src={CDN + "Mercury/mercury_trajectory_framework.png"}
+                    src={CDN + "solar-system/outputs/Mercury/mercury_trajectory_framework.png"}
                     className="w-full md:w-[48%]"
                 />
                 <img
-                    src={CDN + "Jupiter/jupiter_trajectory_framework.png"}
+                    src={CDN + "solar-system/outputs/Jupiter/jupiter_trajectory_framework.png"}
                     className="w-full md:w-[48%]"
                 />
             </div>
@@ -155,14 +154,14 @@ export default function AnalysisSolarSystem({ loaderData }: Route.ComponentProps
             <P classNames="mb-2">Agreement between the two estimators provides an internal consistency check on the measurement of perihelion drift.</P>
 
             {/* Figures 3 & 4 */}
-            <img src={CDN + 'Mercury/lrl_perihelion_direction_comparison.png'} className="w-auto mb-2 lg:max-w-3xl" />
+            <img src={CDN + 'solar-system/outputs/Mercury/lrl_perihelion_direction_comparison.png'} className="w-auto mb-2 lg:max-w-3xl" />
             <P classNames="mb-8 text-sm">
                 <b>Figure 3:</b> Mercury perihelion direction comparison: Comparison of the perihelion direction inferred from the Laplace-Runge-Lenz
                 (LRL) vector for the Newtonian baseline and the κ-framework simulation over a 200-year integration. The near overlap of the two
                 curves indicates that the κ perturbation produces only a very small secular deviation from the Newtonian orbital orientation.
             </P>
 
-            <img src={CDN + 'Mercury/lrl_perihelion_drift.png'} className="w-auto mb-2 lg:max-w-3xl" />
+            <img src={CDN + 'solar-system/outputs/Mercury/lrl_perihelion_drift.png'} className="w-auto mb-2 lg:max-w-3xl" />
             <P classNames="mb-8 text-sm">
                 <b>Figure 4:</b> Secular perihelion drift of Mercury: Accumulated difference in the perihelion direction derived from the LRL vector
                 between the Newtonian baseline and the κ-framework simulation. The ~linear trend indicates a slow secular rotation of the
@@ -181,7 +180,7 @@ export default function AnalysisSolarSystem({ loaderData }: Route.ComponentProps
             </Ul>
 
             {/* Figures 5 & 6 */}
-            <img src={CDN + 'Mercury/mercury_strain_rate_sweep.png'} className="w-auto mb-2 lg:max-w-3xl" />
+            <img src={CDN + 'solar-system/outputs/Mercury/mercury_strain_rate_sweep.png'} className="w-auto mb-2 lg:max-w-3xl" />
             <P classNames="mb-8 text-sm">
                 <b>Figure 5:</b> Mercury orbital deviation as a function of environmental strain-rate: Maximum and final orbital deviation relative
                 to the Newtonian baseline for Mercury over a 200-year integration. Three dynamical regimes are visible: a stable regime in
@@ -190,7 +189,7 @@ export default function AnalysisSolarSystem({ loaderData }: Route.ComponentProps
                 in the present Solar System tests.
             </P>
 
-            <img src={CDN + 'Mercury/mercury_precession_vs_strain_rate.png'} className="w-auto mb-2 lg:max-w-3xl" />
+            <img src={CDN + 'solar-system/outputs/Mercury/mercury_precession_vs_strain_rate.png'} className="w-auto mb-2 lg:max-w-3xl" />
             <P classNames="mb-8 text-sm">
                 <b>Figure 6:</b> Mercury perihelion precession as a function of environmental strain-rate: Estimated perihelion precession rate for
                 Mercury derived from both the angular momentum (ω-based) method and the Laplace-Runge-Lenz (LRL) vector method as a function
@@ -232,11 +231,11 @@ export default function AnalysisSolarSystem({ loaderData }: Route.ComponentProps
             {/* Figures 7-10 */}
             <div className="flex flex-wrap gap-y-4 md:gap-x-[4%] w-[90%] mb-4">
                 <img
-                    src={CDN + "Mercury/orbital_radius_difference.png"}
+                    src={CDN + "solar-system/outputs/Mercury/orbital_radius_difference.png"}
                     className="w-full md:w-[48%]"
                 />
                 <img
-                    src={CDN + "Mercury/radial_acceleration_difference.png"}
+                    src={CDN + "solar-system/outputs/Mercury/radial_acceleration_difference.png"}
                     className="w-full md:w-[48%]"
                 />
             </div>
@@ -249,11 +248,11 @@ export default function AnalysisSolarSystem({ loaderData }: Route.ComponentProps
             </P>
             <div className="flex flex-wrap gap-y-4 md:gap-x-[4%] w-[90%] mb-4">
                 <img
-                    src={CDN + "Jupiter/orbital_radius_difference.png"}
+                    src={CDN + "solar-system/outputs/Jupiter/orbital_radius_difference.png"}
                     className="w-full md:w-[48%]"
                 />
                 <img
-                    src={CDN + "Jupiter/radial_acceleration_difference.png"}
+                    src={CDN + "solar-system/outputs/Jupiter/radial_acceleration_difference.png"}
                     className="w-full md:w-[48%]"
                 />
             </div>
@@ -324,6 +323,33 @@ export default function AnalysisSolarSystem({ loaderData }: Route.ComponentProps
                     </Li>
                 ))}
             </Ol>
+
+            <H2>Further Reading</H2>
+            <div className="mb-12 mt-2 mx-2">
+                <FurtherReading items={[
+                    {
+                        itemType: "Analysis (pre-print)",
+                        label:
+                            "Empirical Tests of the κ-Framework using SPARC Dataset",
+                        to: "/analysis/sparc-galaxy-rotation-curves",
+                        date: "9th March 2026",
+                        image: `${CDN}solar-system-analysis.jpg`,
+                    },
+                    {
+                        itemType: "Theory (pre-print)",
+                        label: "A Curvature Response Model for Weak-Field Gravity",
+                        to: "/preprint/a-curvature-response-model-for-weak-field-gravity",
+                        date: "28th March 2026",
+                        image: `${CDN}k-framework.jpg`,
+                    },
+                    {
+                        itemType: "Simulation",
+                        label: "Toy Galaxy - k-Framework comparison with Newtonian physics",
+                        to: "/toy-galaxy",
+                        date: "12th November 2025",
+                        image: `${CDN}toy-galaxy-16-10.jpg`,
+                    }]} />
+            </div>
 
 
             <H2>Code and Reproducibility</H2>

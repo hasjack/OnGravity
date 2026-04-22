@@ -598,7 +598,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
             </P>
             {/* Figure 15 */}
             <Img
-                path={CDN + 'galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png'}
+                path={CDN + 'solar-system-analysis.jpg'}
                 alt={'Figure 15: Linear regression fit describing the empirical relation between κr/2 and baryonic acceleration.'}
             />
             <P classNames="mb-8 text-sm">
@@ -1590,7 +1590,7 @@ export default function CurvatureResponseModel({ loaderData }: Route.ComponentPr
                             "Empirical Tests of the κ-Framework using SPARC Dataset",
                         to: "/analysis/sparc-galaxy-rotation-curves",
                         date: "9th March 2026",
-                        image: `${CDN}galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png`,
+                        image: `${CDN}solar-system-analysis.jpg`,
                     },
                     {
                         itemType: "Simulation",

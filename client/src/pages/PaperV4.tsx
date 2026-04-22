@@ -532,7 +532,7 @@ const CurvatureResponseModel = () => {
             </P>
             {/* Figure 15 */}
             <Img 
-                path={CDN + 'galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png'}
+                path={CDN + 'solar-system-analysis.jpg'}
                 alt={'Figure 15: Linear regression fit describing the empirical relation between κr/2 and baryonic acceleration.'}
             />
             <P classNames="mb-8 text-sm">

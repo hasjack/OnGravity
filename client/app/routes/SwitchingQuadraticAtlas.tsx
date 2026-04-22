@@ -333,7 +333,7 @@ export default function SwitchingQuadraticAtlasDiagnostics({ loaderData }: Route
                 >github.com/hasjack/OnGravity/tree/main/python/quadratic-atlas
                 </Link>
             </P>
-            <P>
+            <P classNames="mb-12">
                 This repository includes the full analysis pipeline, data ingestion routines, model fitting procedures,
                 and scripts used to generate the figures presented in this paper.
             </P>
