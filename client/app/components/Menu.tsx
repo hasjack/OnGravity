@@ -12,19 +12,17 @@ type Navigation = {
 }
 
 type Props = {
-  navigation: Navigation[]
+    navigation: Navigation[]
 }
 
 const Menu = ({ navigation }: Props) => {
     const [open, setOpen] = useState(false)
     const location = useLocation()
 
-    // Close menu on route change
     useEffect(() => {
         setOpen(false)
     }, [location.pathname])
 
-    // Close on ESC
     useEffect(() => {
         if (!open) return
 
@@ -36,13 +34,30 @@ const Menu = ({ navigation }: Props) => {
         return () => window.removeEventListener("keydown", onKeyDown)
     }, [open])
 
+    useEffect(() => {
+        if (!open) return
+
+        const originalBodyOverflow = document.body.style.overflow
+        const originalHtmlOverflow = document.documentElement.style.overflow
+        const originalBodyTouchAction = document.body.style.touchAction
+
+        document.body.style.overflow = "hidden"
+        document.documentElement.style.overflow = "hidden"
+        document.body.style.touchAction = "none"
+
+        return () => {
+            document.body.style.overflow = originalBodyOverflow
+            document.documentElement.style.overflow = originalHtmlOverflow
+            document.body.style.touchAction = originalBodyTouchAction
+        }
+    }, [open])
+
     return (
         <>
-            {/* Mobile button */}
             <button
                 type="button"
                 onClick={() => setOpen(o => !o)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white shadow-sm top-4 left-4 z-50 fixed print:hidden"
+                className="fixed top-4 left-4 z-50 inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white shadow-sm print:hidden"
                 aria-label={open ? "Close menu" : "Open menu"}
                 aria-expanded={open}
             >
@@ -52,25 +67,24 @@ const Menu = ({ navigation }: Props) => {
                     <span
                         className={[
                             "absolute left-0 top-0 block h-px w-full bg-black transition-transform duration-200",
-                            open ? "translate-y-2 rotate-45" : ""
+                            open ? "translate-y-2 rotate-45" : "",
                         ].join(" ")}
                     />
                     <span
                         className={[
                             "absolute left-0 top-2 block h-px w-full bg-black transition-opacity duration-200",
-                            open ? "opacity-0" : "opacity-100"
+                            open ? "opacity-0" : "opacity-100",
                         ].join(" ")}
                     />
                     <span
                         className={[
                             "absolute left-0 top-4 block h-px w-full bg-black transition-transform duration-200",
-                            open ? "-translate-y-2 -rotate-45" : ""
+                            open ? "-translate-y-2 -rotate-45" : "",
                         ].join(" ")}
                     />
                 </span>
             </button>
 
-            {/* Desktop nav */}
             <nav className="hidden items-center gap-6 text-xs tracking-wide">
                 {navigation.map((section: Navigation) => (
                     <div key={section.title} className="flex items-center gap-3">
@@ -90,7 +104,7 @@ const Menu = ({ navigation }: Props) => {
                                         className={
                                             "transition-colors duration-200 " +
                                             (active
-                                                ? "text-blue-600 font-semibold underline"
+                                                ? "font-semibold text-blue-600 underline"
                                                 : "text-black/80 hover:text-black")
                                         }
                                     >
@@ -103,7 +117,6 @@ const Menu = ({ navigation }: Props) => {
                 ))}
             </nav>
 
-            {/* Overlay + drawer */}
             {open ? (
                 <div className="fixed inset-0 z-50">
                     <button
@@ -113,8 +126,15 @@ const Menu = ({ navigation }: Props) => {
                         aria-label="Close menu"
                     />
 
-                    <aside className="absolute left-0 top-0 h-full w-full max-w-xs bg-white p-6 shadow-xl">
-                        <div className="flex items-center justify-between mb-8">
+                    <aside
+                        className="
+              absolute left-0 top-0 h-dvh w-full max-w-xs
+              overflow-y-auto overscroll-contain
+              bg-white p-6 shadow-xl
+              touch-pan-y
+            "
+                    >
+                        <div className="mb-8 flex items-center justify-between">
                             <div className="text-sm font-semibold uppercase tracking-wide">
                                 Menu
                             </div>
@@ -127,7 +147,7 @@ const Menu = ({ navigation }: Props) => {
                             </button>
                         </div>
 
-                        <div className="flex flex-col gap-5 text-sm">
+                        <div className="flex flex-col gap-5 pb-10 text-sm">
                             {navigation.map((section: Navigation) => (
                                 <div key={section.title}>
                                     <div className="mb-2 mt-5 text-sm font-semibold uppercase tracking-wide text-gray-600">
@@ -144,9 +164,9 @@ const Menu = ({ navigation }: Props) => {
                                                     key={item.to}
                                                     to={item.to}
                                                     className={
-                                                        "py-2 border-b border-black/10 transition-colors duration-200 " +
+                                                        "border-b border-black/10 py-2 transition-colors duration-200 " +
                                                         (active
-                                                            ? "text-blue-600 font-semibold"
+                                                            ? "font-semibold text-blue-600"
                                                             : "text-black/80 hover:text-black")
                                                     }
                                                 >
