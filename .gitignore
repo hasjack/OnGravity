@@ -22,6 +22,8 @@ python/rotation-curves/beta/out_sparc
 python/rotation-curves/output
 python/solar-system/__pycache__
 python/solar-system/outputs
+python/neptune/outputs
+python/pioneer/outputs
 client/build
 python/nm-prover/outputs
 python/bell-toy/outputs
@@ -29,3 +31,4 @@ python/bell-toy/archive/outputs
 python/quant/output
 python/quant/data
 python/quant/__pycache__
+python/rh
