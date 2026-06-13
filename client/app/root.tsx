@@ -6,6 +6,7 @@ import {
     Scripts,
     ScrollRestoration,
 } from "react-router"
+import { useState } from "react"
 import Menu from "./components/Menu"
 
 import appStylesHref from "./app.css?url"
@@ -50,6 +51,8 @@ const navigation = [
 ]
 
 export function Layout({ children }: { children: React.ReactNode }) {
+    const [menuOpen, setMenuOpen] = useState(false)
+
     return (
         <html lang="en">
             <head>
@@ -64,9 +67,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Meta />
                 <Links />
             </head>
-            <body>
-                <Menu {...{ navigation }} />
-                <main>
+            <body className="overflow-x-hidden bg-neutral-950">
+                <Menu navigation={navigation} open={menuOpen} onOpenChange={setMenuOpen} />
+                <main className="relative z-10 min-h-dvh bg-white">
                     {children}
                 </main>
                 <ScrollRestoration />

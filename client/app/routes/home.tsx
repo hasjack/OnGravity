@@ -52,6 +52,18 @@ const items = [
     },
 ]
 
+const pillars = [
+    ["Framework", "A falsifiable curvature-response model for weak-field gravity."],
+    ["Evidence", "Rotation curves, Solar System constraints, and numerical checks."],
+    ["Open Work", "Notes, diagnostics, code, and unresolved questions in public."],
+]
+
+const openQuestions = [
+    "Can the response term be derived geometrically?",
+    "Where does the model fail against precision data?",
+    "Which observations would falsify the mechanism?",
+]
+
 export function meta({ location }: Route.MetaArgs) {
     const title = "κ-Framework | Natural Mathematics & Environmental Curvature";
     const description = "A unified empirical framework for dynamical systems and weak-field gravity. From iterative quadratic atlases to SPARC galaxy rotation curves, exploring how curvature responds to the local environment.";
@@ -82,91 +94,102 @@ export function meta({ location }: Route.MetaArgs) {
 //     // return { csrfToken: context.csrfToken, serverTime: result[0].now };
 // }
 
-export default function Home({ loaderData }: Route.ComponentProps) {
+export default function Home() {
     return (
-        <>
-            <section className="relative min-h-dvh flex flex-col items-center justify-center text-gray-200 py-24">
-                <div className="absolute inset-0">
-                    <img
-                        src={`${CDN}barcode.png`}
-                        alt=""
-                        className="w-full h-full object-cover"
-                    />
-                </div>
-
-                {/* opacity mask */}
-                <div className="absolute inset-0 bg-black/80"></div>
-
-                <div className="relative flex flex-col items-center justify-center">
-                    <img src={`${CDN}logo_transparent.png`} className="h-48 md:h-64 mb-12 md:mb-24" />
-                    <p className="max-w-3xl text-base md:text-lg text-center px-4 mb-8">
-                        The <InlineMath math={String.raw`\kappa`} />-framework is an open research project exploring whether the gravitational phenomena
-                        attributed to dark matter could arise from an environmental response of spacetime itself.
+        <section className="min-h-dvh bg-white font-mono text-neutral-950">
+            <div className="mx-auto grid min-h-dvh max-w-7xl gap-10 px-5 py-16 sm:px-8 lg:grid-cols-[0.72fr_1.28fr] lg:px-10">
+                <aside className="min-w-0 border-neutral-200 pr-0 lg:border-r lg:pr-10">
+                    <img src="/logo.png" alt="" className="h-24 w-24" />
+                    <h1 className="mt-10 text-5xl font-semibold leading-none tracking-normal">On Gravity</h1>
+                    <p className="mt-5 max-w-sm text-lg leading-8 text-neutral-600">
+                        A public notebook for the <InlineMath math={String.raw`\kappa`} />-framework and the evidence around it.
                     </p>
-                    <p className="max-w-3xl text-base md:text-lg text-center px-4 mb-12">
-                        This site presents <Link to={'/preprint/a-curvature-response-model-for-weak-field-gravity'} className={'underline'}>the
-                            framework</Link>,  <Link to={'/notes/switching-quadratic-atlas-diagnostics'} className={'underline'}>related
-                                mathematics</Link>, <Link to={'/analysis/sparc-galaxy-rotation-curves'} className={'underline'}>experimental tests</Link>, and ongoing results as <Link to={'https://github.com/hasjack/OnGravity'} target={'_blank'} className={'underline'}>open research</Link>.
+                    <p className="mt-5 max-w-sm text-base leading-7 text-neutral-600">
+                        Exploring whether gravitational phenomena attributed to dark matter could arise from an environmental response of spacetime itself.
                     </p>
-                    <h3 className="mb-8 text-xl font-bold">Recent Articles:</h3>
-                    <section className="w-full max-w-6xl mx-auto px-8 md:px-4 mb-24">
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                            {items.map((item) => {
-                                const isExternal = item.to.startsWith("https://")
-                                return (
-                                    <article
-                                        key={item.to}
-                                        className="group rounded-2xl border border-gray-800/60 bg-black/20 overflow-hidden shadow-sm hover:shadow-md hover:border-gray-700 transition"
-                                    >
-                                        <div className="aspect-[16/10] bg-gray-900 relative">
-                                            {item.image ? (
-                                                <img
-                                                    src={item.image}
-                                                    alt=""
-                                                    className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition"
-                                                    loading="lazy"
-                                                />
-                                            ) : (
-                                                <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800" />
-                                            )}
-                                        </div>
+                    <div className="mt-10 flex flex-col gap-3 text-sm font-semibold">
+                        <Link
+                            to="/preprint/a-curvature-response-model-for-weak-field-gravity"
+                            className="rounded-md bg-neutral-950 px-4 py-3 text-white transition hover:bg-neutral-800"
+                        >
+                            Start with the pre-print
+                        </Link>
+                        <Link
+                            to="/analysis/sparc-galaxy-rotation-curves"
+                            className="rounded-md border border-neutral-300 px-4 py-3 transition hover:bg-neutral-50"
+                        >
+                            Review the SPARC analysis
+                        </Link>
+                        <Link
+                            to="https://github.com/hasjack/OnGravity"
+                            target="_blank"
+                            className="rounded-md border border-neutral-300 px-4 py-3 transition hover:bg-neutral-50"
+                        >
+                            Open research repository
+                        </Link>
+                    </div>
+                    <div className="flex flex-col items-center pt-8">
+                        <License colorScheme="dark" />
+                    </div>
+                </aside>
 
-                                        <div className="p-5 space-y-3">
-                                            <div className="flex items-center justify-between gap-3">
-                                                <span className="text-xs tracking-wide uppercase text-gray-300 bg-gray-800/60 border border-gray-700/60 rounded-full px-3 py-1">
-                                                    {item.itemType}
-                                                </span>
-                                                <span className="text-xs text-gray-400">{item.date}</span>
-                                            </div>
+                <div className="min-w-0">
+                    <div className="grid gap-4 border-b border-neutral-200 pb-8 md:grid-cols-3">
+                        {pillars.map(([title, body]) => (
+                            <div key={title} className="rounded-lg border border-neutral-200 p-5">
+                                <h2 className="text-sm font-semibold uppercase tracking-wide">{title}</h2>
+                                <p className="mt-3 text-sm leading-6 text-neutral-600">{body}</p>
+                            </div>
+                        ))}
+                    </div>
 
-                                            <h3 className="text-base leading-snug text-gray-100">
-                                                <Link
-                                                    to={item.to}
-                                                    target={isExternal ? "_blank" : "_self"}
-                                                    className="focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
-                                                >
-                                                    <span className="underline decoration-gray-600 group-hover:decoration-gray-300">
+                    <div className="grid gap-8 py-10">
+                        <div>
+                            <h2 className="text-2xl font-semibold tracking-normal">Latest research objects</h2>
+                            <div className="mt-6 divide-y divide-neutral-200 border-y border-neutral-200">
+                                {items.map((item) => {
+                                    const isExternal = item.to.startsWith("https://")
+                                    return (
+                                        <article key={item.to} className="grid gap-4 py-5 sm:grid-cols-[120px_1fr]">
+                                            <img
+                                                src={item.image}
+                                                alt=""
+                                                className="aspect-[16/10] w-full rounded-lg bg-neutral-100 object-cover sm:w-[120px]"
+                                                loading="lazy"
+                                            />
+                                            <div>
+                                                <div className="text-xs uppercase tracking-wide text-neutral-500">
+                                                    {item.itemType} / {item.date}
+                                                </div>
+                                                <h3 className="mt-2 text-xl font-semibold leading-snug tracking-normal">
+                                                    <Link
+                                                        to={item.to}
+                                                        target={isExternal ? "_blank" : "_self"}
+                                                        className="hover:underline"
+                                                    >
                                                         {item.label}
-                                                    </span>
-                                                </Link>
-                                            </h3>
-
-                                            <div className="text-sm text-gray-400">
-                                                <span className="inline-flex items-center gap-2">
-                                                    <span className="w-2 h-2 rounded-full bg-blue-500/80" />
-                                                    Read
-                                                </span>
+                                                    </Link>
+                                                </h3>
                                             </div>
-                                        </div>
-                                    </article>
-                                )
-                            })}
+                                        </article>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
+
+                    <section className="bg-neutral-950 p-6 text-white">
+                        <h2 className="text-2xl font-semibold tracking-normal">Open questions</h2>
+                        <div className="mt-6 grid gap-4 md:grid-cols-3">
+                            {openQuestions.map((question) => (
+                                <p key={question} className="text-sm leading-6 text-neutral-300">
+                                    {question}
+                                </p>
+                            ))}
                         </div>
                     </section>
-                     <License colorScheme="light" />
                 </div>
-               
-            </section>
-        </>
+            </div>
+        </section>
     )
 }

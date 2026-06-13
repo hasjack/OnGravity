@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Link, useLocation } from "react-router"
 
 type NavItem = {
@@ -13,26 +13,27 @@ type Navigation = {
 
 type Props = {
     navigation: Navigation[]
+    open: boolean
+    onOpenChange: (open: boolean) => void
 }
 
-const Menu = ({ navigation }: Props) => {
-    const [open, setOpen] = useState(false)
+const Menu = ({ navigation, open, onOpenChange }: Props) => {
     const location = useLocation()
 
     useEffect(() => {
-        setOpen(false)
-    }, [location.pathname])
+        onOpenChange(false)
+    }, [location.pathname, onOpenChange])
 
     useEffect(() => {
         if (!open) return
 
         const onKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "Escape") setOpen(false)
+            if (e.key === "Escape") onOpenChange(false)
         }
 
         window.addEventListener("keydown", onKeyDown)
         return () => window.removeEventListener("keydown", onKeyDown)
-    }, [open])
+    }, [onOpenChange, open])
 
     useEffect(() => {
         if (!open) return
@@ -56,8 +57,8 @@ const Menu = ({ navigation }: Props) => {
         <>
             <button
                 type="button"
-                onClick={() => setOpen(o => !o)}
-                className="fixed top-4 left-4 z-50 inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white shadow-sm print:hidden"
+                onClick={() => onOpenChange(!open)}
+                className="fixed left-4 top-4 z-[70] inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white shadow-sm print:hidden"
                 aria-label={open ? "Close menu" : "Open menu"}
                 aria-expanded={open}
             >
@@ -117,70 +118,56 @@ const Menu = ({ navigation }: Props) => {
                 ))}
             </nav>
 
-            {open ? (
-                <div className="fixed inset-0 z-50">
-                    <button
-                        type="button"
-                        className="absolute inset-0 bg-black/30"
-                        onClick={() => setOpen(false)}
-                        aria-label="Close menu"
-                    />
+            <button
+                type="button"
+                className={[
+                    "fixed inset-0 z-30 bg-black/35 transition-opacity duration-300 print:hidden",
+                    open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
+                ].join(" ")}
+                onClick={() => onOpenChange(false)}
+                aria-label="Dismiss menu"
+                tabIndex={open ? 0 : -1}
+            />
 
-                    <aside
-                        className="
-              absolute left-0 top-0 h-dvh w-full max-w-xs
-              overflow-y-auto overscroll-contain
-              bg-white p-6 shadow-xl
-              touch-pan-y
-            "
-                    >
-                        <div className="mb-8 flex items-center justify-between">
-                            <div className="text-sm font-semibold uppercase tracking-wide">
-                                Menu
+            <aside
+                className={[
+                    "fixed left-0 top-0 z-50 h-dvh w-72 overflow-y-auto overscroll-contain bg-white px-6 pb-6 pt-20 shadow-2xl transition-transform duration-300 ease-out touch-pan-y print:hidden sm:w-80",
+                    open ? "translate-x-0" : "-translate-x-full",
+                ].join(" ")}
+                aria-hidden={!open}
+            >
+                <div className="flex flex-col gap-5 pb-10 text-sm">
+                    {navigation.map((section: Navigation) => (
+                        <div key={section.title}>
+                            <div className="mb-2 mt-5 text-sm font-semibold uppercase tracking-wide text-gray-600">
+                                {section.title}
                             </div>
-                            <button
-                                type="button"
-                                onClick={() => setOpen(false)}
-                                className="text-sm underline"
-                            >
-                                Close
-                            </button>
-                        </div>
+                            <div className="flex flex-col gap-2">
+                                {section.items.map(item => {
+                                    const active =
+                                        location.pathname === item.to ||
+                                        (item.to !== "/" && location.pathname.startsWith(item.to))
 
-                        <div className="flex flex-col gap-5 pb-10 text-sm">
-                            {navigation.map((section: Navigation) => (
-                                <div key={section.title}>
-                                    <div className="mb-2 mt-5 text-sm font-semibold uppercase tracking-wide text-gray-600">
-                                        {section.title}
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        {section.items.map(item => {
-                                            const active =
-                                                location.pathname === item.to ||
-                                                (item.to !== "/" && location.pathname.startsWith(item.to))
-
-                                            return (
-                                                <Link
-                                                    key={item.to}
-                                                    to={item.to}
-                                                    className={
-                                                        "border-b border-black/10 py-2 transition-colors duration-200 " +
-                                                        (active
-                                                            ? "font-semibold text-blue-600"
-                                                            : "text-black/80 hover:text-black")
-                                                    }
-                                                >
-                                                    {item.label}
-                                                </Link>
-                                            )
-                                        })}
-                                    </div>
-                                </div>
-                            ))}
+                                    return (
+                                        <Link
+                                            key={item.to}
+                                            to={item.to}
+                                            className={
+                                                "border-b border-black/10 py-2 transition-colors duration-200 " +
+                                                (active
+                                                    ? "font-semibold text-blue-600"
+                                                    : "text-black/80 hover:text-black")
+                                            }
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    )
+                                })}
+                            </div>
                         </div>
-                    </aside>
+                    ))}
                 </div>
-            ) : null}
+            </aside>
         </>
     )
 }

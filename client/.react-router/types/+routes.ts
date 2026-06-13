@@ -17,6 +17,9 @@ type Pages = {
   "/about": {
     params: {};
   };
+  "/home-options": {
+    params: {};
+  };
   "/analysis/sparc-galaxy-rotation-curves": {
     params: {};
   };
@@ -58,7 +61,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/about" | "/analysis/sparc-galaxy-rotation-curves" | "/analysis/solar-system" | "/preprint/a-curvature-response-model-for-weak-field-gravity" | "/non-trivial-mars-bars" | "/notes/quantum-gravity-phase-resolution" | "/notes/natural-mathematics-bell-toy" | "/notes/regime-gate" | "/notes/evaluation-protocol-for-progress-state-regime" | "/notes/switching-quadratic-atlas-diagnostics" | "/toy-galaxy" | "/gate" | "/rh";
+    page: "/" | "/about" | "/home-options" | "/analysis/sparc-galaxy-rotation-curves" | "/analysis/solar-system" | "/preprint/a-curvature-response-model-for-weak-field-gravity" | "/non-trivial-mars-bars" | "/notes/quantum-gravity-phase-resolution" | "/notes/natural-mathematics-bell-toy" | "/notes/regime-gate" | "/notes/evaluation-protocol-for-progress-state-regime" | "/notes/switching-quadratic-atlas-diagnostics" | "/toy-galaxy" | "/gate" | "/rh";
   };
   "routes/home.tsx": {
     id: "routes/home";
@@ -67,6 +70,10 @@ type RouteFiles = {
   "routes/about.tsx": {
     id: "routes/about";
     page: "/about";
+  };
+  "routes/home-options.tsx": {
+    id: "routes/home-options";
+    page: "/home-options";
   };
   "routes/AnalysisSparc.tsx": {
     id: "routes/AnalysisSparc";
@@ -122,6 +129,7 @@ type RouteModules = {
   "root": typeof import("./app/root.tsx");
   "routes/home": typeof import("./app/routes/home.tsx");
   "routes/about": typeof import("./app/routes/about.tsx");
+  "routes/home-options": typeof import("./app/routes/home-options.tsx");
   "routes/AnalysisSparc": typeof import("./app/routes/AnalysisSparc.tsx");
   "routes/AnalysisSolarSystem": typeof import("./app/routes/AnalysisSolarSystem.tsx");
   "routes/curvature-response-model": typeof import("./app/routes/curvature-response-model.tsx");

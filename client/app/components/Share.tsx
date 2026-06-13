@@ -4,8 +4,8 @@ import { FacebookShareButton, FacebookIcon } from "react-share";
 import { EmailShareButton, EmailIcon } from "react-share";
 import { LinkedinShareButton, LinkedinIcon } from "react-share";
 import { RedditShareButton, RedditIcon } from "react-share";
-import { TelegramShareButton, TelegramIcon } from "react-share";
-import { WhatsappShareButton, WhatsappIcon } from "react-share";
+
+const iconSize = 22
 
 const Share = ({ shareUrl, title }: { shareUrl: string, title: string }) => {
     return (
@@ -17,15 +17,15 @@ const Share = ({ shareUrl, title }: { shareUrl: string, title: string }) => {
                 url={shareUrl}
                 aria-label="Share on X"
             >
-                <XIcon size={24} round />
+                <XIcon size={iconSize} round />
             </XShareButton>
 
             <FacebookShareButton url={shareUrl} aria-label="Share this page on Facebook">
-                <FacebookIcon size={24} round />
+                <FacebookIcon size={iconSize} round />
             </FacebookShareButton>
 
             <BlueskyShareButton title={title} url={shareUrl} aria-label="Share on Bluesky">
-                <BlueskyIcon size={24} round />
+                <BlueskyIcon size={iconSize} round />
             </BlueskyShareButton>
 
 
@@ -36,7 +36,7 @@ const Share = ({ shareUrl, title }: { shareUrl: string, title: string }) => {
                 url={shareUrl}
                 aria-label="Share by email"
             >
-                <EmailIcon size={24} round />
+                <EmailIcon size={iconSize} round />
             </EmailShareButton>
 
             <LinkedinShareButton
@@ -46,20 +46,12 @@ const Share = ({ shareUrl, title }: { shareUrl: string, title: string }) => {
                 url={shareUrl}
                 aria-label="Share on LinkedIn"
             >
-                <LinkedinIcon size={24} round />
+                <LinkedinIcon size={iconSize} round />
             </LinkedinShareButton>
 
             <RedditShareButton title={title} url={shareUrl} aria-label="Share on Reddit">
-                <RedditIcon size={24} round />
+                <RedditIcon size={iconSize} round />
             </RedditShareButton>
-
-            <TelegramShareButton title={title} url={shareUrl} aria-label="Share on Telegram">
-                <TelegramIcon size={24} round />
-            </TelegramShareButton>
-
-            <WhatsappShareButton title={title} url={shareUrl} aria-label="Share on WhatsApp">
-                <WhatsappIcon size={24} round />
-            </WhatsappShareButton>
 
         </>
     )

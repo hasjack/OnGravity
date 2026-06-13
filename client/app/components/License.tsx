@@ -6,11 +6,11 @@ const RH_LINK = "https://www.researchhub.com/proposal/29607/empirical-test-of-lo
 export default function License({ colorScheme="dark" }) {
     return (
         <>
-            <img src={`${CDN}rh-logo${colorScheme === "dark" ? '2' : ''}.png`} className="h-8 md:h-12 mb-4 md:mb-6" />
+            <img src={`${CDN}rh-logo${colorScheme === "dark" ? '2' : ''}.png`} alt="" className="mx-auto mb-4 h-8 md:mb-6 md:h-12" />
             <p className="max-w-3xl text-xs md:text-sm text-center px-4 mb-8">
                 Please consider <Link to={RH_LINK} target="_blank" className="underline">funding this research</Link> on Research Hub
             </p>
-            <img src={`${CDN}cc-long.webp`} className="h-12 md:h-18 mb-2" />
+            <img src={`${CDN}cc-long.webp`} alt="" className="mx-auto mb-2 h-12 md:h-18" />
             <p className="max-w-5xl text-xs md:text-sm px-4 mb-12 text-center">
                 Content on this site is licensed under
                 a <Link to="https://creativecommons.org/licenses/by/4.0/deed.en" target="_blank" className="underline">Creative Commons 

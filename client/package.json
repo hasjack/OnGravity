@@ -3,8 +3,16 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.19.0 || >=22.12.0"
+  },
   "scripts": {
+    "check-runtime": "node scripts/check-runtime.mjs",
+    "prebuild": "yarn check-runtime",
     "start": "node server.js",
+    "prestart": "yarn check-runtime --require-build",
+    "dev": "NODE_ENV=development node server.js",
+    "predev": "yarn check-runtime",
     "build": "react-router build",
     "lint": "eslint .",
     "serve": "serve -s dist/ -l 5173",

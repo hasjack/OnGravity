@@ -1,6 +1,6 @@
-const Img = ({ path, alt }: { path: string, alt: string }) => {
+const Img = ({ path, alt, classNames = "" }: { path: string, alt: string, classNames?: string }) => {
     return (
-        <img src={path} alt={alt} className="w-auto mb-2 lg:max-w-3xl print:w-[84%]" />
+        <img src={path} alt={alt} className={"mb-6 w-full max-w-full rounded-lg border border-neutral-200 bg-neutral-50 object-contain print:w-[84%] " + classNames} />
     )
 }
 

@@ -1,5 +1,30 @@
 # React + TypeScript + Vite
 
+## Running the server
+
+Use Node 22.22.2 from this directory:
+
+```sh
+nvm use
+yarn install
+```
+
+For local development:
+
+```sh
+yarn dev
+```
+
+For the production server:
+
+```sh
+yarn build
+yarn start
+```
+
+The production server reads from `build/server/index.js`, so `yarn start`
+requires `yarn build` to have completed first.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
