@@ -7,6 +7,7 @@ import Img from '../components/Img'
 import License from '~/components/License'
 import { H2, H3, H4, P, Ul, Ol, Li } from '../components/Typography'
 import { Route } from './+types/AnalysisBellToy'
+import { pageMeta } from '~/lib/seo'
 
 const { VITE_APP_CDN_URL } = import.meta.env
 const CDN = VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/'
@@ -18,22 +19,14 @@ export function loader({ request }: Route.LoaderArgs) {
 }
 
 export function meta({ location }: Route.MetaArgs) {
-    const url = `https://halfasecond.com${location.pathname}`
-
-    return [
-        { title: 'Progress-State Bell Toy in Natural Mathematics' },
-        {
-            name: 'description',
-            content: 'A local Bell-type toy model built from Natural Mathematics progress-state dynamics.',
-        },
-        { property: 'og:type', content: 'website' },
-        { property: 'og:title', content: 'Progress-State Bell Toy in Natural Mathematics' },
-        {
-            property: 'og:description',
-            content: 'A local CHSH-style toy model using sector-state and progress variables with flip-on-overflow dynamics.',
-        },
-        { property: 'og:url', content: url },
-    ]
+    return pageMeta({
+        title: "Progress-State Bell Toy in Natural Mathematics | On Gravity",
+        description:
+            "A local Bell-type toy model built from Natural Mathematics progress-state dynamics, sector state, and flip-on-overflow rules.",
+        pathname: location.pathname,
+        image: "https://cdn.halfasecond.com/images/onGravity/bell-toy-16-10.jpg",
+        type: "article",
+    })
 }
 
 export default function AnalysisBellToy({ loaderData }: Route.ComponentProps) {

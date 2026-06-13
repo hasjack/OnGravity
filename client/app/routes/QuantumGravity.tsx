@@ -3,6 +3,7 @@ import Article from '../components/Article'
 import License from '~/components/License'
 import { H2, H3, P, Ul, Ol, Li } from '../components/Typography'
 import { Route } from './+types/QuantumGravity'
+import { pageMeta } from '~/lib/seo'
 
 
 const { VITE_APP_CDN_URL } = import.meta.env
@@ -14,14 +15,20 @@ export function loader({ request }: Route.LoaderArgs) {
     }
 }
 
-export function meta() {
-    return [
-        { title: "Resolution of the Penrose Quantum-Gravity Phase Catastrophe & connection to the Riemann Spectrum" },
-        {
-            name: "description",
-            content: "In this paper we show that this catastrophe arises solely because quantum mechanics is written over the complex numbers. In Natural Mathematics (NM), the imaginary unit does not encode rotation in the complex plane, but orientation parity. Quantum amplitudes are real and take only the values ±1.",
+export function meta({ location }: Route.MetaArgs) {
+    return pageMeta({
+        title: "Penrose Quantum-Gravity Phase Resolution | On Gravity",
+        description:
+            "A Natural Mathematics note on the Penrose quantum-gravity phase catastrophe, orientation parity, real amplitudes, and a connection to the Riemann spectrum.",
+        pathname: location.pathname,
+        type: "article",
+        citation: {
+            title: "Resolution of the Penrose Quantum-Gravity Phase Catastrophe & connection to the Riemann Spectrum",
+            author: "Jack Pickett",
+            publicationDate: "2025/12/13",
+            doi: "10.55277/researchhub.ocyj3cty.1",
         },
-    ]
+    })
 }
 
 export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {

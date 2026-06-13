@@ -1,6 +1,7 @@
 import type { Route } from "./+types/about";
 import { Link } from "react-router";
 import { InlineMath } from "~/components/Katex";
+import { pageMeta } from "~/lib/seo";
 
 const researchStreams = [
     {
@@ -44,27 +45,12 @@ const principles = [
 ]
 
 export function meta({ location }: Route.MetaArgs) {
-    const title = "κ-Framework | Natural Mathematics & Environmental Curvature";
-    const description = "A unified empirical framework for dynamical systems and weak-field gravity. From iterative quadratic atlases to SPARC galaxy rotation curves, exploring how curvature responds to the local environment.";
-    const url = `https://halfasecond.com${location.pathname}`;
-
-    return [
-        { title },
-        { name: "description", content: description },
-        
-        // OpenGraph / Facebook
-        { property: "og:type", content: "website" },
-        { property: "og:url", content: url },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:image", content: "https://cdn.halfasecond.com/images/onGravity/k-framework.jpg" },
-
-        // Twitter
-        { name: "twitter:card", content: "https://cdn.halfasecond.com/images/onGravity/k-framework.jpg" },
-        { name: "twitter:title", content: title },
-        { name: "twitter:description", content: description },
-        { name: "keywords", content: "kappa framework, natural mathematics, dynamical systems, galaxy rotation curves, SPARC dataset, N-body simulation, numerical diagnostics, Jack Pickett" }
-    ];
+    return pageMeta({
+        title: "About | On Gravity",
+        description:
+            "About On Gravity, a public research notebook for the κ-framework, natural mathematics, and weak-field gravity.",
+        pathname: location.pathname,
+    });
 }
 
 export async function loader({ context }: Route.LoaderArgs) {

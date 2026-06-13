@@ -5,7 +5,8 @@ import FurtherReading from '~/components/FurtherReading'
 import License from '~/components/License'
 import { H2, H3, P, Ul, Ol, Li } from '../components/Typography'
 import { references } from '../lib/references'
-import { Route } from './+types/AnalysisSparc'
+import { Route } from './+types/AnalysisSolarSystem'
+import { pageMeta } from '~/lib/seo'
 
 const { VITE_APP_CDN_URL } = import.meta.env
 const CDN = VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/'
@@ -16,14 +17,21 @@ export function loader({ request }: Route.LoaderArgs) {
     }
 }
 
-export function meta() {
-    return [
-        { title: "Analysis - Solar System Diagnostics of the κ-Framework" },
-        {
-            name: "description",
-            content: "Environmental Curvature Response in Planetary Dynamics: Solar System Diagnostics of the κ-Framework",
+export function meta({ location }: Route.MetaArgs) {
+    return pageMeta({
+        title: "Solar System Diagnostics of the κ-Framework | On Gravity",
+        description:
+            "Planetary N-body diagnostics testing whether the κ-framework remains consistent with Solar System orbital stability and secular perihelion motion.",
+        pathname: location.pathname,
+        image: "https://cdn.halfasecond.com/images/onGravity/solar-system-analysis.jpg",
+        type: "article",
+        citation: {
+            title: "Environmental Curvature Response in Planetary Dynamics: Solar System Diagnostics of the κ-Framework",
+            author: "Jack Pickett",
+            publicationDate: "2026/03/12",
+            doi: "10.55277/researchhub.05wfwlfo.1",
         },
-    ]
+    })
 }
 
 export default function AnalysisSolarSystem({ loaderData }: Route.ComponentProps) {

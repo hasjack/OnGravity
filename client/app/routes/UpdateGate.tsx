@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
-import type { Route } from "./+types/about"
+import type { Route } from "./+types/UpdateGate"
+import { pageMeta } from "~/lib/seo"
 
 export type GateSign = 1 | -1
 
@@ -31,15 +32,13 @@ export function loader({ request }: Route.LoaderArgs) {
     }
 }
 
-export function meta() {
-    return [
-        { title: "Gate Playground" },
-        {
-            name: "description",
-            content:
-                "A browser playground for a minimal progress-state gate with memory, hysteresis, and parity flips.",
-        },
-    ]
+export function meta({ location }: Route.MetaArgs) {
+    return pageMeta({
+        title: "Gate Playground | On Gravity",
+        description: "A browser playground for a minimal progress-state gate with memory, hysteresis, and parity flips.",
+        pathname: location.pathname,
+        noIndex: true,
+    })
 }
 
 export function clampProgress(value: number): number {

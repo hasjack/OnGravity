@@ -6,6 +6,7 @@ import License from '~/components/License'
 import SwitchingAtlasExplorer from '../components/SwitchingAtlasExplorer'
 import { H2, H3, P, Ul, Ol, Li } from '../components/Typography'
 import { Route } from './+types/SwitchingQuadraticAtlas'
+import { pageMeta } from '~/lib/seo'
 
 const { VITE_APP_CDN_URL } = import.meta.env
 const CDN = (VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/')
@@ -15,24 +16,14 @@ export function loader({ request }: Route.LoaderArgs) {
 }
 
 export function meta({ location }: Route.MetaArgs) {
-    const url = `https://halfasecond.com${location.pathname}`
-
-    return [
-        { title: 'Switching Quadratic Atlas Diagnostics' },
-        {
-            name: 'description',
-            content:
-                'Orientation-sensitive diagnostics for a switching extension of the real quadratic atlas: flip count, parity, first-flip iteration, occupancy, and κ deformation.',
-        },
-        { property: 'og:type', content: 'website' },
-        { property: 'og:title', content: 'Switching Quadratic Atlas Diagnostics' },
-        {
-            property: 'og:description',
-            content:
-                'A diagnostic extension of the real quadratic atlas using orientation switching, flip parity, first-flip iteration, occupancy fields, and deformation sweeps in κ.',
-        },
-        { property: 'og:url', content: url },
-    ]
+    return pageMeta({
+        title: "Switching Quadratic Atlas Diagnostics | On Gravity",
+        description:
+            "Orientation-sensitive diagnostics for a switching extension of the real quadratic atlas: flip count, parity, first-flip iteration, occupancy, and κ deformation.",
+        pathname: location.pathname,
+        image: "https://cdn.halfasecond.com/images/onGravity/quadratic-atlas-16-10.jpg",
+        type: "article",
+    })
 }
 
 export default function SwitchingQuadraticAtlasDiagnostics({ loaderData }: Route.ComponentProps) {

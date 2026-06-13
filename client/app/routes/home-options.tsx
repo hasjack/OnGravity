@@ -1,5 +1,16 @@
 import { Link } from "react-router";
 import { InlineMath } from "~/components/Katex";
+import type { Route } from "./+types/home-options";
+import { pageMeta } from "~/lib/seo";
+
+export function meta({ location }: Route.MetaArgs) {
+    return pageMeta({
+        title: "Home Options | On Gravity",
+        description: "Internal homepage design explorations for On Gravity.",
+        pathname: location.pathname,
+        noIndex: true,
+    });
+}
 
 const articles = [
     {

@@ -4,6 +4,7 @@ import { H1, H2, H2Alt, H3, P } from '../components/Typography'
 import Img from '../components/Img'
 import { Route } from './+types/NonTrivialMarsBars'
 import Share from '~/components/Share'
+import { pageMeta } from '~/lib/seo'
 
 const { VITE_APP_CDN } = import.meta.env
 const CDN = VITE_APP_CDN || 'https://cdn.halfasecond.com/images/onGravity/'
@@ -15,47 +16,15 @@ export function loader({ request }: Route.LoaderArgs) {
 }
 
 export function meta({ location }: Route.MetaArgs) {
-    const url = `https://halfasecond.com${location.pathname}`
-    return [
-        { title: "Non-trivial Mars bars" },
-        {
-            name: "description",
-            content: "An Introduction to Natural Maths - Non-trivial Mars bars",
-        },
-
-        // Open Graph
-        { property: "og:type", content: "website" },
-        {
-            property: "og:title",
-            content: "An Introduction to Natural Maths - Non-trivial Mars bars",
-        },
-        {
-            property: "og:description",
-            content:
-                "Exploring the profound implications of sharing zero and the nature of division with Mars Bars.",
-        },
-        { property: "og:url", content: url },
-        {
-            property: "og:image",
-            content: "https://cdn.halfasecond.com/images/onGravity/k-framework.jpg",
-        },
-
-        // Twitter
-        { name: "twitter:card", content: "summary_large_image" },
-        {
-            name: "twitter:title",
-            content: "Non-trivial Mars bars",
-        },
-        {
-            name: "twitter:description",
-            content:
-                "An Introduction to Natural Maths - Non-trivial Mars bars",
-        },
-        {
-            name: "twitter:image",
-            content: "https://cdn.halfasecond.com/images/onGravity/k-framework.jpg",
-        },
-    ]
+    return pageMeta({
+        title: "Non-trivial Mars bars | On Gravity",
+        description:
+            "An exploratory Natural Mathematics note on zero, exact division, internal structure, and boundary definitions using Mars bars as the entry point.",
+        pathname: location.pathname,
+        image: "https://cdn.halfasecond.com/images/onGravity/mars-bar.jpg",
+        type: "article",
+        keywords: "natural mathematics, zero, exact division, boundary structure, Mars bars, Jack Pickett",
+    })
 }
 
 export default function NonTrivialMarsBars({ loaderData }: Route.ComponentProps) {

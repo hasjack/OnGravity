@@ -1,6 +1,7 @@
 import { Route } from './+types/riemann'
 import Article from '~/components/Article';
 import { H2, P } from '~/components/Typography'
+import { pageMeta } from '~/lib/seo'
 
 export function loader({ request }: Route.LoaderArgs) {
     return {
@@ -8,15 +9,14 @@ export function loader({ request }: Route.LoaderArgs) {
     }
 }
 
-export function meta() {
-    return [
-        { title: "Kicking the Nest: Examination of the Riemann Hypothesis in Natural Maths" },
-        {
-            name: "description",
-            content:
-                "",
-        },
-    ]
+export function meta({ location }: Route.MetaArgs) {
+    return pageMeta({
+        title: "Kicking the Nest | On Gravity",
+        description: "A draft Natural Mathematics note on the Riemann hypothesis.",
+        pathname: location.pathname,
+        type: "article",
+        noIndex: true,
+    })
 }
 
 

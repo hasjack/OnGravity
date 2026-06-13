@@ -6,6 +6,7 @@ import License from '~/components/License'
 import { H2, H3, P, Ul, Ol, Li } from '../components/Typography'
 import { references } from '../lib/references'
 import { Route } from './+types/AnalysisSparc'
+import { pageMeta } from '~/lib/seo'
 
 const { VITE_APP_CDN_URL } = import.meta.env
 const CDN = VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/'
@@ -16,14 +17,21 @@ export function loader({ request }: Route.LoaderArgs) {
     }
 }
 
-export function meta() {
-    return [
-        { title: "Analysis - SPARC rotation curves" },
-        {
-            name: "description",
-            content: "The κ-Framework naturally reproduces the Radial Acceleration Relation observed in SPARC galaxies. Including velocity shear tightens the residuals dramatically.",
+export function meta({ location }: Route.MetaArgs) {
+    return pageMeta({
+        title: "SPARC Galaxy Rotation Curves | On Gravity",
+        description:
+            "Empirical tests of the κ-framework against the SPARC galaxy rotation-curve dataset, including baryonic acceleration fits and residual diagnostics.",
+        pathname: location.pathname,
+        image: "https://cdn.halfasecond.com/images/onGravity/galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png",
+        type: "article",
+        citation: {
+            title: "An Environmental Curvature Response for Galaxy Rotation Curves: Empirical Tests of the κ-Framework using the SPARC Dataset",
+            author: "Jack Pickett",
+            publicationDate: "2026/03/09",
+            doi: "10.55277/researchhub.53yst6oa.1",
         },
-    ]
+    })
 }
 
 export default function AnalysisSparc({ loaderData }: Route.ComponentProps) {

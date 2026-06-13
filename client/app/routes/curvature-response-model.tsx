@@ -6,7 +6,8 @@ import FurtherReading from '~/components/FurtherReading'
 import License from '~/components/License'
 import Img from '../components/Img'
 import { references } from '../lib/references'
-import { Route } from './+types/AnalysisSparc'
+import { Route } from './+types/curvature-response-model'
+import { pageMeta } from '~/lib/seo'
 
 const { VITE_APP_CDN_URL } = import.meta.env
 const CDN = VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/'
@@ -18,60 +19,19 @@ export function loader({ request }: Route.LoaderArgs) {
 }
 
 export function meta({ location }: Route.MetaArgs) {
-    const url = `https://halfasecond.com${location.pathname}`
-    return [
-        { title: "Pre-print: A Curvature Response Model for Weak-Field Gravity" },
-        {
-            name: "description",
-            content: "The κ-framework: A Curvature Response Model for Weak-Field Gravity",
+    return pageMeta({
+        title: "A Curvature Response Model for Weak-Field Gravity | On Gravity",
+        description:
+            "The core κ-framework pre-print proposing an environment-dependent curvature response model for weak-field gravity, tested against galaxy and Solar System diagnostics.",
+        pathname: location.pathname,
+        type: "article",
+        citation: {
+            title: "A Curvature Response Model for Weak-Field Gravity",
+            author: "Jack Pickett",
+            publicationDate: "2026/03/28",
+            doi: "10.55277/researchhub.zwegi9m9.3",
         },
-
-        // Open Graph
-        { property: "og:type", content: "website" },
-        {
-            property: "og:title",
-            content: "κ-Framework: A Unified Geometric Model for Weak-Field Gravity",
-        },
-        {
-            property: "og:description",
-            content:
-                "An environment-dependent gravitational response model that resolves galaxy rotation curves and early-universe SMBH formation without dark matter. Validated against the SPARC dataset and Solar System dynamics.",
-        },
-        { property: "og:url", content: url },
-        {
-            property: "og:image",
-            content: "https://cdn.halfasecond.com/images/onGravity/k-framework.jpg",
-        },
-
-        // Twitter
-        { name: "twitter:card", content: "summary_large_image" },
-        {
-            name: "twitter:title",
-            content: "κ-Framework: A Unified Geometric Model for Weak-Field Gravity",
-        },
-        {
-            name: "twitter:description",
-            content:
-                "Exploring κ — the density-dependent curvature term unifying galactic and cosmological gravity.",
-        },
-        {
-            name: "twitter:image",
-            content: "https://cdn.halfasecond.com/images/onGravity/k-framework.jpg",
-        },
-
-        // Academic / citation
-        {
-            name: "citation_title",
-            content: "κ-Framework: A Unified Geometric Model for Weak-Field Gravity",
-        },
-        { name: "citation_author", content: "Jack Pickett" },
-        { name: "citation_publication_date", content: "2026/03/28" },
-        {
-            name: "citation_pdf_url",
-            content: "https://doi.org/10.55277/researchhub.zwegi9m9.3",
-        },
-        { name: "citation_language", content: "en" },
-    ]
+    })
 }
 
 export default function CurvatureResponseModel({ loaderData }: Route.ComponentProps) {

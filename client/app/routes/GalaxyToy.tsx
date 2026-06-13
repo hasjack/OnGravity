@@ -2,6 +2,7 @@ import { useRef, useEffect, useState, useCallback } from "react"
 
 import Share from "~/components/Share"
 import { Route } from './+types/GalaxyToy'
+import { pageMeta } from "~/lib/seo"
 type Mode = "newton" | "kappa"
 type Vec2 = { x: number; y: number }
 type Particle = { pos: Vec2; vel: Vec2 }
@@ -55,25 +56,15 @@ const PRESETS: {
 export function meta({ location }: Route.MetaArgs) {
     const title = "κ-Framework | Simulation: Galaxy Toy";
     const description = "A unified empirical framework for dynamical systems and weak-field gravity. This component shows a stylised disc galaxy under either a simple Newtonian central force or a toy κ-boosted response. A rotating non-axisymmetric perturbation is added to encourage visible spiral, bar-like, and dispersive structure.";
-    const url = `https://halfasecond.com${location.pathname}`;
 
-    return [
-        { title },
-        { name: "description", content: description },
-
-        // OpenGraph / Facebook
-        { property: "og:type", content: "website" },
-        { property: "og:url", content: url },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:image", content: "https://cdn.halfasecond.com/images/onGravity/toy-galaxy-16-10.jpg" },
-
-        // Twitter
-        { name: "twitter:card", content: "https://cdn.halfasecond.com/images/onGravity/toy-galaxy-16-10.jpg" },
-        { name: "twitter:title", content: title },
-        { name: "twitter:description", content: description },
-        { name: "keywords", content: "kappa framework, natural mathematics, dynamical systems, galaxy rotation curves, SPARC dataset, N-body simulation, numerical diagnostics, Jack Pickett" }
-    ];
+    return pageMeta({
+        title,
+        description,
+        pathname: location.pathname,
+        image: "https://cdn.halfasecond.com/images/onGravity/toy-galaxy-16-10.jpg",
+        keywords:
+            "kappa framework, galaxy simulation, toy galaxy, Newtonian dynamics, weak-field gravity, N-body simulation, Jack Pickett",
+    });
 }
 
 export function loader({ request }: Route.LoaderArgs) {

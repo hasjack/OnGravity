@@ -2,55 +2,8 @@ import type { Route } from "./+types/home";
 import { Link } from "react-router";
 import License from "~/components/License";
 import { InlineMath } from "../components/Katex";
-
-const { VITE_APP_CDN_URL } = import.meta.env
-const CDN = VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/'
-
-const items = [
-    {
-        itemType: "Note",
-        label: "Methods and Evaluation Protocol for the Progress-State Regime Gate",
-        to: "/notes/evaluation-protocol-for-progress-state-regime",
-        date: "21st April 2026",
-        image: `${CDN}bell-toy-candles-16-10.jpg`,
-    },
-    {
-        itemType: "Note",
-        label: "Switching Quadratic Atlas Diagnostics",
-        to: "/notes/switching-quadratic-atlas-diagnostics",
-        date: "15th April 2026",
-        image: `${CDN}quadratic-atlas-16-10.jpg`,
-    },
-    {
-        itemType: "Note",
-        label: "Progress-State Bell Toy in Natural Mathematics",
-        to: "/notes/natural-mathematics-bell-toy",
-        date: "12th April 2026",
-        image: `${CDN}bell-toy-16-10.jpg`,
-    },
-    {
-        itemType: "Theory (pre-print)",
-        label: "A Curvature Response Model for Weak-Field Gravity",
-        to: "/preprint/a-curvature-response-model-for-weak-field-gravity",
-        date: "28th March 2026",
-        image: `${CDN}k-framework.jpg`,
-    },
-    {
-        itemType: "Analysis (pre-print)",
-        label:
-            "Empirical Tests of the κ-Framework using SPARC Dataset",
-        to: "/analysis/sparc-galaxy-rotation-curves",
-        date: "9th March 2026",
-        image: `${CDN}galaxy-rotation-curves/output/plots/kappa_vs_gbar_fit.png`,
-    },
-    {
-        itemType: "Simulation",
-        label: "Toy Galaxy - k-Framework comparison with Newtonian physics",
-        to: "/toy-galaxy",
-        date: "12th November 2025",
-        image: `${CDN}toy-galaxy-16-10.jpg`,
-    },
-]
+import { latestArticles } from "~/lib/articles";
+import { pageMeta } from "~/lib/seo";
 
 const pillars = [
     ["Framework", "A falsifiable curvature-response model for weak-field gravity."],
@@ -67,25 +20,8 @@ const openQuestions = [
 export function meta({ location }: Route.MetaArgs) {
     const title = "κ-Framework | Natural Mathematics & Environmental Curvature";
     const description = "A unified empirical framework for dynamical systems and weak-field gravity. From iterative quadratic atlases to SPARC galaxy rotation curves, exploring how curvature responds to the local environment.";
-    const url = `https://halfasecond.com${location.pathname}`;
 
-    return [
-        { title },
-        { name: "description", content: description },
-
-        // OpenGraph / Facebook
-        { property: "og:type", content: "website" },
-        { property: "og:url", content: url },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:image", content: "https://cdn.halfasecond.com/images/onGravity/k-framework.jpg" },
-
-        // Twitter
-        { name: "twitter:card", content: "https://cdn.halfasecond.com/images/onGravity/k-framework.jpg" },
-        { name: "twitter:title", content: title },
-        { name: "twitter:description", content: description },
-        { name: "keywords", content: "kappa framework, natural mathematics, dynamical systems, galaxy rotation curves, SPARC dataset, N-body simulation, numerical diagnostics, Jack Pickett" }
-    ];
+    return pageMeta({ title, description, pathname: location.pathname });
 }
 
 // export async function loader({ context }: Route.LoaderArgs) {
@@ -145,9 +81,17 @@ export default function Home() {
 
                     <div className="grid gap-8 py-10">
                         <div>
-                            <h2 className="text-2xl font-semibold tracking-normal">Latest research objects</h2>
+                            <div className="flex items-end justify-between gap-4">
+                                <h2 className="text-2xl font-semibold tracking-normal">Latest research objects</h2>
+                                <Link
+                                    to="/articles"
+                                    className="shrink-0 text-sm font-semibold text-neutral-600 underline decoration-neutral-300 underline-offset-4 transition hover:text-neutral-950"
+                                >
+                                    See more
+                                </Link>
+                            </div>
                             <div className="mt-6 divide-y divide-neutral-200 border-y border-neutral-200">
-                                {items.map((item) => {
+                                {latestArticles.map((item) => {
                                     const isExternal = item.to.startsWith("https://")
                                     return (
                                         <article key={item.to} className="grid gap-4 py-5 sm:grid-cols-[120px_1fr]">

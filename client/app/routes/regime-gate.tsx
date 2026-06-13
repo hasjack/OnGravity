@@ -10,6 +10,7 @@ import FurtherReading from '~/components/FurtherReading'
 import License from '~/components/License'
 import { H2, H3, P, Ul, Li } from '~/components/Typography'
 import { Route } from './+types/regime-gate'
+import { pageMeta } from '~/lib/seo'
 
 
 const { VITE_APP_CDN_URL } = import.meta.env
@@ -21,15 +22,15 @@ export function loader({ request }: Route.LoaderArgs) {
     }
 }
 
-export function meta() {
-    return [
-        { title: "Methods and Evaluation Protocol for the Progress-State Regime Gate" },
-        {
-            name: "description",
-            content:
-                "An executive methods note on the Progress-State Regime Gate, a lightweight state-machine controller for trading signals, with evidence from walk-forward out-of-sample testing, friction sweeps, reproducible artifacts, and infrastructure-focused product positioning.",
-        },
-    ]
+export function meta({ location }: Route.MetaArgs) {
+    return pageMeta({
+        title: "Executive Summary: Regime Gate | On Gravity",
+        description:
+            "An executive methods note on the Progress-State Regime Gate, a lightweight state-machine controller with walk-forward out-of-sample testing and friction sweeps.",
+        pathname: location.pathname,
+        image: "https://cdn.halfasecond.com/images/onGravity/bell-toy-candles-16-10.jpg",
+        type: "article",
+    })
 }
 
 export default function RegimeGate({ loaderData }: Route.ComponentProps) {

@@ -5,6 +5,7 @@ import Img from '~/components/Img'
 import License from '~/components/License'
 import { H2, H3, P, Ul, Li } from '~/components/Typography'
 import { Route } from './+types/regime-gate-candles'
+import { pageMeta } from '~/lib/seo'
 
 
 const { VITE_APP_CDN_URL } = import.meta.env
@@ -16,15 +17,15 @@ export function loader({ request }: Route.LoaderArgs) {
     }
 }
 
-export function meta() {
-    return [
-        { title: "Methods and Evaluation Protocol for the Progress-State Regime Gate" },
-        {
-            name: "description",
-            content:
-                "A methods note documenting the Progress-State Regime Gate on crypto candles, including model definition, feature mapping, walk-forward out-of-sample testing, fee stress buckets, parameter pocket selection, controller benchmarks, and reproducibility.",
-        },
-    ]
+export function meta({ location }: Route.MetaArgs) {
+    return pageMeta({
+        title: "Progress-State Regime Gate Evaluation Protocol | On Gravity",
+        description:
+            "A methods note documenting the Progress-State Regime Gate on crypto candles, including model definition, feature mapping, walk-forward testing, fee stress buckets, and reproducibility.",
+        pathname: location.pathname,
+        image: "https://cdn.halfasecond.com/images/onGravity/bell-toy-candles-16-10.jpg",
+        type: "article",
+    })
 }
 
 export default function RegimeGateCandles({ loaderData }: Route.ComponentProps) {
