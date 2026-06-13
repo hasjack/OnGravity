@@ -85,7 +85,7 @@ export default function About({ loaderData }: Route.ComponentProps) {
                         Project note
                     </div>
                     <h1 className="mt-3 text-5xl font-semibold leading-none tracking-normal">
-                        About On Gravity
+                        About
                     </h1>
                     <p className="mt-5 max-w-sm text-lg leading-8 text-neutral-600">
                         A public research notebook for the <InlineMath math={String.raw`\kappa`} />-framework, natural mathematics, and weak-field gravity.

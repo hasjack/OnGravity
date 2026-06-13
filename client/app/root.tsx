@@ -23,12 +23,8 @@ const navigation = [
         ]
     },
     {
-        title: "Pre-prints", items: [
+        title: "Research", items: [
             { to: "/preprint/a-curvature-response-model-for-weak-field-gravity", label: "Curvature Response Model" },
-        ]
-    },
-    {
-        title: "Framework Analysis", items: [
             { to: "/analysis/sparc-galaxy-rotation-curves", label: "SPARC rotation curves" },
             { to: "/analysis/solar-system", label: "Solar System" },
         ]
@@ -43,7 +39,7 @@ const navigation = [
         ]
     },
     {
-        title: "Exploratory", items: [
+        title: "Toys", items: [
             { to: "/non-trivial-mars-bars", label: "Non-trivial Mars bars" },
             { to: "/toy-galaxy", label: "Simulation: Galaxy Toy" }
         ]
