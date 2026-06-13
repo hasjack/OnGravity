@@ -102,7 +102,7 @@ export default function Home() {
                     <img src="/logo.png" alt="" className="h-24 w-24" />
                     <h1 className="mt-10 text-5xl font-semibold leading-none tracking-normal">On Gravity</h1>
                     <p className="mt-5 max-w-sm text-lg leading-8 text-neutral-600">
-                        A public notebook for the <InlineMath math={String.raw`\kappa`} />-framework and the evidence around it.
+                        A public notebook for the <InlineMath math={String.raw`\kappa`} />-framework & supporting evidence.
                     </p>
                     <p className="mt-5 max-w-sm text-base leading-7 text-neutral-600">
                         Exploring whether gravitational phenomena attributed to dark matter could arise from an environmental response of spacetime itself.

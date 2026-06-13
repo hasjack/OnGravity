@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState, useCallback } from "react"
 
-import { H2, P } from '~/components/Typography'
 import Share from "~/components/Share"
 import { Route } from './+types/GalaxyToy'
 type Mode = "newton" | "kappa"
@@ -322,6 +321,7 @@ export default function Universe({ loaderData }: Route.ComponentProps) {
 
     return (
         <section
+            className="font-mono"
             style={{
                 display: "flex",
                 flexDirection: "column",
@@ -408,61 +408,41 @@ export default function Universe({ loaderData }: Route.ComponentProps) {
                         }}
                     >
                         <div
-                            style={{
-                                width: "100%",
-                                maxWidth: 760,
-                                background: "rgba(10, 14, 28, 0.96)",
-                                border: "1px solid #2a3555",
-                                borderRadius: 12,
-                                padding: "1.25rem 1.25rem 1rem",
-                                boxShadow: "0 20px 60px rgba(0,0,0,0.45)",
-                            }}
+                            className="w-full max-w-3xl border border-white/15 bg-neutral-950/90 p-6 shadow-2xl sm:p-8"
                         >
-                            <H2 style={{ margin: "0 0 0.75rem", fontSize: "1.25rem" }}>
+                            <h1 className="text-2xl font-semibold leading-tight tracking-normal text-white sm:text-3xl">
                                 Toy galaxy simulator
-                            </H2>
+                            </h1>
 
-                            <div style={{ fontSize: "0.95rem", lineHeight: 1.6, opacity: 0.92 }}>
-                                <P style={{ marginTop: 0 }}>
+                            <div className="mt-6 grid gap-5 text-base leading-7 text-neutral-300">
+                                <p>
                                     This component shows a stylised disc galaxy under either a simple
                                     Newtonian central force or a toy κ-boosted response. A rotating
                                     non-axisymmetric perturbation is added to encourage visible spiral,
                                     bar-like, and dispersive structure.
-                                </P>
+                                </p>
 
-                                <P>
+                                <p>
                                     The controls let you switch between Newton and κ mode, adjust κ,
                                     choose a preset regime, and change the number of stars. It is a
                                     qualitative visual sandbox rather than a calibrated astrophysical
                                     model, but it is useful for exploring how different response
                                     strengths change the morphology of the disc.
-                                </P>
+                                </p>
 
-                                <P style={{ marginBottom: "1rem" }}>
+                                <p>
                                     The default scene is already visible behind this panel with{" "}
-                                    <strong>{starCount.toLocaleString()}</strong> stars laid out. Close
+                                    <strong className="font-semibold text-white">{starCount.toLocaleString()}</strong> stars laid out. Close
                                     this intro to start the simulation.
-                                </P>
+                                </p>
                             </div>
 
                             <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "flex-end",
-                                    gap: "0.75rem",
-                                }}
+                                className="mt-8 flex justify-end"
                             >
                                 <button
                                     onClick={() => setIntroOpen(false)}
-                                    style={{
-                                        padding: "0.55rem 0.9rem",
-                                        borderRadius: 6,
-                                        border: "none",
-                                        cursor: "pointer",
-                                        background: "#2d7fff",
-                                        color: "#fff",
-                                        fontWeight: 600,
-                                    }}
+                                    className="rounded-md bg-white px-4 py-3 text-sm font-semibold text-neutral-950 transition hover:bg-neutral-200"
                                 >
                                     Start simulation
                                 </button>

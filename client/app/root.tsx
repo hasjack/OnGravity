@@ -25,7 +25,7 @@ const navigation = [
     {
         title: "Research", items: [
             { to: "/preprint/a-curvature-response-model-for-weak-field-gravity", label: "Curvature Response Model" },
-            { to: "/analysis/sparc-galaxy-rotation-curves", label: "SPARC rotation curves" },
+            { to: "/analysis/sparc-galaxy-rotation-curves", label: "SPARC Rotation Curves" },
             { to: "/analysis/solar-system", label: "Solar System" },
         ]
     },
