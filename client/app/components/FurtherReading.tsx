@@ -5,54 +5,54 @@ const CDN = VITE_APP_CDN_URL
 
 export default function FurtherReading({ items }) {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {items.map((item: any) => {
                 const isExternal = item.to.startsWith("https://")
                 return (
                     <article
                         key={item.to}
-                        className="group rounded-2xl border border-gray-800/60 bg-black/20 overflow-hidden shadow-sm hover:shadow-md hover:border-gray-700 transition"
+                        className="group overflow-hidden rounded-md border border-neutral-300 bg-neutral-50 shadow-sm transition hover:border-neutral-400 hover:bg-white hover:shadow-md"
                     >
-                        <div className="aspect-[16/10] bg-gray-900 relative">
+                        <div className="relative aspect-[16/10] bg-neutral-100">
                             {item.image ? (
                                 <img
                                     src={item.image}
                                     alt=""
-                                    className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition"
+                                    className="absolute inset-0 h-full w-full object-cover opacity-95 transition group-hover:opacity-100"
                                     loading="lazy"
                                 />
                             ) : (
-                                <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800" />
+                                <div className="absolute inset-0 bg-neutral-100" />
                             )}
                         </div>
 
-                        <div className="p-5 space-y-3">
+                        <div className="space-y-3 p-5">
                             <div className="flex items-center justify-between gap-3">
-                                <span className="text-xs tracking-wide uppercase text-gray-800 bg-gray-800/60 border border-gray-700/60 rounded-full px-3 py-1">
+                                <span className="border border-neutral-300 bg-white px-2.5 py-1 text-xs uppercase tracking-wide text-neutral-600">
                                     {item.itemType}
                                 </span>
-                                <span className="text-xs text-gray-900">{item.date}</span>
+                                <span className="text-xs text-neutral-600">{item.date}</span>
                             </div>
 
-                            <h3 className="text-base leading-snug text-gray-900">
+                            <h3 className="text-base leading-snug text-neutral-950">
                                 <Link
                                     to={item.to}
                                     target={isExternal ? "_blank" : "_self"}
-                                    className="focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+                                    className="rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                                 >
-                                    <span className="underline decoration-gray-600 group-hover:decoration-gray-300">
+                                    <span className="underline decoration-neutral-400 underline-offset-2 group-hover:decoration-neutral-950">
                                         {item.label}
                                     </span>
                                 </Link>
                             </h3>
 
-                            <div className="text-sm text-gray-600">
+                            <div className="text-sm text-neutral-600">
                                 <span className="inline-flex items-center gap-2">
-                                    <span className="w-2 h-2 rounded-full bg-blue-500/80" />
+                                    <span className="h-2 w-2 rounded-full bg-blue-500/80" />
                                     <Link
                                         to={item.to}
                                         target={isExternal ? "_blank" : "_self"}
-                                        className="focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+                                        className="rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                                     >Read</Link>
                                 </span>
                             </div>

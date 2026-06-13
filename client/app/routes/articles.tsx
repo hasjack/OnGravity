@@ -18,7 +18,7 @@ export default function Articles() {
                 <aside className="min-w-0 border-neutral-200 pr-0 lg:border-r lg:pr-10">
                     <img src="/logo.png" alt="" className="h-24 w-24" />
                     <h1 className="mt-10 text-5xl font-semibold leading-none tracking-normal">Articles</h1>
-                    <p className="mt-5 max-w-sm text-lg leading-8 text-neutral-600">
+                    <p className="mt-5 max-w-sm text-base leading-7 text-neutral-600">
                         A complete index of research objects, notes, simulations, and exploratory pieces.
                     </p>
                     <Link

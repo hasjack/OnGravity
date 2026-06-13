@@ -16,8 +16,8 @@ export const links = () => [
 ]
 
 const navigation = [
-    {   
-        title: "Main", items: [
+    {
+        title: "", items: [
             { to: "/", label: "Home" },
             { to: "/about", label: "About" },
         ]

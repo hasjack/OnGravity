@@ -3,7 +3,7 @@ const { VITE_APP_CDN_URL } = import.meta.env
 const CDN = VITE_APP_CDN_URL || 'https://cdn.halfasecond.com/images/onGravity/'
 const RH_LINK = "https://www.researchhub.com/proposal/29607/empirical-test-of-local-density-curvature-response-using-grace-fo-laser-ranging-data"
 
-export default function License({ colorScheme="dark" }) {
+export default function License({ colorScheme = "dark", flushBottom = false }) {
     return (
         <>
             <img src={`${CDN}rh-logo${colorScheme === "dark" ? '2' : ''}.png`} alt="" className="mx-auto mb-4 h-8 md:mb-6 md:h-12" />
@@ -11,7 +11,7 @@ export default function License({ colorScheme="dark" }) {
                 Please consider <Link to={RH_LINK} target="_blank" className="underline">funding this research</Link> on Research Hub
             </p>
             <img src={`${CDN}cc-long.webp`} alt="" className="mx-auto mb-2 h-12 md:h-18" />
-            <p className="max-w-5xl text-xs md:text-sm px-4 mb-12 text-center">
+            <p className={`max-w-5xl px-4 text-center text-xs md:text-sm ${flushBottom ? "mb-0" : "mb-12"}`}>
                 Content on this site is licensed under
                 a <Link to="https://creativecommons.org/licenses/by/4.0/deed.en" target="_blank" className="underline">Creative Commons 
                 Attribution 4.0 International License</Link>

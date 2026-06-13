@@ -34,38 +34,40 @@ export default function Home() {
     return (
         <section className="min-h-dvh bg-white font-mono text-neutral-950">
             <div className="mx-auto grid min-h-dvh max-w-7xl gap-10 px-5 py-16 sm:px-8 lg:grid-cols-[0.72fr_1.28fr] lg:px-10">
-                <aside className="min-w-0 border-neutral-200 pr-0 lg:border-r lg:pr-10">
-                    <img src="/logo.png" alt="" className="h-24 w-24" />
-                    <h1 className="mt-10 text-5xl font-semibold leading-none tracking-normal">On Gravity</h1>
-                    <p className="mt-5 max-w-sm text-lg leading-8 text-neutral-600">
-                        A public notebook for the <InlineMath math={String.raw`\kappa`} />-framework & supporting evidence.
-                    </p>
-                    <p className="mt-5 max-w-sm text-base leading-7 text-neutral-600">
-                        Exploring whether gravitational phenomena attributed to dark matter could arise from an environmental response of spacetime itself.
-                    </p>
-                    <div className="mt-10 flex flex-col gap-3 text-sm font-semibold">
-                        <Link
-                            to="/preprint/a-curvature-response-model-for-weak-field-gravity"
-                            className="rounded-md bg-neutral-950 px-4 py-3 text-white transition hover:bg-neutral-800"
-                        >
-                            Start with the pre-print
-                        </Link>
-                        <Link
-                            to="/analysis/sparc-galaxy-rotation-curves"
-                            className="rounded-md border border-neutral-300 px-4 py-3 transition hover:bg-neutral-50"
-                        >
-                            Review the SPARC analysis
-                        </Link>
-                        <Link
-                            to="https://github.com/hasjack/OnGravity"
-                            target="_blank"
-                            className="rounded-md border border-neutral-300 px-4 py-3 transition hover:bg-neutral-50"
-                        >
-                            Open research repository
-                        </Link>
+                <aside className="flex min-w-0 flex-col border-neutral-200 pr-0 lg:min-h-[calc(100dvh-8rem)] lg:border-r lg:pr-10">
+                    <div>
+                        <img src="/logo.png" alt="" className="h-24 w-24" />
+                        <h1 className="mt-10 text-5xl font-semibold leading-none tracking-normal">On Gravity</h1>
+                        <p className="mt-5 max-w-sm text-base leading-7 text-neutral-600">
+                            A public notebook for the <InlineMath math={String.raw`\kappa`} />-framework & supporting evidence.
+                        </p>
+                        <p className="mt-5 max-w-sm text-base leading-7 text-neutral-600">
+                            Exploring whether gravitational phenomena attributed to dark matter could arise from an environmental response of spacetime itself.
+                        </p>
+                        <div className="mt-10 flex flex-col gap-3 text-sm font-semibold">
+                            <Link
+                                to="/preprint/a-curvature-response-model-for-weak-field-gravity"
+                                className="rounded-md bg-neutral-950 px-4 py-3 text-white transition hover:bg-neutral-800"
+                            >
+                                Start with the pre-print
+                            </Link>
+                            <Link
+                                to="/analysis/sparc-galaxy-rotation-curves"
+                                className="rounded-md border border-neutral-300 px-4 py-3 transition hover:bg-neutral-50"
+                            >
+                                Review the SPARC analysis
+                            </Link>
+                            <Link
+                                to="https://github.com/hasjack/OnGravity"
+                                target="_blank"
+                                className="rounded-md border border-neutral-300 px-4 py-3 transition hover:bg-neutral-50"
+                            >
+                                Open research repository
+                            </Link>
+                        </div>
                     </div>
-                    <div className="flex flex-col items-center pt-8">
-                        <License colorScheme="dark" />
+                    <div className="mt-12 flex flex-col items-center lg:mt-auto lg:pt-10">
+                        <License colorScheme="dark" flushBottom />
                     </div>
                 </aside>
 

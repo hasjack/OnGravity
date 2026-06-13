@@ -7,7 +7,7 @@ type NavItem = {
 }
 
 type Navigation = {
-    title: string
+    title?: string
     items: NavItem[]
 }
 
@@ -87,11 +87,13 @@ const Menu = ({ navigation, open, onOpenChange }: Props) => {
             </button>
 
             <nav className="hidden items-center gap-6 text-xs tracking-wide">
-                {navigation.map((section: Navigation) => (
-                    <div key={section.title} className="flex items-center gap-3">
-                        <span className="text-xs uppercase tracking-wider text-gray-500">
-                            {section.title}
-                        </span>
+                {navigation.map((section: Navigation, sectionIndex) => (
+                    <div key={section.title || `section-${sectionIndex}`} className="flex items-center gap-3">
+                        {section.title && (
+                            <span className="text-xs uppercase tracking-wider text-gray-500">
+                                {section.title}
+                            </span>
+                        )}
                         <div className="flex items-center gap-2">
                             {section.items.map(item => {
                                 const active =
@@ -140,11 +142,13 @@ const Menu = ({ navigation, open, onOpenChange }: Props) => {
 
                 <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-4">
                     <div className="flex flex-col gap-4 text-sm">
-                        {navigation.map((section: Navigation) => (
-                            <div key={section.title}>
-                                <div className="mb-1 mt-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                                    {section.title}
-                                </div>
+                        {navigation.map((section: Navigation, sectionIndex) => (
+                            <div key={section.title || `section-${sectionIndex}`} className={section.title ? "" : "pt-4"}>
+                                {section.title && (
+                                    <div className="mb-1 mt-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                                        {section.title}
+                                    </div>
+                                )}
                                 <div className="flex flex-col gap-1">
                                     {section.items.map(item => {
                                         const active =
