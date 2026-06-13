@@ -92,18 +92,18 @@ export default function Home() {
                                     See more
                                 </Link>
                             </div>
-                            <div className="mt-6 divide-y divide-neutral-200 border-y border-neutral-200">
+                            <div className="mt-6 divide-y divide-neutral-200">
                                 {latestArticles.map((item) => {
                                     const isExternal = item.to.startsWith("https://")
                                     return (
-                                        <article key={item.to} className="grid gap-4 py-5 sm:grid-cols-[120px_1fr]">
+                                        <article key={item.to} className="grid gap-4 py-6 sm:grid-cols-[150px_1fr]">
                                             <img
                                                 src={item.image}
                                                 alt=""
-                                                className="aspect-[16/10] w-full rounded-lg bg-neutral-100 object-cover sm:w-[120px]"
+                                                className="aspect-[16/10] w-full rounded-lg bg-neutral-100 object-cover sm:w-[150px]"
                                                 loading="lazy"
                                             />
-                                            <div>
+                                            <div className="min-w-0">
                                                 <div className="text-xs uppercase tracking-wide text-neutral-500">
                                                     {item.itemType} / {item.date}
                                                 </div>
@@ -116,6 +116,9 @@ export default function Home() {
                                                         {item.label}
                                                     </Link>
                                                 </h3>
+                                                <p className="mt-3 max-w-2xl text-sm leading-6 text-neutral-600">
+                                                    {item.summary}
+                                                </p>
                                             </div>
                                         </article>
                                     )
